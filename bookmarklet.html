@@ -3,15 +3,22 @@
 <head>
     <title>Bookmarklets</title>
     <meta charset="utf-8">
-
+    <link rel='stylesheet' id='knowlton-styles-css'  href='https://assets.digitalfirstmedia.com/prod/static/css/denverpost.css?ver=1.0' type='text/css' media='all' />
+    <link rel='stylesheet' id='mason-fonts-css'  href='https://fonts.googleapis.com/css?family=Open%20Sans|Source+Serif+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C700italic%7CSource+Sans+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C400italic&#038;ver=4.5.3' type='text/css' media='all' />
+    <style type="text/css">
+    body { margin: 1em; }
+    .body-copy h2 { margin-top: 1em; }
+    body .body-copy>* { margin-bottom:.4em; }
+    </style>
 </head>
 <body>
-<h1>Bookmarklets!</h1>
-<h2>Flush Cache Bookmarklet</h2>
-<p>
-Drag this link to your browser's bookmakers bar and click the button to flush the cache on any Denver Post page you're on.
-</p>
-<a href="javascript:void((function(){ var iframe = document.createElement('iframe'); iframe.style.display = 'none'; iframe.src='http://denverpostplus.com/app/cache-buster/?url=' + window.location.href; document.body.appendChild(iframe);  })());">🚽</a>
+    <h1>Bookmarklets!</h1>
+    <section class="body-copy">
+        <h2>Flush Cache Bookmarklet</h2>
+        <p>
+        Drag this link to your browser's bookmakers bar and click the button to flush the cache on any Denver Post page you're on.
+        </p>
+        <a href="javascript:void((function(){ var iframe = document.createElement('iframe'); iframe.style.display = 'none'; iframe.src='http://denverpostplus.com/app/cache-buster/?url=' + window.location.href; document.body.appendChild(iframe);  })());">🚽</a>
 
 <h2>In-Article-Promo Bookmarklet</h2>
 <p>
@@ -119,5 +126,6 @@ parentContainer: 'mc-embed-container'
 -->
 
 
+</section>
 </body>
 </html>

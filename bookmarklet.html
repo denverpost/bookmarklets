@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookmarklets</title>
+    <meta charset="utf-8">
+
+</head>
+<body>
+<h1>Bookmarklets!</h1>
+<h2>Flush Cache Bookmarklet</h2>
+<p>
+Drag this link to your browser's bookmakers bar and click the button to flush the cache on any Denver Post page you're on.
+</p>
+<a href="javascript:void((function(){ var iframe = document.createElement('iframe'); iframe.style.display = 'none'; iframe.src='http://denverpostplus.com/app/cache-buster/?url=' + window.location.href; document.body.appendChild(iframe);  })());">🚽</a>
+
+<h2>In-Article-Promo Bookmarklet</h2>
+<p>
+Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add in-article promos every 6 paragraphs.
+</p>
+<!--
+<a href="javascript:void((function(){ var e = document.createElement('script'); e.setAttribute('src', '//extras.denverpost.com/app/bookmarklet/inarticlepromo.js'); document.body.appendChild(e); })());">ADD PROMO</a>
+<a href="javascript:void((function(){      })());">ADD PROMO</a>
+-->
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var len = grafs.length; var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); }); var item = promos.pop(); var editing = true; var ceiling = 6; if ( content.text().indexOf('in-article-promo') !== -1 ) { promos = []; item = undefined; } if ( typeof item !== 'undefined' ) { var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports.', ''); var section = 'sports'; if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; } else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; } else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; } } while ( editing == true ) { if ( len <= ceiling ) { editing = false; } if ( typeof item !== 'undefined' ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } item = promos.pop(); ceiling += 6; } if ( typeof item !== 'undefined' ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } jQuery('#content').text(grafs.join('\n\n'));   })());">ADD PROMO</a>
+
+<script>
+/*
+var content = jQuery('#content');
+var grafs = content.text().split('\n\n');
+var len = grafs.length;
+var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); });
+var item = promos.pop();
+var editing = true;
+var ceiling = 6;
+if ( content.text().indexOf('in-article-promo') !== -1 ) {
+    promos = [];
+    item = undefined;
+}
+if ( typeof item !== 'undefined' ) {
+    var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports.', '');
+    var section = 'sports';
+    if ( section_id.indexOf('1') >= 0 ) {
+        section = 'dont-miss';
+    }
+    else if ( section_id.indexOf('2') >= 0 ) {
+        section = 'hard-news';
+    }
+    else if ( section_id.indexOf('3') >= 0 ) {
+        section = 'broncos';
+    }
+}
+while ( editing == true ) {
+    if ( len <= ceiling ) {
+        editing = false;
+    }
+    if ( typeof item !== 'undefined' ) {
+        grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
+    }
+    item = promos.pop();
+    ceiling += 6;
+}
+if ( typeof item !== 'undefined' ) {
+    grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
+}
+jQuery('#content').text(grafs.join('\n\n'));
+*/
+</script>
+<!--
+<h2>DPTV Bookmarklet</h2>
+<p>
+Drag this link up to your bookmarks bar to make creating DPTV freeforms easier. Note: These are autoplay FF's. Note: This bookmarklet also works on the Sports Show.
+</p>
+<p>
+<a href="javascript:void((function(){ jQuery('body').prepend('<pre>&amp;lt;iframe width=\'654\' height=\'470\' src=\'' + window.location.href + '?iframe=1&autoplay=1\' frameborder=\'0\' allowfullscreen scrolling=\'no\' seamless&amp;gt;&amp;lt;\/iframe&amp;gt;</pre>'); })());">[ DPTV-to-FF ]</a>
+</p>
+<p>Click the button when you're on a page you want to create a FF for, it will create markup that looks something like this:</p>
+<pre> 
+&lt;iframe width='654' height='470' src='http://dptv.denverpost.com/2015/11/17/law-enforcement-from-across-the-state-gather-in-solidarity/?iframe=1&autoplay=1' frameborder='0' allowfullscreen scrolling='no' seamless></iframe>
+</pre>
+<h2>Media Center Bookmarklet</h2>
+<p>
+This bookmarklet automates the javascript you need to create a Media Center freeform.
+</p>
+<a href="javascript:void((function(){ jQuery('header').remove(); jQuery('body').prepend('<pre>&amp;lt;link rel=\'stylesheet\' href=\'http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed_styles.css\' type=\'text/css\' /&amp;gt;\n\&amp;lt;script src=\'http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed.js\'&amp;gt;&amp;lt;/script&amp;gt;\n\&amp;lt;div id=\'mc-embed-container\'&amp;gt;&amp;lt;\/div&amp;gt;\n\&amp;lt;div class=\'clear\' style=\'margin-bottom:10px;\'&amp;gt;&amp;lt;\/div&amp;gt;\n\&amp;lt;script&amp;gt;\n\$(document).ready(function(){\n\mc_embed_gallery = new MCGallery({\n\ url : \'' + window.location.origin + window.location.pathname +'\',\n\captionHeight : \'85px\',\n\parentContainer: \'mc-embed-container\'\n\});\n\});\n\&amp;lt;\/script&amp;gt;</pre>'); })());">[ MC-to-FF ]</a>
+<p>It creates markup that looks like this:</p>
+<pre>
+&lt;link rel="stylesheet" href="http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed_styles.css" type="text/css" />
+&lt;script src="http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed.js">&lt;/script>
+&lt;div id="mc-embed-container">&lt;/div>
+&lt;div class="clear" style="margin-bottom:10px;">&lt;/div>
+&lt;script>
+$(document).ready(function(){
+mc_embed_gallery = new MCGallery({
+url : 'http://photos.denverpost.com/2015/12/07/planned-parenthood-shooting-suspect-off-grid-home/',
+captionHeight : '85px',
+parentContainer: 'mc-embed-container'
+});
+});
+&lt;/script>
+</pre>
+-->
+
+
+</body>
+</html>

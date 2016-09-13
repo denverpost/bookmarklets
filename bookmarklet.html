@@ -65,6 +65,24 @@ if ( typeof item !== 'undefined' ) {
 jQuery('#content').text(grafs.join('\n\n'));
 */
 </script>
+
+<h2 id="preps">Preps Sidebar Bookmarklet</h2>
+<p>
+Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically the preps sidebar after the third graf of the story.
+</p>
+<!--
+<a href="javascript:void((function(){      })());">PREPS SIDEBAR</a>
+-->
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'http://preps.denverpost.com/\'>Colorado Prep Stats</a></h2> [dfm_iframe src=\'http://preps.denverpost.com/sidebar.html\' width=\'300px\' height=\'250px\' scrolling=\'no\'] </aside>'; grafs.splice(3, 0, markup); jQuery('#content').text(grafs.join('\n\n'));   })());">PREPS SIDEBAR</a>
+<script>
+/*
+var content = jQuery('#content');
+var grafs = content.text().split('\n\n');
+var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'http://preps.denverpost.com/\'>Colorado Prep Stats</a></h2> [dfm_iframe src=\'http://preps.denverpost.com/sidebar.html\' width=\'300px\' height=\'250px\' scrolling=\'no\'] </aside>';
+grafs.splice(3, 0, markup);
+jQuery('#content').text(grafs.join('\n\n'));
+*/
+</script>
 <!--
 <h2>DPTV Bookmarklet</h2>
 <p>

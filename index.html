@@ -28,13 +28,13 @@ Drag this link to your browser's bookmakers bar and click it when you're editing
 </p>
 <p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
 <!--
-<a href="javascript:void((function(){ var e = document.createElement('script'); e.setAttribute('src', '//extras.denverpost.com/app/bookmarklet/inarticlepromo.js'); document.body.appendChild(e); })());">ADD PROMO</a>
-<a href="javascript:void((function(){      })());">ADD PROMO</a>
+<a href="javascript:void((function(){ var e = document.createElement('script'); e.setAttribute('src', '//extras.denverpost.com/app/bookmarklet/inarticlepromo.js'); document.body.appendChild(e); })());">+ PROMOS</a>
+<a href="javascript:void((function(){      })());">+ PROMOS</a>
 -->
-<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var len = grafs.length; var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); }); var item = promos.pop(); var editing = true; var ceiling = 6; if ( content.text().indexOf('in-article-promo') !== -1 ) { promos = []; item = undefined; } if ( typeof item !== 'undefined' ) { var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports.', ''); var section = 'sports'; if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; } else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; } else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; } } while ( editing == true ) { if ( len <= ceiling ) { editing = false; } if ( typeof item !== 'undefined' ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } item = promos.pop(); ceiling += 6; } if ( typeof item !== 'undefined' ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } jQuery('#content').text(grafs.join('\n\n'));   })());">ADD PROMO</a>
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var len = grafs.length; var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); }); var item = promos.pop(); var editing = true; var ceiling = 6; if ( content.text().indexOf('in-article-promo') !== -1 ) { promos = []; item = undefined; } if ( typeof item !== 'undefined' ) { var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports.', ''); var section = 'sports'; if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; } else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; } else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; } } while ( editing == true ) { if ( len <= ceiling ) { editing = false; } if ( typeof item !== 'undefined' ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } item = promos.pop(); ceiling += 6; } if ( typeof item !== 'undefined' && grafs[grafs.length-1].indexOf('in-article') === -1 ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } jQuery('#content').text(grafs.join('\n\n'));   })());">+PROMOS</a>
 
 <script>
-/*
+/* 38 lines long
 var content = jQuery('#content');
 var grafs = content.text().split('\n\n');
 var len = grafs.length;
@@ -69,7 +69,7 @@ while ( editing == true ) {
     item = promos.pop();
     ceiling += 6;
 }
-if ( typeof item !== 'undefined' ) {
+if ( typeof item !== 'undefined' && grafs[grafs.length-1].indexOf('in-article') === -1 ) {
     grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
 }
 jQuery('#content').text(grafs.join('\n\n'));

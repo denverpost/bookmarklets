@@ -31,7 +31,7 @@ Drag this link to your browser's bookmakers bar and click it when you're editing
 <a href="javascript:void((function(){ var e = document.createElement('script'); e.setAttribute('src', '//extras.denverpost.com/app/bookmarklet/inarticlepromo.js'); document.body.appendChild(e); })());">+ PROMOS</a>
 <a href="javascript:void((function(){      })());">+ PROMOS</a>
 -->
-<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var len = grafs.length; var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); }); var item = promos.pop(); var editing = true; var ceiling = 6; if ( content.text().indexOf('in-article-promo') !== -1 ) { promos = []; item = undefined; } if ( typeof item !== 'undefined' ) { var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports.', ''); var section = 'sports'; if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; } else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; } else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; } } while ( editing == true ) { /* "len - 3" so we don't stick one of these right near the one that always goes at the end */ if ( len - 3 <= ceiling ) { editing = false; } if ( typeof item !== 'undefined' ) { /* Make sure to splice in before a header or related articles list */ if ( grafs[ceiling].match(/related_articles|h3|h4|h5) ) { ceiling -= 1; } grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } item = promos.pop(); ceiling += 6; } if ( typeof item !== 'undefined' && grafs[grafs.length-1].indexOf('in-article') === -1 ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } jQuery('#content').text(grafs.join('\n\n'));   })());">+ PROMOS</a>
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var len = grafs.length; var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); }); var item = promos.pop(); var editing = true; var ceiling = 6; if ( content.text().indexOf('in-article-promo') !== -1 ) { promos = []; item = undefined; } if ( typeof item !== 'undefined' ) { var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports.', ''); var section = 'sports'; if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; } else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; } else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; } } while ( editing == true ) { /* len - 3 so we don't stick one of these right near the one that always goes at the end */ if ( len - 3 <= ceiling ) { editing = false; } if ( typeof item !== 'undefined' ) { /* Make sure to splice in before a header or related articles list */ console.log(len, ceiling); console.log(grafs[ceiling]); if ( typeof grafs[ceiling] !== 'undefined' && grafs[ceiling].match(/(related_articles|h3|h4|h5)/) ) { ceiling -= 1; } grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } item = promos.pop(); ceiling += 6; } if ( typeof item !== 'undefined' && grafs[grafs.length-1].indexOf('in-article') === -1 ) { grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']'); } jQuery('#content').text(grafs.join('\n\n'));   })());">+ PROMOS</a>
 
 <script>
 /* 41 lines long
@@ -60,13 +60,13 @@ if ( typeof item !== 'undefined' ) {
     }
 }
 while ( editing == true ) {
-    /* "len - 3" so we don't stick one of these right near the one that always goes at the end */
+    /* len - 3 so we don't stick one of these right near the one that always goes at the end */
     if ( len - 3 <= ceiling ) {
         editing = false;
     }
     if ( typeof item !== 'undefined' ) {
         /* Make sure to splice in before a header or related articles list */
-        if ( grafs[ceiling].match(/related_articles|h3|h4|h5) ) { ceiling -= 1; }
+        if ( typeof grafs[ceiling] !== 'undefined' && grafs[ceiling].match(/(related_articles|h3|h4|h5)/) ) { ceiling -= 1; }
         grafs.splice(ceiling, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
     }
     item = promos.pop();

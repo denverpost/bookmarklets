@@ -89,9 +89,27 @@ jQuery('#content').text(grafs.join('\n\n'));
 */
 </script>
 
+<h2 id="preps">Weather Sidebar Bookmarklet</h2>
+<p>
+Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
+</p>
+<p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
+<!--
+<a href="javascript:void((function(){      })());">#COWX SIDEBAR</a>
+-->
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/weather\'>Weather</a></h2> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'750px\'] </aside>'; grafs.splice(3, 0, markup); jQuery('#content').text(grafs.join('\n\n'));   })());">#COWX SIDEBAR</a>
+<script>
+/* 5 lines
+var content = jQuery('#content');
+var grafs = content.text().split('\n\n');
+var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/weather\'>Weather</a></h2> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'750px\'] </aside>';
+grafs.splice(3, 0, markup);
+jQuery('#content').text(grafs.join('\n\n'));
+*/
+</script>
 <h2 id="preps">Preps Sidebar Bookmarklet</h2>
 <p>
-Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically the preps sidebar after the third graf of the story.
+Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
 </p>
 <p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
 <!--

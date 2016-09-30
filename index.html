@@ -97,12 +97,30 @@ Drag this link to your browser's bookmakers bar and click it when you're editing
 <!--
 <a href="javascript:void((function(){      })());">#COWX SIDEBAR</a>
 -->
-<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/weather\'>Weather</a></h2> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'750px\'] </aside>'; grafs.splice(3, 0, markup); jQuery('#content').text(grafs.join('\n\n'));   })());">#COWX SIDEBAR</a>
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/weather\'>Weather</a></h2> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'550px\'] </aside>'; grafs.splice(3, 0, markup); jQuery('#content').text(grafs.join('\n\n'));   })());">#COWX SIDEBAR</a>
 <script>
 /* 5 lines
 var content = jQuery('#content');
 var grafs = content.text().split('\n\n');
-var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/weather\'>Weather</a></h2> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'750px\'] </aside>';
+var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/weather\'>Weather</a></h2> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'550px\'] </aside>';
+grafs.splice(3, 0, markup);
+jQuery('#content').text(grafs.join('\n\n'));
+*/
+</script>
+<h2 id="preps">Homicide Report Sidebar Bookmarklet</h2>
+<p>
+Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
+</p>
+<p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
+<!--
+<a href="javascript:void((function(){      })());">HOMICIDE SIDEBAR</a>
+-->
+<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2> <a href=\'/denver-homicides/\'><img src=\'http://extras.mnginteractive.com/live/media/site36/2015/0211/20150211_025321_denver-homicide-map.gif\' alt=\'Denver Homicide Map\' border=\'0\'></a> <p>Track this year\'s homicides in Denver, and compare the city\'s homicide rate to Denver\'s homicide rate in past years.</p> </aside>'; grafs.splice(3, 0, markup); jQuery('#content').text(grafs.join('\n\n'));   })());">HOMICIDE SIDEBAR</a>
+<script>
+/* 5 lines
+var content = jQuery('#content');
+var grafs = content.text().split('\n\n');
+var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2> <a href=\'/denver-homicides/\'><img src=\'http://extras.mnginteractive.com/live/media/site36/2015/0211/20150211_025321_denver-homicide-map.gif\' alt=\'Denver Homicide Map\' border=\'0\'></a> <p>Track this year\'s homicides in Denver, and compare the city\'s homicide rate to Denver\'s homicide rate in past years.</p> </aside>';
 grafs.splice(3, 0, markup);
 jQuery('#content').text(grafs.join('\n\n'));
 */

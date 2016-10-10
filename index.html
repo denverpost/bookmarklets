@@ -36,9 +36,11 @@ Drag this link to your browser's bookmakers bar and click it when you're editing
 <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/inarticlepromo.js'); document.body.appendChild(e);  })());">+ PROMOS</a>
 
 <script>
+/*
 var e = document.createElement('script');
 e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/inarticlepromo.js');
 document.body.appendChild(e);
+*/
 </script>
 
 <h2 id="preps">Weather Sidebar Bookmarklet</h2>
@@ -64,17 +66,12 @@ jQuery('#content').text(grafs.join('\n\n'));
 Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
 </p>
 <p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
-<!--
-<a href="javascript:void((function(){      })());">HOMICIDE SIDEBAR</a>
--->
-<a href="javascript:void((function(){   var content = jQuery('#content'); var grafs = content.text().split('\n\n'); var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2> <a href=\'/denver-homicides/\'><img src=\'http://extras.mnginteractive.com/live/media/site36/2015/0211/20150211_025321_denver-homicide-map.gif\' alt=\'Denver Homicide Map\' border=\'0\'></a> <p>Track this year\'s homicides in Denver, and compare the city\'s homicide rate to Denver\'s homicide rate in past years.</p> </aside>'; grafs.splice(3, 0, markup); jQuery('#content').text(grafs.join('\n\n'));   })());">HOMICIDE SIDEBAR</a>
+<a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/homicidereport.js'); document.body.appendChild(e);    })());">HOMICIDE SIDEBAR</a>
 <script>
-/* 5 lines
-var content = jQuery('#content');
-var grafs = content.text().split('\n\n');
-var markup = '<aside class=\'related right\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2> <a href=\'/denver-homicides/\'><img src=\'http://extras.mnginteractive.com/live/media/site36/2015/0211/20150211_025321_denver-homicide-map.gif\' alt=\'Denver Homicide Map\' border=\'0\'></a> <p>Track this year\'s homicides in Denver, and compare the city\'s homicide rate to Denver\'s homicide rate in past years.</p> </aside>';
-grafs.splice(3, 0, markup);
-jQuery('#content').text(grafs.join('\n\n'));
+/*
+var e = document.createElement('script');
+e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/homicidereport.js');
+document.body.appendChild(e);
 */
 </script>
 <h2 id="preps">Preps Sidebar Bookmarklet</h2>

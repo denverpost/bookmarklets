@@ -14,6 +14,7 @@
 <body>
     <h1>Bookmarklets!</h1>
     <p>Note on the WordPress bookmarklets: Don't use 'em in visual mode.</p>
+    <p><strong>Also:</strong> Most of these WordPress bookmarklets must be clicked before you make any other edits to an article.</p>
 
     <section class="body-copy">
         <h2>Flush Cache Bookmarklet</h2>
@@ -26,13 +27,6 @@
 <p>
 Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add in-article promos (for soft news, hard news, sports and for Broncos) every 6 paragraphs.
 </p>
-<p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
-<!--
-<a href="javascript:void((function(){ var e = document.createElement('script'); e.setAttribute('src', '//extras.denverpost.com/app/bookmarklet/inarticlepromo.js'); document.body.appendChild(e); })());">+ PROMOS</a>
-<a href="javascript:void((function(){      })());">+ PROMOS</a>
-<a href="javascript:void((function(){      })());">+ PROMOS</a>
-<a href="javascript:void((function(){      })());">+ PROMOS</a>
--->
 <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/inarticlepromo.js'); document.body.appendChild(e);  })());">+ PROMOS</a>
 
 <script>
@@ -61,11 +55,18 @@ grafs.splice(3, 0, markup);
 jQuery('#content').text(grafs.join('\n\n'));
 */
 </script>
-<h2 id="preps">Homicide Report Sidebar Bookmarklet</h2>
+
+<h2 id="video">Inform video Sidebar Bookmarklet</h2>
+<p>
+Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the Inform video markup with cq's above and below it to the top of the article you're editing.
+</p>
+<p><strong>NOTE:</strong> This bookmarklet can be clicked at any time in the article-editing process.</p>
+<a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/video.js'); document.body.appendChild(e);    })());">+ INFORM VIDEO</a>
+
+<h2 id="homicidereport">Homicide Report Sidebar Bookmarklet</h2>
 <p>
 Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
 </p>
-<p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
 <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/homicidereport.js'); document.body.appendChild(e);    })());">HOMICIDE SIDEBAR</a>
 <script>
 /*
@@ -74,6 +75,7 @@ e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/homicidereport.
 document.body.appendChild(e);
 */
 </script>
+
 <h2 id="preps">Preps Sidebar Bookmarklet</h2>
 <p>
 Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
@@ -128,6 +130,6 @@ parentContainer: 'mc-embed-container'
 -->
 
 
-</section>
-</body>
+        </section>
+    </body>
 </html>

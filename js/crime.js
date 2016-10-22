@@ -52,6 +52,8 @@ var bookmarklet = {
     init: function () {
         this.grafs = this.content.text().split('\n\n');
         this.pos = grafs.length - 2;
+        grafs.splice(4, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
+        jQuery('#content').text(grafs.join('\n\n'));
     },
     slugify: function(str)
     {
@@ -74,25 +76,3 @@ var bookmarklet = {
             .replace(/\s/gi, "-");
     },
 }
-var editing = true;
-var ceiling = 10;
-if ( content.text().indexOf('in-article-promo') !== -1 ) {
-    promos = [];
-    item = undefined;
-}
-if ( typeof item !== 'undefined' ) {
-    var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports, 6 = entertainment, 7 restaurants, 8 food, 9 Ask Amy, 10 books. 11 movies, 12 home-garden, 13 yourhub, 14 editorials, 15 politics, 16 travel 17 real-estate 18 business 19 tech 20 featured homes \n 420 marijuana.', '');
-    var section = 'sports';
-}
-if ( len > 10 ) {
-    grafs.splice(4, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
-    item = promos.pop();
-    if ( len > 16 ) {
-        grafs.splice(Math.floor(len/2) + 1, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
-        item = promos.pop();
-    }
-}
-if ( typeof item !== 'undefined' && grafs[grafs.length-1].indexOf('in-article') === -1 ) {
-    grafs.splice(grafs.length, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
-}
-jQuery('#content').text(grafs.join('\n\n'));

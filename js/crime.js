@@ -20,16 +20,17 @@ var bookmarklet = {
         this.type = prompt('Enter 1 for a neighborhood crime promo or hit enter for a crime-specific promo');
         return this.type;
     },
-    get_neighborhood = function() {
+    get_neighborhood: function() {
         this.neighborhood = prompt('Type in the name of the neighborhood');
         this.slug = this.slugify(this.neighborhood);
-    }
-    get_crime = function() {
-        crime_id = prompt('Hit enter for Violent Crimes, type 1 for Assaults, 2 for Bank Robberies, 3 for Bike Thefts, 4 for Burglaries, 5 for Car Thefts, 6 for DUIs,\
-        7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes,\
-        11 for Sexual Assault, 12 for Rape, 13 for Robberies');
+    },
+    get_crime: function() {
+        crime_id = prompt('Hit enter for Violent Crimes, type 1 for Assaults, 2 for Bank Robberies, 3 for Bike Thefts,\
+4 for Burglaries, 5 for Car Thefts, 6 for DUIs,\
+7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes,\
+11 for Sexual Assault, 12 for Rape, 13 for Robberies');
         this.crime = 'violent crime'; this.slug = 'violent';
-        else if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'sexual assault'; this.slug = 'sexual-assault'; }
+        if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'sexual assault'; this.slug = 'sexual-assault'; }
         else if ( crime_id.indexOf('11') >= 0 ) { this.crime = 'rape'; this.slug = 'sexual-assault/rape'; }
         else if ( crime_id.indexOf('12') >= 0 ) { this.crime = 'robbery'; this.slug = 'robbery'; }
         else if ( crime_id.indexOf('13') >= 0 ) { this.crime = ''; this.slug = ''; }
@@ -49,7 +50,7 @@ var bookmarklet = {
         else if ( crime_id.indexOf('7') >= 0 ) { this.crime = 'hit-and-runs'; this.slug = 'traffic-accident-hit-and-run'; }
         else if ( crime_id.indexOf('8') >= 0 ) { this.crime = 'domestic violence'; this.slug = 'dv'; }
         else if ( crime_id.indexOf('9') >= 0 ) { this.crime = 'homicide'; this.slug = 'homicide'; }
-    }
+    },
     init: function () {
         this.grafs = this.content.text().split('\n\n');
         this.pos = this.grafs.length - 2;
@@ -79,5 +80,6 @@ var bookmarklet = {
         return str.replace(/^\s+|\s+$/g, '') //trim
             .replace(/[^-a-zA-Z0-9\s]+/ig, '')
             .replace(/\s/gi, "-");
-    },
+    }
 }
+bookmarklet.init();

@@ -20,8 +20,12 @@ var bookmarklet = {
         this.type = prompt('Enter 1 for a neighborhood crime promo or hit enter for a crime-specific promo');
         return this.type;
     },
-    get_neighborhood: function() {
-        this.neighborhood = prompt('Type in the name of the neighborhood');
+    get_neighborhood: function(message='') {
+        this.neighborhood = prompt(message + 'Type in the name of the neighborhood');
+        if ( this.neighborhoods.indexOf(this.neighborhood) === -1 ) {
+            if ( message == '' ) this.get_neighborhood("That's not a valid neighborhood\n");
+            else this.get_neighborhood("This is a list of valid neighborhoods: " + this.neighborhoods.join(", "));
+        }
         this.slug = this.slugify(this.neighborhood);
     },
     get_crime: function() {

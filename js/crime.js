@@ -18,6 +18,7 @@ var bookmarklet = {
     },
     get_type: function () {
         this.type = prompt('Enter 1 for a neighborhood crime promo or hit enter for a crime-specific promo');
+        return this.type;
     },
     get_neighborhood = function() {
         this.neighborhood = prompt('Type in the name of the neighborhood');
@@ -51,9 +52,13 @@ var bookmarklet = {
     }
     init: function () {
         this.grafs = this.content.text().split('\n\n');
-        this.pos = grafs.length - 2;
-        grafs.splice(4, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
-        jQuery('#content').text(grafs.join('\n\n'));
+        this.pos = this.grafs.length - 2;
+
+        if ( this.get_type() == '1' ) this.get_neighborhood();
+        else this.get_crime();
+
+        this.grafs.splice(this.pos, 0, this.get_markup());
+        jQuery('#content').text(this.grafs.join('\n\n'));
     },
     slugify: function(str)
     {

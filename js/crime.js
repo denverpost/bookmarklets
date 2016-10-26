@@ -12,7 +12,7 @@ var bookmarklet = {
             return '<aside class="related right">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime Report Data</a></h2>\n\
 <div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
-<p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">heatmap of reported ' + this.crime + ' in Denver</a>.</p>\n\
+<p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">heatmap and neighborhood rankings of reported ' + this.crime + ' in Denver</a>.</p>\n\
 </aside>\n\n';
         }
     },
@@ -34,10 +34,10 @@ var bookmarklet = {
 7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes,\
 11 for Sexual Assault, 12 for Rape, 13 for Robberies');
         this.crime = 'violent crime'; this.slug = 'violent';
-        if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'sexual assault'; this.slug = 'sexual-assault'; }
-        else if ( crime_id.indexOf('11') >= 0 ) { this.crime = 'rape'; this.slug = 'sexual-assault/rape'; }
-        else if ( crime_id.indexOf('12') >= 0 ) { this.crime = 'robbery'; this.slug = 'robbery'; }
-        else if ( crime_id.indexOf('13') >= 0 ) { this.crime = ''; this.slug = ''; }
+        if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'property crimes'; this.slug = 'property'; }
+        else if ( crime_id.indexOf('11') >= 0 ) { this.crime = 'sexual assaults'; this.slug = 'sexual-assault'; }
+        else if ( crime_id.indexOf('12') >= 0 ) { this.crime = 'rape'; this.slug = 'sexual-assault/rape'; }
+        else if ( crime_id.indexOf('13') >= 0 ) { this.crime = 'robbery'; this.slug = 'robbery'; }
         else if ( crime_id.indexOf('14') >= 0 ) { this.crime = ''; this.slug = ''; }
         else if ( crime_id.indexOf('15') >= 0 ) { this.crime = ''; this.slug = ''; }
         else if ( crime_id.indexOf('16') >= 0 ) { this.crime = ''; this.slug = ''; }
@@ -57,7 +57,7 @@ var bookmarklet = {
     },
     init: function () {
         this.grafs = this.content.text().split('\n\n');
-        this.pos = this.grafs.length - 2;
+        this.pos = this.grafs.length - 3;
 
         if ( this.get_type() == '1' ) this.get_neighborhood();
         else this.get_crime();

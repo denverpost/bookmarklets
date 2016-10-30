@@ -6,14 +6,14 @@ var bookmarklet = {
             return '<aside class="related right">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime Report Data</a></h2>\n\
 <p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>, and our <a href="http://crime.denverpost.com/neighborhood/compare/">ranking of neighborhood crime rates</a>.</p>\n\
-</aside>\n\n';
+</aside>';
         }
         else if ( this.type == '' ) {
             return '<aside class="related right">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime Report Data</a></h2>\n\
 <div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
 <p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">heatmap and neighborhood rankings of reported ' + this.crime + ' in Denver</a>.</p>\n\
-</aside>\n\n';
+</aside>';
         }
     },
     get_type: function () {

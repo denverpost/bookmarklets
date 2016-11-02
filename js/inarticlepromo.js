@@ -7,6 +7,10 @@ if ( len == 1 ) {
     if ( len == 1 ) {
         grafs = content.text().split('</p>\n<p>');
         len = grafs.length;
+        if ( len == 1 ) {
+            grafs = content.text().split('     <p>');
+            len = grafs.length;
+        }
     }
 }
 var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); });

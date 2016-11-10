@@ -3,17 +3,17 @@ var bookmarklet = {
     neighborhoods: Array('Wellshire',  'CBD',  'University Hills',  'Overland',  'Speer',  'Gateway / Green Valley Ranch',  'Ruby Hill',  'Marston',  'North Capitol Hill',  'City Park',  'Indian Creek',  'Five Points',  'Sun Valley',  'Westwood',  'Cole',  'Washington Park West',  'Platt Park',  'Harvey Park South',  'Villa Park',  'Athmar Park',  'Skyland',  'North Park Hill',  'Sunnyside',  'Southmoor Park',  'Jefferson Park',  'Capitol Hill',  'Windsor',  'Barnum West',  'Virginia Village',  'Montbello',  'Bear Valley',  'Goldsmith',  'Stapleton',  'Chaffee Park',  'Cory-Merrill',  'Northeast Park Hill',  'Union Station',  'Washington Park',  'Barnum',  'Elyria-Swansea',  'Civic Center',  'Hampden South',  'Globeville',  'City Park West',  'Clayton',  'Cheesman Park',  'Country Club',  'Hale',  'Mar Lee',  'Lincoln Park',  'Berkeley',  'West Highland',  'Harvey Park',  'Regis',  'East Colfax',  'Whittier',  'Belcaro',  'Hampden',  'Fort Logan',  'College View / South Platte',  'West Colfax',  'Baker',  'Kennedy',  'Cherry Creek',  'DIA',  'Congress Park',  'South Park Hill',  'Rosedale',  'Valverde',  'Lowry Field',  'Washington Virginia Vale',  'Auraria',  'Hilltop',  'Highland',  'Montclair',  'University',  'University Park',  'Sloan Lake'),
     get_markup: function() {
         if ( this.type == '1' ) {
-            return '<aside class="related right">\n\
+            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime Report Data</a></h2>\n\
 <p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>, and our <a href="http://crime.denverpost.com/neighborhood/compare/">ranking of neighborhood crime rates</a>.</p>\n\
-</aside>';
+</aside>[cq comment="ASIDE PLACED ABOVE"]\n';
         }
         else if ( this.type == '' ) {
-            return '<aside class="related right">\n\
+            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime Report Data</a></h2>\n\
 <div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
 <p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">heatmap and neighborhood rankings of reported ' + this.crime + ' in Denver</a>.</p>\n\
-</aside>';
+</aside>[cq comment="ASIDE PLACED ABOVE"]\n';
         }
     },
     get_type: function () {
@@ -32,14 +32,14 @@ var bookmarklet = {
         crime_id = prompt('Hit enter for Violent Crimes, type 1 for Assaults, 2 for Bank Robberies, 3 for Bike Thefts,\
 4 for Burglaries, 5 for Car Thefts, 6 for DUIs,\
 7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes,\
-11 for Sexual Assault, 12 for Rape, 13 for Robberies');
+11 for Sexual Assault, 12 for Rape, 13 for Robberies, 14 for Drug & Alcohol, 15 for Larceny');
         this.crime = 'violent crime'; this.slug = 'violent';
         if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'property crimes'; this.slug = 'property'; }
         else if ( crime_id.indexOf('11') >= 0 ) { this.crime = 'sexual assaults'; this.slug = 'sexual-assault'; }
         else if ( crime_id.indexOf('12') >= 0 ) { this.crime = 'rape'; this.slug = 'sexual-assault/rape'; }
         else if ( crime_id.indexOf('13') >= 0 ) { this.crime = 'robbery'; this.slug = 'robbery'; }
-        else if ( crime_id.indexOf('14') >= 0 ) { this.crime = ''; this.slug = ''; }
-        else if ( crime_id.indexOf('15') >= 0 ) { this.crime = ''; this.slug = ''; }
+        else if ( crime_id.indexOf('14') >= 0 ) { this.crime = 'drug-and-alcohol'; this.slug = 'drug-and-alcohol'; }
+        else if ( crime_id.indexOf('15') >= 0 ) { this.crime = 'larceny'; this.slug = 'larceny'; }
         else if ( crime_id.indexOf('16') >= 0 ) { this.crime = ''; this.slug = ''; }
         else if ( crime_id.indexOf('17') >= 0 ) { this.crime = ''; this.slug = ''; }
         else if ( crime_id.indexOf('18') >= 0 ) { this.crime = ''; this.slug = ''; }

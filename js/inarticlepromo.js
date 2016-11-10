@@ -8,7 +8,7 @@ if ( len == 1 ) {
         grafs = content.text().split('</p>\n<p>');
         len = grafs.length;
         if ( len == 1 ) {
-            grafs = content.text().split('     <p>');
+            grafs = content.text().split('    <p>');
             len = grafs.length;
         }
     }
@@ -51,11 +51,11 @@ if ( len > 10 ) {
     grafs.splice(4, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
     item = promos.pop();
     if ( len > 16 ) {
-        grafs.splice(Math.floor(len/2) + 1, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
+        grafs.splice(Math.floor(len/2) + 1, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\' scrolling=\'no\']');
         item = promos.pop();
     }
 }
 if ( typeof item !== 'undefined' && grafs[grafs.length-1].indexOf('in-article') === -1 ) {
-    grafs.splice(grafs.length, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
+    grafs.splice(grafs.length, 0, '[dfm_iframe src=\'http://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\' scrolling=\'no\']');
 }
 jQuery('#content').text(grafs.join('\n\n'));

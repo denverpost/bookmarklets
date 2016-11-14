@@ -10,6 +10,10 @@ if ( len == 1 ) {
         if ( len == 1 ) {
             grafs = content.text().split('    <p>');
             len = grafs.length;
+            if ( len == 1 ) {
+                grafs = content.text().split('</p> \n<p>');
+                len = grafs.length;
+            }
         }
     }
 }

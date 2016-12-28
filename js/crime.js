@@ -13,8 +13,13 @@ var bookmarklet = {
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
 <div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
 <p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">map, report and neighborhood rankings of ' + this.crime + ' in Denver</a>.</p>\n\
+<p><strong>New:</strong> <a href="http://crime.denverpost.com/neighborhood/compare/">Compare crime rates across Denver neighborhoods</a>.</p>\n\
 </aside>[cq comment="ASIDE PLACED ABOVE"]';
         }
+    },
+    feature_list: array({'Compare crime rates across Denver neighborhoods': 'http://crime.denverpost.com/neighborhood/compare/'}),
+    random_feature: function () {
+        // Pull a random item from this.feature_list
     },
     get_type: function () {
         this.type = prompt('Enter 1 for a neighborhood crime promo or hit enter for a crime-specific promo');

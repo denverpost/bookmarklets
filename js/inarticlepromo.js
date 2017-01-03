@@ -27,7 +27,7 @@ if ( content.text().indexOf('in-article-promo') !== -1 ) {
     item = undefined;
 }
 if ( typeof item !== 'undefined' ) {
-    var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports, 6 = entertainment, 7 restaurants, 8 food, 9 Ask Amy, 10 books. 11 movies, 12 home-garden, 13 yourhub, 14 editorials, 15 politics, 16 travel 17 real-estate 18 business 19 tech 20 featured homes \n 21 season to share\n 420 marijuana.', '');
+    var section_id = prompt('Enter 1 for soft-news promos, 2 for hard-news promos, 3 for Broncos and nothing for sports, 6 = entertainment, 7 restaurants, 8 food, 9 Ask Amy, 10 books. 11 movies, 12 home-garden, 13 yourhub, 14 editorials, 15 politics, 16 travel 17 real-estate 18 business 19 tech 20 featured homes \n 21 season to share\n 22 stock show & 420 marijuana.', '');
     var section = 'sports';
     if ( section_id.indexOf('420') >= 0 ) { section = 'marijuana'; item = 'map'; }
     else if ( section_id.indexOf('10') >= 0 ) { section = 'books'; }
@@ -42,6 +42,7 @@ if ( typeof item !== 'undefined' ) {
     else if ( section_id.indexOf('19') >= 0 ) { section = 'tech'; }
     else if ( section_id.indexOf('20') >= 0 ) { section = 'featured-homes'; }
     else if ( section_id.indexOf('21') >= 0 ) { section = 'season-to-share'; }
+    else if ( section_id.indexOf('22') >= 0 ) { section = 'stock-show'; }
     else if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; }
     else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; }
     else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; }

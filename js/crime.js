@@ -5,7 +5,8 @@ var bookmarklet = {
         if ( this.type == '1' ) {
             return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
-<p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>, and our <a href="http://crime.denverpost.com/neighborhood/compare/">ranking of neighborhood crime rates</a>.</p>\n\
+<p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>.</p>\n\
+<p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n\
 </aside>[cq comment="ASIDE PLACED ABOVE"]';
         }
         else if ( this.type == '' ) {
@@ -17,19 +18,19 @@ var bookmarklet = {
 </aside>[cq comment="ASIDE PLACED ABOVE"]';
         }
     },
-    image_list: array('http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map11.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map4.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map3.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map2.png', 'http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png'),
+    image_list: ['http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map11.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map4.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map3.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map2.png', 'http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png'],
     get_random_image: function() {
         var ceiling = this.image_list.length;
         var index = Math.floor(Math.random() * ceiling);
         return this.image_list[index];
     },
-    feature_list: array({'compare crime rates across Denver neighborhoods': 'http://crime.denverpost.com/neighborhood/compare/'}, {'see our Denver crime map': 'http://crime.denverpost.com/map/'}, {'see the Denver-city crime report': 'http://crime.denverpost.com/city/'}, {'see our list of neighborhood crime reports': 'http://crime.denverpost.com/neighborhood/'}),
+    feature_list: [{'compare crime rates across Denver neighborhoods': 'http://crime.denverpost.com/neighborhood/compare/'}, {'see our Denver crime map': 'http://crime.denverpost.com/map/'}, {'see the Denver-city crime report': 'http://crime.denverpost.com/city/'}, {'see our list of neighborhood crime reports': 'http://crime.denverpost.com/neighborhood/'}],
     get_random_feature: function () {
         // Pull a random item from this.feature_list
         var ceiling = this.feature_list.length;
         var index = Math.floor(Math.random() * ceiling);
         var item = this.feature_list[index];
-        var key = keys(item)[0];
+        var key = Object.keys(item)[0];
         return '<a href="' + item[key] + '">' + key + '</a>';
     },
     get_type: function () {

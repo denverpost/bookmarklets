@@ -11,15 +11,26 @@ var bookmarklet = {
         else if ( this.type == '' ) {
             return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n\
 <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
-<div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
+<div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="' + this.get_random_image() + '" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
 <p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">map, report and neighborhood rankings of ' + this.crime + ' in Denver</a>.</p>\n\
-<p><strong>New:</strong> <a href="http://crime.denverpost.com/neighborhood/compare/">Compare crime rates across Denver neighborhoods</a>.</p>\n\
+<p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n\
 </aside>[cq comment="ASIDE PLACED ABOVE"]';
         }
     },
-    feature_list: array({'Compare crime rates across Denver neighborhoods': 'http://crime.denverpost.com/neighborhood/compare/'}),
-    random_feature: function () {
+    image_list: array('http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map11.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map4.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map3.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map2.png', 'http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png'),
+    get_random_image: function() {
+        var ceiling = this.image_list.length;
+        var index = Math.floor(Math.random() * ceiling);
+        return this.image_list[index];
+    },
+    feature_list: array({'compare crime rates across Denver neighborhoods': 'http://crime.denverpost.com/neighborhood/compare/'}, {'see our Denver crime map': 'http://crime.denverpost.com/map/'}, {'see the Denver-city crime report': 'http://crime.denverpost.com/city/'}, {'see our list of neighborhood crime reports': 'http://crime.denverpost.com/neighborhood/'}),
+    get_random_feature: function () {
         // Pull a random item from this.feature_list
+        var ceiling = this.feature_list.length;
+        var index = Math.floor(Math.random() * ceiling);
+        var item = this.feature_list[index];
+        var key = keys(item)[0];
+        return '<a href="' + item[key] + '">' + key + '</a>';
     },
     get_type: function () {
         this.type = prompt('Enter 1 for a neighborhood crime promo or hit enter for a crime-specific promo');

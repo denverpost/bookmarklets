@@ -29,10 +29,14 @@ javascript:(function(){
     }
     if ( typeof item !== 'undefined' ) {
         var section_id = prompt('Select the type of news to insert:\n\n\n\
-            News: (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) Politics, (23) Colo. Leg.\n\n\
-            Sports: (Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n\
-            Features: (6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel\n\n\
-            Misc: (13) YourHub, (14) Editorials, (21) Season to Share, (22) Stock Show, (420) Marijuana\n\n\n\
+        News:\n\
+            (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) Politics, (23) Colo. Leg.\n\n\
+        Sports:\n\
+            (Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n\
+        Features:\n\
+            (6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel\n\n\
+        Misc:\n\
+            (13) YourHub, (14) Editorials, (21) Season to Share, (22) Stock Show, (420) Marijuana\n\n\n\
         Selection:', '');
         var section = 'sports';
         if ( section_id.indexOf('420') >= 0 ) { section = 'marijuana'; item = 'map'; }

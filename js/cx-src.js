@@ -7,10 +7,10 @@ var cx_month = monthNames[cx_date.getMonth()];
 var amPm = ( cx_date.getHours() < 12 ) ? ' a.m.' : ' p.m.';
 var cx_date_markup = cx_month +  cx_date.getDay() + ', ' + cx_date.getFullYear() + ' at ' + cx_date.getHours() + ':' + cx_date.getMinutes() + amPm;
 
-var cx_content = prompt('Type or paste the correction language here. The Updated date and time, and all other formatting, will be included automatically.\n\n', '');
+var cx_content = prompt('Type or paste the correction language here. The Update date and time, "The following ... has been added:" and all other formatting will be included automatically.\n\n', '');
 
 var markup = '<hr />\n\n\
-<strong>Updated ' + cx_date_markup + '</strong> <em>' + cx_content + '</em>\n\n\
+<strong>Updated ' + cx_date_markup + '</strong> <em>The following corrected information has been added to this article: ' + cx_content + '</em>\n\n\
 <hr />';
 
 grafs.splice(grafs.length, 0, markup);

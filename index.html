@@ -3,6 +3,8 @@
 <head>
     <title>Bookmarklets</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="//extras.denverpost.com/foundation/css/foundation.css" />
+    <link rel="stylesheet" href="//extras.denverpost.com/foundation/css/normalize.css" />
     <link rel='stylesheet' id='knowlton-styles-css'  href='https://assets.digitalfirstmedia.com/prod/static/css/denverpost.css?ver=1.0' type='text/css' media='all' />
     <link rel='stylesheet' id='mason-fonts-css'  href='https://fonts.googleapis.com/css?family=Open%20Sans|Source+Serif+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C700italic%7CSource+Sans+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C400italic&#038;ver=4.5.3' type='text/css' media='all' />
     <style type="text/css">
@@ -12,114 +14,129 @@
     </style>
 </head>
 <body>
-    <h1>Bookmarklets!</h1>
-    <p>Note on the WordPress bookmarklets: Don't use 'em in visual mode.</p>
-    <p><strong>Also:</strong> Most of these WordPress bookmarklets must be clicked before you make any other edits to an article.</p>
 
-    <section class="body-copy">
-        <h2>Flush Cache Bookmarklet</h2>
+    <div class="row">
+        <div class="large-12">
+            <h1>Bookmarklets!</h1>
+
+            <p>Note on the WordPress bookmarklets: Don't use 'em in visual mode.</p>
+            <p><strong>Also:</strong> Most of these WordPress bookmarklets must be clicked before you make any other edits to an article.</p>
+
+            <section class="body-copy">
+                <h2>Denver Post AUTO-PRODUCER™</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click the button to enter the Denver Post AUTO-PRODUCER™, which automates some repetitive story production tasks.
+                </p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/auto-link.js'); document.body.appendChild(e);  })());">+ PROMOS</a>
+
+                <h2 id="flush">Flush Cache Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click the button to flush the cache on any Denver Post page you're on.
+                </p>
+                <a href="javascript:void((function(){ var iframe = document.createElement('iframe'); iframe.style.display = 'none'; iframe.src='http://denverpostplus.com/app/cache-buster/?url=' + window.location.href; document.body.appendChild(iframe);  })());">🚽</a>
+
+                <h2 id="inarticlepromo">In-Article-Promo Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add in-article promos (for soft news, hard news, sports and for Broncos) every 6 paragraphs.
+                </p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/inarticlepromo.js'); document.body.appendChild(e);  })());">+ PROMOS</a>
+
+                <h2 id="cx">Corrections Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you need to add a correction. Paste in the language and you're done!
+                </p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/cx.js'); document.body.appendChild(e);  })());">+ CX</a>
+
+                <h2 id="inform">Inform Embed Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to add an Inform Video Embed code without looking up the syntax. Now with handy list of top playlist IDs!
+                </p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/vid_embed.js'); document.body.appendChild(e);  })());">🎥</a>
+
+                <h2 id="nouner">Nouner Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically link matching proper nouns in the article.
+                </p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/nouner.js'); document.body.appendChild(e);  })());">+ NOUNER</a>
+
+                <h2 id="wx">Weather Sidebar Bookmarklets</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
+                </p>
+                <p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
+                <p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/weather.js'); document.body.appendChild(e);  })());">+ #COWX</a>
+                </p>
+                <p>
+                <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/weather-closures.js'); document.body.appendChild(e);  })());">+ WX CLOSURES</a>
+                </p>
+
+                <h2 id="video">Inform video Sidebar Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the Inform video markup with cq's above and below it to the top of the article you're editing.
+                </p>
+                <p><strong>NOTE:</strong> This bookmarklet can be clicked at any time in the article-editing process.</p>
+                <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/video.js'); document.body.appendChild(e);    })());">+ INFORM VIDEO</a>
+
+                <h2 id="homicidereport">Homicide Report Sidebar Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
+                </p>
+                <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/homicidereport.js'); document.body.appendChild(e);    })());">HOMICIDE SIDEBAR</a>
+
+                <h2 id="preps">Preps Sidebar Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
+                </p>
+                <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/preps.js'); document.body.appendChild(e);    })());">+ PREPS SIDEBAR</a>
+
+                <h2 id="crime">Denver Crime Bookmarklet</h2>
+                <p>
+                Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the second-to-last graf of an article.
+                </p>
+                <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/crime.js'); document.body.appendChild(e);    })());">+ CRIME SIDEBAR</a>
+
+        <!--
+        <h2>DPTV Bookmarklet</h2>
         <p>
-        Drag this link to your browser's bookmakers bar and click the button to flush the cache on any Denver Post page you're on.
-        </p>
-        <a href="javascript:void((function(){ var iframe = document.createElement('iframe'); iframe.style.display = 'none'; iframe.src='http://denverpostplus.com/app/cache-buster/?url=' + window.location.href; document.body.appendChild(iframe);  })());">🚽</a>
-
-        <h2 id="inarticlepromo">In-Article-Promo Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add in-article promos (for soft news, hard news, sports and for Broncos) every 6 paragraphs.
-        </p>
-        <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/inarticlepromo.js'); document.body.appendChild(e);  })());">+ PROMOS</a>
-
-        <h2 id="cx">Corrections Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you need to add a correction. Paste in the language and you're done!
-        </p>
-        <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/cx.js'); document.body.appendChild(e);  })());">+ CX</a>
-
-        <h2 id="inform">Inform Embed Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to add an Inform Video Embed code without looking up the syntax. Now with handy list of top playlist IDs!
-        </p>
-        <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/vid_embed.js'); document.body.appendChild(e);  })());">🎥</a>
-
-        <h2 id="nouner">Nouner Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically link matching proper nouns in the article.
-        </p>
-        <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/nouner.js'); document.body.appendChild(e);  })());">+ NOUNER</a>
-
-        <h2 id="wx">Weather Sidebar Bookmarklets</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
-        </p>
-        <p><strong>NOTE:</strong> This must be clicked before you make any other edits to an article.</p>
-        <p>
-        <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/weather.js'); document.body.appendChild(e);  })());">+ #COWX</a>
+        Drag this link up to your bookmarks bar to make creating DPTV freeforms easier. Note: These are autoplay FF's. Note: This bookmarklet also works on the Sports Show.
         </p>
         <p>
-        <a href="javascript:void((function(){    var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/weather-closures.js'); document.body.appendChild(e);  })());">+ WX CLOSURES</a>
+        <a href="javascript:void((function(){ jQuery('body').prepend('<pre>&amp;lt;iframe width=\'654\' height=\'470\' src=\'' + window.location.href + '?iframe=1&autoplay=1\' frameborder=\'0\' allowfullscreen scrolling=\'no\' seamless&amp;gt;&amp;lt;\/iframe&amp;gt;</pre>'); })());">[ DPTV-to-FF ]</a>
         </p>
-
-        <h2 id="video">Inform video Sidebar Bookmarklet</h2>
+        <p>Click the button when you're on a page you want to create a FF for, it will create markup that looks something like this:</p>
+        <pre> 
+        &lt;iframe width='654' height='470' src='http://dptv.denverpost.com/2015/11/17/law-enforcement-from-across-the-state-gather-in-solidarity/?iframe=1&autoplay=1' frameborder='0' allowfullscreen scrolling='no' seamless></iframe>
+        </pre>
+        <h2>Media Center Bookmarklet</h2>
         <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the Inform video markup with cq's above and below it to the top of the article you're editing.
+        This bookmarklet automates the javascript you need to create a Media Center freeform.
         </p>
-        <p><strong>NOTE:</strong> This bookmarklet can be clicked at any time in the article-editing process.</p>
-        <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/video.js'); document.body.appendChild(e);    })());">+ INFORM VIDEO</a>
-
-        <h2 id="homicidereport">Homicide Report Sidebar Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
-        </p>
-        <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/homicidereport.js'); document.body.appendChild(e);    })());">HOMICIDE SIDEBAR</a>
-
-        <h2 id="preps">Preps Sidebar Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the third graf of the story.
-        </p>
-        <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/preps.js'); document.body.appendChild(e);    })());">+ PREPS SIDEBAR</a>
-
-        <h2 id="crime">Denver Crime Bookmarklet</h2>
-        <p>
-        Drag this link to your browser's bookmakers bar and click it when you're editing an article to automatically add the sidebar after the second-to-last graf of an article.
-        </p>
-        <a href="javascript:void((function(){  var e = document.createElement('script'); e.setAttribute('src','//extras.denverpost.com/app/bookmarklet/js/crime.js'); document.body.appendChild(e);    })());">+ CRIME SIDEBAR</a>
-
-<!--
-<h2>DPTV Bookmarklet</h2>
-<p>
-Drag this link up to your bookmarks bar to make creating DPTV freeforms easier. Note: These are autoplay FF's. Note: This bookmarklet also works on the Sports Show.
-</p>
-<p>
-<a href="javascript:void((function(){ jQuery('body').prepend('<pre>&amp;lt;iframe width=\'654\' height=\'470\' src=\'' + window.location.href + '?iframe=1&autoplay=1\' frameborder=\'0\' allowfullscreen scrolling=\'no\' seamless&amp;gt;&amp;lt;\/iframe&amp;gt;</pre>'); })());">[ DPTV-to-FF ]</a>
-</p>
-<p>Click the button when you're on a page you want to create a FF for, it will create markup that looks something like this:</p>
-<pre> 
-&lt;iframe width='654' height='470' src='http://dptv.denverpost.com/2015/11/17/law-enforcement-from-across-the-state-gather-in-solidarity/?iframe=1&autoplay=1' frameborder='0' allowfullscreen scrolling='no' seamless></iframe>
-</pre>
-<h2>Media Center Bookmarklet</h2>
-<p>
-This bookmarklet automates the javascript you need to create a Media Center freeform.
-</p>
-<a href="javascript:void((function(){ jQuery('header').remove(); jQuery('body').prepend('<pre>&amp;lt;link rel=\'stylesheet\' href=\'http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed_styles.css\' type=\'text/css\' /&amp;gt;\n\&amp;lt;script src=\'http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed.js\'&amp;gt;&amp;lt;/script&amp;gt;\n\&amp;lt;div id=\'mc-embed-container\'&amp;gt;&amp;lt;\/div&amp;gt;\n\&amp;lt;div class=\'clear\' style=\'margin-bottom:10px;\'&amp;gt;&amp;lt;\/div&amp;gt;\n\&amp;lt;script&amp;gt;\n\$(document).ready(function(){\n\mc_embed_gallery = new MCGallery({\n\ url : \'' + window.location.origin + window.location.pathname +'\',\n\captionHeight : \'85px\',\n\parentContainer: \'mc-embed-container\'\n\});\n\});\n\&amp;lt;\/script&amp;gt;</pre>'); })());">[ MC-to-FF ]</a>
-<p>It creates markup that looks like this:</p>
-<pre>
-&lt;link rel="stylesheet" href="http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed_styles.css" type="text/css" />
-&lt;script src="http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed.js">&lt;/script>
-&lt;div id="mc-embed-container">&lt;/div>
-&lt;div class="clear" style="margin-bottom:10px;">&lt;/div>
-&lt;script>
-$(document).ready(function(){
-mc_embed_gallery = new MCGallery({
-url : 'http://photos.denverpost.com/2015/12/07/planned-parenthood-shooting-suspect-off-grid-home/',
-captionHeight : '85px',
-parentContainer: 'mc-embed-container'
-});
-});
-&lt;/script>
-</pre>
--->
+        <a href="javascript:void((function(){ jQuery('header').remove(); jQuery('body').prepend('<pre>&amp;lt;link rel=\'stylesheet\' href=\'http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed_styles.css\' type=\'text/css\' /&amp;gt;\n\&amp;lt;script src=\'http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed.js\'&amp;gt;&amp;lt;/script&amp;gt;\n\&amp;lt;div id=\'mc-embed-container\'&amp;gt;&amp;lt;\/div&amp;gt;\n\&amp;lt;div class=\'clear\' style=\'margin-bottom:10px;\'&amp;gt;&amp;lt;\/div&amp;gt;\n\&amp;lt;script&amp;gt;\n\$(document).ready(function(){\n\mc_embed_gallery = new MCGallery({\n\ url : \'' + window.location.origin + window.location.pathname +'\',\n\captionHeight : \'85px\',\n\parentContainer: \'mc-embed-container\'\n\});\n\});\n\&amp;lt;\/script&amp;gt;</pre>'); })());">[ MC-to-FF ]</a>
+        <p>It creates markup that looks like this:</p>
+        <pre>
+        &lt;link rel="stylesheet" href="http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed_styles.css" type="text/css" />
+        &lt;script src="http://extras.mnginteractive.com/live/partners/MediaCenter/embedded_galleries/mc_embed.js">&lt;/script>
+        &lt;div id="mc-embed-container">&lt;/div>
+        &lt;div class="clear" style="margin-bottom:10px;">&lt;/div>
+        &lt;script>
+        $(document).ready(function(){
+        mc_embed_gallery = new MCGallery({
+        url : 'http://photos.denverpost.com/2015/12/07/planned-parenthood-shooting-suspect-off-grid-home/',
+        captionHeight : '85px',
+        parentContainer: 'mc-embed-container'
+        });
+        });
+        &lt;/script>
+        </pre>
+        -->
 
 
-        </section>
+                </section>
+            </div>
+        </div>
+        <script>
+           $(document).foundation();
+        </script>
     </body>
 </html>

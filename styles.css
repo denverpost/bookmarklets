@@ -1,0 +1,27 @@
+/* main styles */
+body {
+  background:rgba(255,255,255,1);
+  background:#fff;
+  z-index:1;
+  margin-top:2em;
+  font-family:'Noticia Text', Georgia, Times, 'Times New Roman', serif;
+}
+h1, h2, h3, h4 {
+    font-family:'PT Sans Narrow', Helvetica, Arial, sans-serif !important;
+    font-weight:700;
+    line-height: 1.5;
+}
+p, a, ul, ul li {
+  font-family: 'PT Sans',Helvetica,Arial,sans-serif;
+  font-size:1.1rem;
+}
+.panel { font-size:1.25em; }
+.panelbig a { font-size:2em; line-height:1;}
+.panel a + a { margin:1em auto;clear:both;display:block; }
+.row.panel { margin-bottom:1.5em; }
+.row .row.alert-box { margin-bottom: .75em!important; margin-left:-0.75em;margin-right:-0.75em; }
+.alert-box p { margin-bottom:0;font-size:1.6em; }
+.panel ul li {
+  font-size:90%;
+}
+.panel.help-chunk p { margin-bottom:.3em;font-size:90%; }

@@ -41,9 +41,11 @@ javascript:(function() {
     loop:
     while(true) {
         var selectFunction = prompt('Welcome to AUTO-PRODUCER. How can I help?\n\n\n\
-            ( 1 ) Trump story helper\n\n\n\
-        Enter selection:\n','0');
+            ( 1 ) Trump Story\n\n\n\
+        Enter selection (or "?" for help):\n','0');
         switch (selectFunction) {
+            case '?':
+                window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');
             case '1':
                 trumpThatBitch();
                 break loop;

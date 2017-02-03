@@ -1,7 +1,7 @@
 javascript:(function() {
     function isValid(str) {
         var string = parseInt(str);
-        if (string >= 0 && strong <= 99) {
+        if (string >= 0 && string <= 99) {
             return true;
         } else {
             return false;
@@ -25,10 +25,10 @@ javascript:(function() {
     function primaryOptions(sectionPrimary,tagPrimary){
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
-        if (sectionPrimary.length >= 1) {
+        if (typeof sectionPrimary != 'undefined') {
             document.getElementById(sectionSelect).value = sectionPrimary;
         }
-        if (tagPrimary.length >= 1) {
+        if (typeof tagPrimary != 'undefined') {
             document.getElementById(tagSelect).value = tagPrimary;
         }
     }
@@ -41,16 +41,16 @@ javascript:(function() {
     }
 
     function trumpThatBitch(options) {
-        if (options['check-sections'].length >= 1){
+        if (typeof options['check-sections'] != 'undefined'){
             checkSections(options['check-sections']);
         }
-        if (options['add-tags'].length >= 1) {
+        if (typeof options['add-tags'] != 'undefined') {
             addTag(options['add-tags']);
         }
-        if (options['primary-section'].length >= 1 || options['primary-tag'].length >= 1) {
+        if (typeof options['primary-section'] != 'undefined' || typeof options['primary-tag'] != 'undefined') {
             primaryOptions(options['primary-section'],options['primary-tag'])
         }
-        if (options['apple-news'].length >= 1) {
+        if (typeof options['apple-news'] != 'undefined') {
             checkAppleNewsBoxes(options['apple-news']);
         }
     }
@@ -114,17 +114,16 @@ javascript:(function() {
             ( 4 ) Business Story\n\
             ( 5 ) Technology Story\n\
         \n\nEnter selection (or "?" for help):\n','0');
-        switch (selectFunction) {
-            case '?':
-                window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');
-            case '1':
-                trumpThatBitch(options['1']);
+        if (selectFunction == '?') {
+            window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');
+        } else if (isValid(selectFunction)) {
+            trumpThatBitch(options[selectFunction]);
+            break loop;
+        } else {
+            var again = confirm('That\'s not a valid option. Try again?');
+            if (again == false) {
                 break loop;
-            default:
-                var again = confirm('That\'s not a valid option. Try again?');
-                if (again == false) {
-                    break loop;
-                }
+            }
         }
     }
 }());

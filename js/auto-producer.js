@@ -83,11 +83,25 @@ javascript:(function() {
             'apple-news': ['colorado-news'],
         },
         '3': {
-            'check-sections': ['40','47','39'],
+            'check-sections': ['64','47','39'],
             'add-tags': [''],
-            'primary-section': '40',
+            'primary-section': '64',
             'primary-tag': '',
             'apple-news': ['colorado-news'],
+        },
+        '4': {
+            'check-sections': ['15','39'],
+            'add-tags': [''],
+            'primary-section': '15',
+            'primary-tag': '',
+            'apple-news': ['business'],
+        },
+        '5': {
+            'check-sections': ['15','27','39'],
+            'add-tags': [''],
+            'primary-section': '27',
+            'primary-tag': '',
+            'apple-news': ['business'],
         },
     }
 
@@ -96,6 +110,9 @@ javascript:(function() {
         var selectFunction = prompt('Welcome to AUTO-PRODUCER. How can I help?\n\n\n\
             ( 1 ) Trump Story\n\
             ( 2 ) Crime Story\n\
+            ( 3 ) Weather Story\n\
+            ( 4 ) Business Story\n\
+            ( 5 ) Technology Story\n\
         \n\nEnter selection (or "?" for help):\n','0');
         switch (selectFunction) {
             case '?':
@@ -105,7 +122,7 @@ javascript:(function() {
                 break loop;
             default:
                 var again = confirm('That\'s not a valid option. Try again?');
-                if (again == true) {
+                if (again == false) {
                     break loop;
                 }
         }

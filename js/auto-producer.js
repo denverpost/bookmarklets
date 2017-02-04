@@ -69,39 +69,60 @@ javascript:(function() {
 
     var options = {
         '1': {
-            'check-sections': ['11580', '75', '81', '48', '39', '59'],
+            'check-sections': ['48','11580','75','81','39','59'],
             'add-tags': ['Donald Trump'],
             'primary-section': '11580',
             'primary-tag': '1276',
             'apple-news': ['politics'],
         },
         '2': {
-            'check-sections': ['40','47','39'],
-            'add-tags': [''],
+            'check-sections': ['48','40','47','39'],
+            'add-tags': [],
             'primary-section': '40',
             'primary-tag': '',
             'apple-news': ['colorado-news'],
         },
         '3': {
-            'check-sections': ['64','47','39'],
-            'add-tags': [''],
+            'check-sections': ['48','64','47','39'],
+            'add-tags': [],
             'primary-section': '64',
             'primary-tag': '',
             'apple-news': ['colorado-news'],
         },
         '4': {
-            'check-sections': ['15','39'],
+            'check-sections': ['48','15'],
             'add-tags': [''],
             'primary-section': '15',
-            'primary-tag': '',
+            'primary-tag': '7864',
             'apple-news': ['business'],
         },
         '5': {
-            'check-sections': ['15','27','39'],
-            'add-tags': [''],
+            'check-sections': ['48','15','27'],
+            'add-tags': [],
             'primary-section': '27',
-            'primary-tag': '',
+            'primary-tag': '7864',
             'apple-news': ['business'],
+        },
+        '6': {
+            'check-sections': ['48','85','83','84','6710','9101'],
+            'add-tags': ['advice','Ask Amy','relationship advice'],
+            'primary-section': '85',
+            'primary-tag': '7819',
+            'apple-news': ['lifestyle'],
+        },
+        '7': {
+            'check-sections': ['48','33','30','9101'],
+            'add-tags': ['movie reviews'],
+            'primary-section': '33',
+            'primary-tag': '4289',
+            'apple-news': ['entertainment'],
+        },
+        '8': {
+            'check-sections': ['48','93'],
+            'add-tags': [],
+            'primary-section': '93',
+            'primary-tag': '',
+            'apple-news': ['entertainment','lifestyle'],
         },
     }
 
@@ -113,6 +134,9 @@ javascript:(function() {
             ( 3 ) Weather Story\n\
             ( 4 ) Business Story\n\
             ( 5 ) Technology Story\n\
+            ( 6 ) Ask Amy\n\
+            ( 7 ) Movie Reviews\n\
+            ( 8 ) Travel Story\n\
         \n\nEnter selection (or "?" for help):\n','0');
         if (selectFunction == '?') {
             window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');

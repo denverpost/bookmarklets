@@ -16,8 +16,6 @@ javascript:(function() {
 
     function checkAppleNewsBoxes(boxes){
         for(var i=0,len=boxes.length;i<len;i++){
-            console.log(boxes[i]);
-            console.log(appleNewsSections[boxes[i]]);
             document.getElementById(appleNewsSections[boxes[i]]).checked = true;
         }
     }
@@ -91,7 +89,7 @@ javascript:(function() {
         },
         '4': {
             'check-sections': ['48','15'],
-            'add-tags': [''],
+            'add-tags': [],
             'primary-section': '15',
             'primary-tag': '7864',
             'apple-news': ['business'],
@@ -124,6 +122,13 @@ javascript:(function() {
             'primary-tag': '',
             'apple-news': ['entertainment','lifestyle'],
         },
+        '9': {
+            'check-sections': ['48','39','59'],
+            'add-tags': [],
+            'primary-section': '59',
+            'primary-tag': '',
+            'apple-news': [],
+        },
     }
 
     loop:
@@ -137,6 +142,7 @@ javascript:(function() {
             ( 6 ) Ask Amy\n\
             ( 7 ) Movie Reviews\n\
             ( 8 ) Travel Story\n\
+            ( 9 ) Nation / World Story\n\
         \n\nEnter selection (or "?" for help):\n','0');
         if (selectFunction == '?') {
             window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');

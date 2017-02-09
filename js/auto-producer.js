@@ -129,6 +129,13 @@ javascript:(function() {
             'primary-tag': '',
             'apple-news': [],
         },
+        '10': {
+            'check-sections': ['48','39','47','79','80','75'],
+            'add-tags': [],
+            'primary-section': '79',
+            'primary-tag': '',
+            'apple-news': ['politics'],
+        },
     }
 
     loop:
@@ -143,6 +150,7 @@ javascript:(function() {
             ( 7 ) Movie Reviews\n\
             ( 8 ) Travel Story\n\
             ( 9 ) Nation / World Story\n\
+            ( 10 ) Colorado Legislature\n\
         \n\nEnter selection (or "?" for help):\n','0');
         if (selectFunction == '?') {
             window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');

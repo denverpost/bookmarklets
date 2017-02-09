@@ -89,14 +89,14 @@ javascript:(function() {
         },
         '4': {
             'check-sections': ['48','15'],
-            'add-tags': [],
+            'add-tags': ['More Business News'],
             'primary-section': '15',
             'primary-tag': '7864',
             'apple-news': ['business'],
         },
         '5': {
             'check-sections': ['48','15','27'],
-            'add-tags': [],
+            'add-tags': ['More Business News'],
             'primary-section': '27',
             'primary-tag': '7864',
             'apple-news': ['business'],

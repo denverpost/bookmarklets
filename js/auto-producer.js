@@ -15,10 +15,10 @@ javascript:(function() {
     function primaryOptions(sectionPrimary,tagPrimary){
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
-        if (typeof sectionPrimary != 'undefined') {
+        if (typeof sectionPrimary != 'undefined' || sectionPrimary == '') {
             document.getElementById(sectionSelect).value = sectionPrimary;
         }
-        if (typeof tagPrimary != 'undefined') {
+        if (typeof tagPrimary != 'undefined' || tagPrimary == '') {
             document.getElementById(tagSelect).value = tagPrimary;
         }
     }

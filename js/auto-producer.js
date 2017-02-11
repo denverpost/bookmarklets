@@ -1,12 +1,4 @@
 javascript:(function() {
-    function isValid(str) {
-        var string = parseInt(str);
-        if (string >= 0 && string <= 99) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     function checkSections(tags){
         for(var i=0,len=tags.length;i<len;i++){
@@ -67,6 +59,7 @@ javascript:(function() {
 
     var options = {
         '1': {
+            'title': 'Trump Story',
             'check-sections': ['48','11580','75','81','39','59'],
             'add-tags': ['Donald Trump'],
             'primary-section': '11580',
@@ -74,6 +67,7 @@ javascript:(function() {
             'apple-news': ['politics'],
         },
         '2': {
+            'title': 'Crime Story',
             'check-sections': ['48','40','47','39'],
             'add-tags': [],
             'primary-section': '40',
@@ -81,6 +75,7 @@ javascript:(function() {
             'apple-news': ['colorado-news'],
         },
         '3': {
+            'title': 'Weather Story',
             'check-sections': ['48','64','47','39'],
             'add-tags': [],
             'primary-section': '64',
@@ -88,6 +83,7 @@ javascript:(function() {
             'apple-news': ['colorado-news'],
         },
         '4': {
+            'title': 'Business Story',
             'check-sections': ['48','15'],
             'add-tags': ['More Business News'],
             'primary-section': '15',
@@ -95,6 +91,7 @@ javascript:(function() {
             'apple-news': ['business'],
         },
         '5': {
+            'title': 'Technology Story',
             'check-sections': ['48','15','27'],
             'add-tags': ['More Business News'],
             'primary-section': '27',
@@ -102,6 +99,7 @@ javascript:(function() {
             'apple-news': ['business'],
         },
         '6': {
+            'title': 'Ask Amy',
             'check-sections': ['48','85','83','84','6710','9101'],
             'add-tags': ['advice','Ask Amy','relationship advice'],
             'primary-section': '85',
@@ -109,6 +107,7 @@ javascript:(function() {
             'apple-news': ['lifestyle'],
         },
         '7': {
+            'title': 'Movie Review',
             'check-sections': ['48','33','30','9101'],
             'add-tags': ['movie reviews'],
             'primary-section': '33',
@@ -116,6 +115,7 @@ javascript:(function() {
             'apple-news': ['entertainment'],
         },
         '8': {
+            'title': 'Travel Story',
             'check-sections': ['48','93'],
             'add-tags': [],
             'primary-section': '93',
@@ -123,6 +123,7 @@ javascript:(function() {
             'apple-news': ['entertainment','lifestyle'],
         },
         '9': {
+            'title': 'Nation / World Story',
             'check-sections': ['48','39','59'],
             'add-tags': [],
             'primary-section': '59',
@@ -130,6 +131,7 @@ javascript:(function() {
             'apple-news': [],
         },
         '10': {
+            'title': 'Colorado Legislature',
             'check-sections': ['48','39','47','79','80','75'],
             'add-tags': [],
             'primary-section': '79',
@@ -138,30 +140,100 @@ javascript:(function() {
         },
     }
 
-    loop:
-    while(true) {
-        var selectFunction = prompt('Welcome to AUTO-PRODUCER. How can I help?\n\n\n\
-            ( 1 ) Trump Story\n\
-            ( 2 ) Crime Story\n\
-            ( 3 ) Weather Story\n\
-            ( 4 ) Business Story\n\
-            ( 5 ) Technology Story\n\
-            ( 6 ) Ask Amy\n\
-            ( 7 ) Movie Reviews\n\
-            ( 8 ) Travel Story\n\
-            ( 9 ) Nation / World Story\n\
-            ( 10 ) Colorado Legislature\n\
-        \n\nEnter selection (or "?" for help):\n','0');
-        if (selectFunction == '?') {
-            window.open('http://extras.denverpost.com/app/bookmarklet/ap-help.html', '_blank');
-        } else if (isValid(selectFunction)) {
+    var validOptions = ['?'];
+    for(var object in options){
+        if (options.hasOwnProperty(object)) {
+            validOptions.push(object);
+        }
+    }
+
+    var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">I can do that!</strong></h3>\n\
+     <p style="text-align:center;"><img src="https://extras.denverpost.com/oil-gas-deaths/img/loading.gif" style="margin:1em auto;width:15%;" /></p>';
+
+    function APdialogText(options){
+        var output = '<p>Welcome to The Denver Post AUTO-PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
+        output += '<ul>';
+        for(var object in options){
+            if (options.hasOwnProperty(object)) {
+                output += '<li>( ' + object + ' ) ' + options[object]['title'] + '</li>';
+            }
+        }
+        output += '</ul>';
+        output += '<p>Enter selection (or "?" for help): <input type="text" id="APoptionSelect"></p>';
+        return output;
+    }
+
+    function modifyDialog() {
+        jQuery(".ui-dialog-titlebar-close").hide();
+        jQuery(".ui-dialog").css('z-index','99999999');
+        jQuery('#auto-producer').keydown(function (event) {
+            if (event.keyCode == 13) {
+                jQuery("#btnOne").trigger("click");
+                return false;
+            }
+        });
+        jQuery("#APoptionSelect").get(0).focus();
+    }
+
+    function processAPform() {
+        var selectFunction = jQuery('#APoptionSelect').val();
+        if (validOptions.indexOf(selectFunction) != -1) {
+            jQuery('#auto-producer').html(APsuccessText);
             trumpThatBitch(options[selectFunction]);
-            break loop;
+            setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1600);
         } else {
-            var again = confirm('That\'s not a valid option. Try again?');
+            var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');
             if (again == false) {
-                break loop;
+                jQuery('#auto-producer').dialog('close');
+            } else {
+                return false;
             }
         }
     }
+
+    function loadAPDialog() {
+        jQuery('#auto-producer').html(APdialogText(options));
+        jQuery('#auto-producer').dialog({
+            autoOpen: false,
+            buttons: [  
+                {
+                    id: "btnCancel",
+                    text: "Cancel",
+                    click: function(){
+                        jQuery(this).dialog('close');
+                    }
+                },
+                {
+                    id: "btnOne",
+                    text: "AUTO-PRODUCE™!",
+                    click: function () {
+                        processAPform();
+                    }
+                }
+            ],
+            title: 'Denver Post AUTO-PRODUCER™',
+            resize: 'auto',
+            modal: true,
+            minWidth: 450,
+            open: function(event, ui) { modifyDialog(); }
+        });
+        jQuery('#auto-producer').dialog('open');
+    }
+
+    if (!document.body.contains(document.getElementById('auto-producer'))) {
+        var s2 = window.document.createElement('script');
+        s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+        window.document.body.appendChild(s2);
+        var APdiv = window.document.createElement('div');
+        APdiv.setAttribute('id','auto-producer');
+        window.document.body.appendChild(APdiv);
+    }
+
+    var UILoaded = setInterval(function() {
+        if (typeof jQuery.ui.dialog != 'undefined') {
+            clearInterval(UILoaded);
+            loadAPDialog();
+        }
+    }, 100);
+    
 }());

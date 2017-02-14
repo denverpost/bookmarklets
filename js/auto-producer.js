@@ -1,13 +1,13 @@
-javascript:(function() {
-
+javascript:
+(function() {
     function checkSections(tags){
-        for(var i=0,len=tags.length;i<len;i++){
+        for (var i=0,len=tags.length;i<len;i++){
             document.getElementById('in-category-'+tags[i]).checked = true;
         }
     }
 
     function checkAppleNewsBoxes(boxes){
-        for(var i=0,len=boxes.length;i<len;i++){
+        for (var i=0,len=boxes.length;i<len;i++){
             document.getElementById(appleNewsSections[boxes[i]]).checked = true;
         }
     }
@@ -30,7 +30,10 @@ javascript:(function() {
         }
     }
 
-    function trumpThatBitch(options) {
+    function trumpThatBitch(options,related) {
+        if ((typeof options['related'] != 'undefined' && options['related'] == true) || related == true) {
+            relatedPrimaryTag();
+        }
         if (typeof options['check-sections'] != 'undefined'){
             checkSections(options['check-sections']);
         }
@@ -38,11 +41,19 @@ javascript:(function() {
             addTag(options['add-tags']);
         }
         if (typeof options['primary-section'] != 'undefined' || typeof options['primary-tag'] != 'undefined') {
-            primaryOptions(options['primary-section'],options['primary-tag'])
+            primaryOptions(options['primary-section'],options['primary-tag']);
         }
         if (typeof options['apple-news'] != 'undefined') {
             checkAppleNewsBoxes(options['apple-news']);
         }
+    }
+
+    function relatedPrimaryTag() {
+        var dt = new Date();
+        var secs = dt.getSeconds() + (60 * dt.getMinutes());
+        var bookmarkletSource = document.createElement('script');
+        bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/related-tag.min.js?v='+secs);
+        document.body.appendChild(bookmarkletSource);
     }
 
     var appleNewsSections = {
@@ -65,6 +76,7 @@ javascript:(function() {
             'primary-section': '11580',
             'primary-tag': '1276',
             'apple-news': ['politics'],
+            'related' : true,
         },
         '2': {
             'title': 'Crime Story',
@@ -73,6 +85,7 @@ javascript:(function() {
             'primary-section': '40',
             'primary-tag': '',
             'apple-news': ['colorado-news'],
+            'related' : false,
         },
         '3': {
             'title': 'Weather Story',
@@ -81,6 +94,7 @@ javascript:(function() {
             'primary-section': '64',
             'primary-tag': '',
             'apple-news': ['colorado-news'],
+            'related' : true,
         },
         '4': {
             'title': 'Business Story',
@@ -89,6 +103,7 @@ javascript:(function() {
             'primary-section': '15',
             'primary-tag': '7864',
             'apple-news': ['business'],
+            'related' : false,
         },
         '5': {
             'title': 'Technology Story',
@@ -97,6 +112,7 @@ javascript:(function() {
             'primary-section': '27',
             'primary-tag': '7864',
             'apple-news': ['business'],
+            'related' : false,
         },
         '6': {
             'title': 'Ask Amy',
@@ -105,6 +121,7 @@ javascript:(function() {
             'primary-section': '85',
             'primary-tag': '7819',
             'apple-news': ['lifestyle'],
+            'related' : true,
         },
         '7': {
             'title': 'Movie Review',
@@ -113,6 +130,7 @@ javascript:(function() {
             'primary-section': '33',
             'primary-tag': '4289',
             'apple-news': ['entertainment'],
+            'related' : false,
         },
         '8': {
             'title': 'Travel Story',
@@ -121,6 +139,7 @@ javascript:(function() {
             'primary-section': '93',
             'primary-tag': '',
             'apple-news': ['entertainment','lifestyle'],
+            'related' : false,
         },
         '9': {
             'title': 'Nation / World Story',
@@ -129,6 +148,7 @@ javascript:(function() {
             'primary-section': '59',
             'primary-tag': '',
             'apple-news': [],
+            'related' : false,
         },
         '10': {
             'title': 'Colorado Legislature',
@@ -137,6 +157,7 @@ javascript:(function() {
             'primary-section': '79',
             'primary-tag': '',
             'apple-news': ['politics'],
+            'related' : false,
         },
         '11': {
             'title': 'YourHub Crime Blotter',
@@ -145,6 +166,7 @@ javascript:(function() {
             'primary-section': '2222',
             'primary-tag': '4241',
             'apple-news': ['colorado-news'],
+            'related' : true,
         },
         '12': {
             'title': 'YourHub Biz Profile',
@@ -153,8 +175,9 @@ javascript:(function() {
             'primary-section': '2222',
             'primary-tag': '4280',
             'apple-news': ['colorado-news'],
+            'related' : true,
         }
-    }
+    };
 
     var validOptions = ['?'];
     for(var object in options){
@@ -163,19 +186,21 @@ javascript:(function() {
         }
     }
 
-    var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">I can do that!</strong></h3>\n\
-     <p style="text-align:center;"><img src="https://extras.denverpost.com/oil-gas-deaths/img/loading.gif" style="margin:1em auto;width:15%;" /></p>';
+    var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">I can do that!</strong></h3><p style="text-align:center;"><img src="https://extras.denverpost.com/oil-gas-deaths/img/loading.gif" style="margin:1em auto;width:15%;" /></p>';
 
     function APdialogText(options){
         var output = '<p>Welcome to The Denver Post AUTO-PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
         output += '<ul>';
         for(var object in options){
+            var relStar = (options[object]['related']) ? '<span style="color:darkred;font-weight:bold;">*</span>' : '';
             if (options.hasOwnProperty(object)) {
-                output += '<li>( ' + object + ' ) ' + options[object]['title'] + '</li>';
+                output += '<li>( ' + object + ' ) ' + options[object]['title'] + relStar + '</li>';
             }
         }
         output += '</ul>';
         output += '<p>Enter selection (or "?" for help): <input type="text" id="APoptionSelect"></p>';
+        output += '<p>Insert Primary Tag Related?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" /></p>';
+        output += '<p style="font-size:80%;color:darkred;">Items with a star insert Related by Primary Tag automatically. Related items will only be inserted on articles with 6 or more paragraphs.</p>';
         return output;
     }
 
@@ -193,10 +218,11 @@ javascript:(function() {
 
     function processAPform() {
         var selectFunction = jQuery('#APoptionSelect').val();
+        var selectRelated = jQuery('#relatedSelect').prop('checked');
         if (validOptions.indexOf(selectFunction) != -1) {
             jQuery('#auto-producer').html(APsuccessText);
-            trumpThatBitch(options[selectFunction]);
-            setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1600);
+            trumpThatBitch(options[selectFunction],selectRelated);
+            setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);
         } else {
             var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');
             if (again == false) {
@@ -211,7 +237,7 @@ javascript:(function() {
         jQuery('#auto-producer').html(APdialogText(options));
         jQuery('#auto-producer').dialog({
             autoOpen: false,
-            buttons: [  
+            buttons: [
                 {
                     id: "btnCancel",
                     text: "Cancel",
@@ -251,5 +277,4 @@ javascript:(function() {
             loadAPDialog();
         }
     }, 100);
-    
 }());

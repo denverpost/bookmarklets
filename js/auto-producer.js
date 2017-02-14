@@ -15,10 +15,10 @@ javascript:(function() {
     function primaryOptions(sectionPrimary,tagPrimary){
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
-        if (typeof sectionPrimary != 'undefined' || sectionPrimary == '') {
+        if ( (typeof sectionPrimary != 'undefined' || sectionPrimary == '') && document.getElementById(sectionSelect).value != '')  {
             document.getElementById(sectionSelect).value = sectionPrimary;
         }
-        if (typeof tagPrimary != 'undefined' || tagPrimary == '') {
+        if ( (typeof tagPrimary != 'undefined' || tagPrimary == '') && document.getElementById(tagSelect).value != '') {
             document.getElementById(tagSelect).value = tagPrimary;
         }
     }
@@ -138,6 +138,22 @@ javascript:(function() {
             'primary-tag': '',
             'apple-news': ['politics'],
         },
+        '11': {
+            'title': 'YourHub Crime Blotter',
+            'check-sections': ['48','2222','40'],
+            'add-tags': ['crime blotter'],
+            'primary-section': '2222',
+            'primary-tag': '4241',
+            'apple-news': ['colorado-news'],
+        },
+        '12': {
+            'title': 'YourHub Biz Profile',
+            'check-sections': ['48','15'],
+            'add-tags': ['YourHub business profile'],
+            'primary-section': '2222',
+            'primary-tag': '4280',
+            'apple-news': ['colorado-news'],
+        }
     }
 
     var validOptions = ['?'];

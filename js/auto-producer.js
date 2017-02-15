@@ -300,6 +300,7 @@ javascript:
         output += '<div style="width:33%;float:left;display:inline-block;">';
         output += '<ul>';
         var i = 0;
+        var nobreak = true;
         for(var object in options){
             var relStar = (options[object]['related']) ? ' <span style="color:darkred;font-weight:bold;">*</span>' : ' ';
             var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
@@ -309,12 +310,12 @@ javascript:
             tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
             if (options.hasOwnProperty(object)) {
                 output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
-                if (i > (optsLength / 2) ) {
-                    console.log(i + ' | ' + (optsLength / 2));
-                    output += '</ul></div><div style="width:33%;float:left;display:inline-block;"><ul>';
-                    i++;
-                }
             }
+            if (i > (optsLength / 2) && i > 10 && nobreak == true) {
+                output += '</ul></div><div style="width:33%;float:left;display:inline-block;"><ul>';
+                nobreak = false;
+            }
+            i++;
         }
         output += '</ul>';
         output += '</div>';
@@ -406,7 +407,7 @@ javascript:
             title: 'Denver Post 🤖 AUTO-PRODUCER™ v0.5.1',
             resize: 'auto',
             modal: true,
-            minWidth: 700,
+            minWidth: 900,
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');

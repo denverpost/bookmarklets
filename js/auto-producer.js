@@ -363,21 +363,24 @@ javascript:
                     text: "Capture New",
                     click: function () {
                         captureSettings();
-                    }
+                    },
+                    tabindex: 10
                 },
                 {
                     id: "btnCancel",
                     text: "Cancel",
                     click: function(){
                         jQuery(this).dialog('close');
-                    }
+                    },
+                    tabindex: 11
                 },
                 {
                     id: "btnOne",
                     text: "🤖 AUTO-PRODUCE™!",
                     click: function () {
                         processAPform();
-                    }
+                    },
+                    tabindex: 12
                 }
             ],
             title: 'Denver Post 🤖 AUTO-PRODUCER™',

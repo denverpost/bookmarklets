@@ -383,7 +383,7 @@ javascript:
                     tabindex: 12
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-PRODUCER™',
+            title: 'Denver Post 🤖 AUTO-PRODUCER™ v0.5.1',
             resize: 'auto',
             modal: true,
             minWidth: 700,

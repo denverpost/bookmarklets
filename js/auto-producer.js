@@ -1,5 +1,16 @@
 javascript:
 (function() {
+    function HTMLescape(html){
+    return document.createElement('div')
+        .appendChild(document.createTextNode(html))
+        .parentNode
+        .innerHTML
+    }
+
+    function pad(n) {
+    return (n < 10 && n >= 0) ? ("&nbsp;&nbsp;" + n) : n;
+}
+
     function checkSections(tags){
         for (var i=0,len=tags.length;i<len;i++){
             document.getElementById('in-category-'+tags[i]).checked = true;
@@ -77,6 +88,9 @@ javascript:
             'primary-tag': '1276',
             'apple-news': ['politics'],
             'related' : true,
+            'help-primary-tag': 'Donald Trump',
+            'help-sections': 'Latest News, News, Nation and World News, Politics, National Politics, Trump Administration',
+            'help-primary-section': 'Trump Administration',
         },
         '2': {
             'title': 'Crime Story',
@@ -86,6 +100,9 @@ javascript:
             'primary-tag': '',
             'apple-news': ['colorado-news'],
             'related' : false,
+            'help-primary-tag': '',
+            'help-sections': 'Latest News, News, Colorado News, Crime &amp; Courts',
+            'help-primary-section': 'Crime &amp; Courts',
         },
         '3': {
             'title': 'Weather Story',
@@ -95,6 +112,9 @@ javascript:
             'primary-tag': '',
             'apple-news': ['colorado-news'],
             'related' : true,
+            'help-primary-tag': '',
+            'help-sections': 'Latest News, News, Colorado News, Weather',
+            'help-primary-section': 'Weather',
         },
         '4': {
             'title': 'Business Story',
@@ -104,6 +124,9 @@ javascript:
             'primary-tag': '7864',
             'apple-news': ['business'],
             'related' : false,
+            'help-primary-tag': 'More Business News',
+            'help-sections': 'Latest News, Business',
+            'help-primary-section': 'Business',
         },
         '5': {
             'title': 'Technology Story',
@@ -113,6 +136,9 @@ javascript:
             'primary-tag': '7864',
             'apple-news': ['business'],
             'related' : false,
+            'help-primary-tag': 'More Business News',
+            'help-sections': 'Latest News, Business, Technology',
+            'help-primary-section': 'Technology',
         },
         '6': {
             'title': 'Ask Amy',
@@ -122,6 +148,9 @@ javascript:
             'primary-tag': '7819',
             'apple-news': ['lifestyle'],
             'related' : true,
+            'help-primary-tag': 'Ask Amy, advice, relationship advice',
+            'help-sections': 'Latest News, Ask Amy, Lifestyle, Entertainment / Lifestyle, Family, Lifestyle Columnists',
+            'help-primary-section': 'Ask Amy',
         },
         '7': {
             'title': 'Movie Review',
@@ -131,6 +160,9 @@ javascript:
             'primary-tag': '4289',
             'apple-news': ['entertainment'],
             'related' : false,
+            'help-primary-tag': 'movie reviews',
+            'help-sections': 'Latest News, Movies, Entertainment, Entertainment / Lifestyle',
+            'help-primary-section': 'Movies',
         },
         '8': {
             'title': 'Travel Story',
@@ -140,6 +172,9 @@ javascript:
             'primary-tag': '',
             'apple-news': ['entertainment','lifestyle'],
             'related' : false,
+            'help-primary-tag': '',
+            'help-sections': 'Latest News, Travel',
+            'help-primary-section': 'Travel',
         },
         '9': {
             'title': 'Nation / World Story',
@@ -149,6 +184,9 @@ javascript:
             'primary-tag': '',
             'apple-news': [],
             'related' : false,
+            'help-primary-tag': '',
+            'help-sections': 'Latest News, News, Nation and World News',
+            'help-primary-section': 'Nation and World News',
         },
         '10': {
             'title': 'Colorado Legislature',
@@ -158,6 +196,9 @@ javascript:
             'primary-tag': '',
             'apple-news': ['politics'],
             'related' : false,
+            'help-primary-tag': '',
+            'help-sections': 'Latest News, News, Colorado News, Politics, Local Politics, Colorado Legislature',
+            'help-primary-section': 'Colorado Legislature',
         },
         '11': {
             'title': 'YourHub Crime Blotter',
@@ -167,6 +208,9 @@ javascript:
             'primary-tag': '4241',
             'apple-news': ['colorado-news'],
             'related' : true,
+            'help-primary-tag': 'crime blotter',
+            'help-sections': 'Latest News, YourHub, Crime &amp; Courts',
+            'help-primary-section': 'YourHub',
         },
         '12': {
             'title': 'YourHub Biz Profile',
@@ -176,6 +220,9 @@ javascript:
             'primary-tag': '4280',
             'apple-news': ['colorado-news'],
             'related' : true,
+            'help-primary-tag': 'YourHub business profile',
+            'help-sections': 'Latest News, YourHub, Business',
+            'help-primary-section': 'YourHub',
         },
         '13': {
             'title': 'Colorado News',
@@ -185,6 +232,9 @@ javascript:
             'primary-tag': '',
             'apple-news': ['colorado-news'],
             'related' : true,
+            'help-primary-tag': '',
+            'help-sections': 'Latest News, News, Colorado News,',
+            'help-primary-section': 'Colorado News',
         },
         '14': {
             'title': 'Colorado Wildfires',
@@ -194,10 +244,13 @@ javascript:
             'primary-tag': '11673',
             'apple-news': ['colorado-news'],
             'related' : true,
+            'help-primary-tag': 'Colorado wildfires 2017',
+            'help-sections': 'Latest News, News, Colorado News, Colorado Wildfires',
+            'help-primary-section': 'Colorado Wildfires',
         }
     };
 
-    var validOptions = ['?'];
+    var validOptions = [];
     for(var object in options){
         if (options.hasOwnProperty(object)) {
             validOptions.push(object);
@@ -208,17 +261,33 @@ javascript:
 
     function APdialogText(options){
         var output = '<p>Welcome to The Denver Post AUTO-PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
+        output += '<div style="width:50%;float:left;display:inline-block;">';
         output += '<ul>';
         for(var object in options){
-            var relStar = (options[object]['related']) ? '<span style="color:darkred;font-weight:bold;">*</span>' : '';
+            var relStar = (options[object]['related']) ? ' <span style="color:darkred;font-weight:bold;">*</span>' : ' ';
+            var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
+            tooltipString += '<p>Sets <strong>Primary Tag</strong> to:<br />' + options[object]['help-primary-tag'] + '</p>';
+            tooltipString += '<p>Selects these <strong>Sections</strong>:<br />' + options[object]['help-sections'] + '</p>';
+            tooltipString += '<p>Adds these <strong>Tags</strong>:<br />' + options[object]['add-tags'].join(', ') + '</p>';
+            tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
             if (options.hasOwnProperty(object)) {
-                output += '<li>( ' + object + ' ) ' + options[object]['title'] + relStar + '</li>';
+                output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
             }
         }
         output += '</ul>';
-        output += '<p>Enter selection (or "?" for help): <input type="text" id="APoptionSelect"></p>';
-        output += '<p>Insert Primary Tag Related?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" /></p>';
-        output += '<p style="font-size:80%;color:darkred;">Items with a star insert Related by Primary Tag automatically. Related items will only be inserted on articles with 6 or more paragraphs.</p>';
+        output += '</div>';
+        output += '<div style="width:50%;float:left;display:inline-block;">';
+        output += '<div class="tipGraf" style="display:none;"></div>';
+        output += '</div>';
+        output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+        output += '<div style="width:50%;float:left;display:inline-block;">';
+        output += '<p>Enter selection: <input type="text" id="APoptionSelect" tabindex="1"></p>';
+        output += '</div>';
+        output += '<div style="width:50%;float:left;display:inline-block;">';
+        output += '<p style="text-indent:10%;">Insert Related by Primary Tag?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /></p>';
+        output += '</div>';
+        output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+        output += '<p style="font-size:85%;color:darkred;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
         return output;
     }
 
@@ -230,6 +299,12 @@ javascript:
                 jQuery("#btnOne").trigger("click");
                 return false;
             }
+        });
+        jQuery('.tooltip-link').on('mouseenter',function(){
+            var tipText = jQuery(this).data("tooltip");
+            jQuery('.tipGraf').html(tipText).css('display','block');
+        }).on('mouseleave',function(){
+            jQuery('.tipGraf').html('').css('display','none');            
         });
         jQuery("#APoptionSelect").get(0).focus();
     }
@@ -257,6 +332,13 @@ javascript:
             autoOpen: false,
             buttons: [
                 {
+                    id: "btnCapture",
+                    text: "Capture New",
+                    click: function () {
+                        captureSettings();
+                    }
+                },
+                {
                     id: "btnCancel",
                     text: "Cancel",
                     click: function(){
@@ -265,16 +347,16 @@ javascript:
                 },
                 {
                     id: "btnOne",
-                    text: "AUTO-PRODUCE™!",
+                    text: "🤖 AUTO-PRODUCE™!",
                     click: function () {
                         processAPform();
                     }
                 }
             ],
-            title: 'Denver Post AUTO-PRODUCER™',
+            title: 'Denver Post 🤖 AUTO-PRODUCER™',
             resize: 'auto',
             modal: true,
-            minWidth: 450,
+            minWidth: 700,
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');

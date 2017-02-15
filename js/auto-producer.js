@@ -284,6 +284,8 @@ javascript:
         }
     };
 
+    var optsLength = Object.keys(options).length;
+
     var validOptions = [];
     for(var object in options){
         if (options.hasOwnProperty(object)) {
@@ -295,8 +297,9 @@ javascript:
 
     function APdialogText(options){
         var output = '<p>Welcome to The Denver Post AUTO-PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
-        output += '<div style="width:50%;float:left;display:inline-block;">';
+        output += '<div style="width:33%;float:left;display:inline-block;">';
         output += '<ul>';
+        var i = 0;
         for(var object in options){
             var relStar = (options[object]['related']) ? ' <span style="color:darkred;font-weight:bold;">*</span>' : ' ';
             var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
@@ -306,11 +309,16 @@ javascript:
             tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
             if (options.hasOwnProperty(object)) {
                 output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
+                if (i > (optsLength / 2) ) {
+                    console.log(i + ' | ' + (optsLength / 2));
+                    output += '</ul></div><div style="width:33%;float:left;display:inline-block;"><ul>';
+                    i++;
+                }
             }
         }
         output += '</ul>';
         output += '</div>';
-        output += '<div style="width:50%;float:left;display:inline-block;">';
+        output += '<div style="width:33%;float:left;display:inline-block;">';
         output += '<div class="tipGraf" style="display:none;"></div>';
         output += '</div>';
         output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
@@ -318,9 +326,9 @@ javascript:
         output += '<p>Enter selection: <input type="text" id="APoptionSelect" tabindex="1"></p>';
         output += '</div>';
         output += '<div style="width:50%;float:left;display:inline-block;">';
-        output += '<p style="text-indent:10%;">Insert Related by Primary Tag?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /></p>';
-        output += '<p style="text-indent:10%;">Change author to AP?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /></p>';
-        output += '<p style="text-indent:10%;">Change author to WaPo?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
+        output += '<p>Insert Related by Primary Tag?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
+        output += 'Change author to AP?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /><br />';
+        output += 'Change author to WaPo?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
         output += '</div>';
         output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
         output += '<p style="font-size:85%;color:darkred;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';

@@ -41,7 +41,23 @@ javascript:
         }
     }
 
-    function trumpThatBitch(options,related) {
+    function addAPauthor(){
+        jQuery('#coauthors_hidden_input').remove();
+        jQuery('.suggest.coauthor-row:first-child').append('<input id="coauthors_hidden_input" name="coauthors[]" value="the-associated-press" type="hidden">');
+    }
+
+    function addWaPoauthor(){
+        jQuery('#coauthors_hidden_input').remove();
+        jQuery('.suggest.coauthor-row:first-child').append('<input id="coauthors_hidden_input" name="coauthors[]" value="the-washington-post" type="hidden">');
+    }
+
+    function trumpThatBitch(options,related,APauthorSelect,WaPoauthorSelect) {
+        if (typeof WaPoauthorSelect != 'undefined' && WaPoauthorSelect == true) {
+            addWaPoauthor();
+        }
+        if (typeof APauthorSelect != 'undefined' && APauthorSelect == true) {
+            addAPauthor();
+        }
         if ((typeof options['related'] != 'undefined' && options['related'] == true) || related == true) {
             relatedPrimaryTag();
         }
@@ -80,6 +96,12 @@ javascript:
     };
 
     var options = {
+        '0': {
+            'title': 'Do Nothing',
+            'add-tags': [],
+            'help-sections': 'Does not add sections or tags!',
+            'related' : false,
+        },
         '1': {
             'title': 'Trump Story',
             'check-sections': ['48','11580','75','81','39','59'],
@@ -285,9 +307,12 @@ javascript:
         output += '</div>';
         output += '<div style="width:50%;float:left;display:inline-block;">';
         output += '<p style="text-indent:10%;">Insert Related by Primary Tag?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /></p>';
+        output += '<p style="text-indent:10%;">Change author to AP?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /></p>';
+        output += '<p style="text-indent:10%;">Change author to WaPo?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
         output += '</div>';
         output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
         output += '<p style="font-size:85%;color:darkred;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
+        output += '<p style="font-size:85%;color:darkblue;">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
         return output;
     }
 
@@ -312,9 +337,11 @@ javascript:
     function processAPform() {
         var selectFunction = jQuery('#APoptionSelect').val();
         var selectRelated = jQuery('#relatedSelect').prop('checked');
+        var APauthorSelect = jQuery('#APauthorSelect').prop('checked');
+        var WaPoauthorSelect = jQuery('#WaPoauthorSelect').prop('checked');
         if (validOptions.indexOf(selectFunction) != -1) {
             jQuery('#auto-producer').html(APsuccessText);
-            trumpThatBitch(options[selectFunction],selectRelated);
+            trumpThatBitch(options[selectFunction],selectRelated,APauthorSelect,WaPoauthorSelect);
             setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);
         } else {
             var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');

@@ -1,11 +1,16 @@
 javascript:
 (function() {
+    var APversion = ' v0.5.6';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
 
     function pad(n) {
         return (n < 10 && n >= 0) ? ("&nbsp;&nbsp;" + n) : n;
+    }
+
+    function padNum(n) {
+        return (n < 10 && n >= 0) ? ("0" + n) : n;
     }
 
     function getKeyByValue(object, value) {
@@ -27,7 +32,7 @@ javascript:
         return str.join("&");
     };
 
-    function autoProducerPost() {
+    function autoProducerPost(randomGif) {
         function captureSections() {
             var output = [];
             jQuery('#categorychecklist input:checked').each(function(){
@@ -167,7 +172,7 @@ javascript:
             document.body.appendChild(bookmarkletSource);
         }
 
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">I can do that!</strong></h3><p style="text-align:center;"><img src="https://extras.denverpost.com/oil-gas-deaths/img/loading.gif" style="margin:1em auto;width:15%;" /></p>';
+        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">I can do that!</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
         var appleNewsSections = {
@@ -487,7 +492,7 @@ javascript:
                     tabindex: 12
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-PRODUCER™ v0.5.2',
+            title: 'Denver Post 🤖 AUTO-PRODUCER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,
@@ -496,11 +501,7 @@ javascript:
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerSearch() {
-        alert('Search function chosen!');
-    }
-
-    function autoProducerContentHub() {
+    function autoProducerContentHub(randomGif) {
         var options = {
             '1': {
                 'title': 'Daily Camera',
@@ -538,10 +539,12 @@ javascript:
                 'default': false,
             }
         };
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Content Hub...</strong></h3><p style="text-align:center;"><img src="https://extras.denverpost.com/oil-gas-deaths/img/loading.gif" style="margin:1em auto;width:15%;" /></p>';
+
+        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Content Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
 
         function modifyDialog() {
             jQuery(".ui-dialog-titlebar-close").hide();
+            jQuery(".ui-widget-content").css('background','#fff');
             jQuery(".ui-widget-header").css('border','1px solid #aaa');
             jQuery(".ui-widget-header").css('color','#222');
             jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
@@ -557,7 +560,7 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO-SEARCH™ for CONTENT HUB. Here\'s what I can do for you:</p>';
+            var output = '<p>Welcome to The Denver Post AUTO-SEARCHER™ for CONTENT HUB. Here\'s what I can do for you:</p>';
             output += '<p>';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
@@ -577,7 +580,12 @@ javascript:
             var searchString = (selectFunction != '') ? selectSearch + ' ' + selectFunction : selectSearch;
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);
-            jQuery('#search-submit').trigger("click");
+            var imageLoad = setInterval(function(){
+                if (jQuery('#waiting-gif').height() > 10) {
+                    clearInterval(imageLoad);
+                    jQuery('#search-submit').trigger("click");
+                }
+            },500);
         }
 
         jQuery('#auto-producer').html(APdialogText(options));
@@ -594,14 +602,14 @@ javascript:
                 },
                 {
                     id: "btnOne",
-                    text: "🤖 AUTO-SEARCH!",
+                    text: "🤖 AUTO-SEARCHER™!",
                     click: function () {
                         processAPform();
                     },
                     tabindex: 3
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-SEARCH v0.5.5',
+            title: 'Denver Post 🤖 AUTO-SEARCHER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,
@@ -610,20 +618,135 @@ javascript:
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerWireHub() {
-        alert('Wire Hub function chosen!');
+    function autoProducerWireHub(randomGif) {
+        var options = {
+            '1': {
+                'title': 'Associated Press',
+                'search-term': 'associated press',
+                'default': ' checked',
+            },
+            '2': {
+                'title': 'Washington Post',
+                'search-term': 'washington post',
+                'default': false,
+            },
+            '3': {
+                'title': 'Bloomberg (experimental)',
+                'search-term': 'bloomberg',
+                'default': false,
+            }
+        };
+        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Content Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+
+        function modifyDialog() {
+            jQuery(".ui-dialog-titlebar-close").hide();
+            jQuery(".ui-widget-content").css('background','#fff');
+            jQuery(".ui-widget-header").css('border','1px solid #aaa');
+            jQuery(".ui-widget-header").css('color','#222');
+            jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
+            jQuery(".ui-dialog").css('z-index','99999999');
+            jQuery('#auto-producer').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    jQuery("#btnOne").trigger("click");
+                    return false;
+                }
+            });
+            jQuery("input[name=searchname]:checked").focus();
+
+        }
+
+        function APdialogText(options){
+            var output = '<p>Welcome to The Denver Post AUTO-SEARCHER™ for WIRE HUB. Here\'s what I can do for you:</p>';
+            output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a news source:</strong></p>';
+            for(var object in options){
+                if (options.hasOwnProperty(object)) {
+                    var tabind = (options[object]['default']) ? ' tabindex="1"' : ' tabindex="-1"';
+                    output += '<input type="radio" name="searchname" value="' + options[object]['search-term'] + '" ' + tabind + options[object]['default'] + '> ' + options[object]['title'] + '<br />';
+                }
+            }
+            output += '</div>';
+            output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a date range:</strong></p>';
+            output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
+            output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
+            output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
+            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+            output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
+            return output;
+        }
+
+        function fillDates(days) {
+            var now = new Date();
+            var backup = now - 1000 * 60 * 60 * 24 * days;
+            var then = new Date(backup);
+            document.getElementById('dfm_hub_start_mm').value = padNum(then.getMonth() + 1);
+            document.getElementById('dfm_hub_start_dd').value = padNum(then.getDate());
+            document.getElementById('dfm_hub_start_yyyy').value = then.getFullYear();
+            document.getElementById('dfm_hub_end_mm').value = padNum(now.getMonth() + 1);
+            document.getElementById('dfm_hub_end_dd').value = padNum(now.getDate());
+            document.getElementById('dfm_hub_end_yyyy').value = now.getFullYear();
+        }
+
+        function processAPform() {
+            var searchLength = jQuery('input[name=searchlength]:checked').val();
+            var selectFunction = jQuery('#APoptionSelect').val();
+            var selectSearch = jQuery("input[name=searchname]:checked").val();
+            var searchString = (selectFunction != '') ? selectSearch + ' ' + selectFunction : selectSearch;
+            fillDates(searchLength);
+            jQuery('#hub_search-search-input').val(searchString);
+            jQuery('#auto-producer').html(APsuccessText);
+            var imageLoad = setInterval(function(){
+                console.log(jQuery('#waiting-gif').height());
+                if (jQuery('#waiting-gif').height() > 10) {
+                    clearInterval(imageLoad);
+                    jQuery('#search-submit').trigger("click");
+                }
+            },500);
+        }
+
+        jQuery('#auto-producer').html(APdialogText(options));
+        jQuery('#auto-producer').dialog({
+            autoOpen: false,
+            buttons: [
+                {
+                    id: "btnCancel",
+                    text: "Cancel",
+                    click: function(){
+                        jQuery(this).dialog('close');
+                    },
+                    tabindex: 5
+                },
+                {
+                    id: "btnOne",
+                    text: "🤖 AUTO-SEARCHER™!",
+                    click: function () {
+                        processAPform();
+                    },
+                    tabindex: 4
+                }
+            ],
+            title: 'Denver Post 🤖 AUTO-SEARCHER™' + APversion,
+            resize: 'auto',
+            modal: true,
+            minWidth: 900,
+            open: function(event, ui) { modifyDialog(); }
+        });
+        jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerPick() {
+    function autoProducerSearch() {
+        alert('Search function chosen!');
+    }
+
+    function autoProducerPick(randomGif) {
         var loc = window.location.href;
         if (loc.indexOf('post.php') > -1) {
-            autoProducerPost();
+            autoProducerPost(randomGif);
         } else if (loc.indexOf('edit.php') >-1) {
-            autoProducerSearch();
+            autoProducerSearch(randomGif);
         } else if (loc.indexOf('content_hub_view') >-1) {
-            autoProducerContentHub();
+            autoProducerContentHub(randomGif);
         } else if (loc.indexOf('wire_hub_view') >-1) {
-            autoProducerWireHub();
+            autoProducerWireHub(randomGif);
         }
     }
 
@@ -639,7 +762,21 @@ javascript:
     var UILoaded = setInterval(function() {
         if (typeof jQuery.ui.dialog != 'undefined') {
             clearInterval(UILoaded);
-            autoProducerPick();
+            var randomGifin = '';
+            var randomGiphy = jQuery.ajax({
+                url:'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
+                type: 'GET',
+                success: function(response) {
+                    randomGifin = response.data.image_url;
+                    randomGifin = randomGifin.replace('http:','https:');
+                }
+            });
+            var gifInt = setInterval(function() {
+                if (typeof randomGifin != 'undefined' && randomGifin.indexOf('giphy.gif') > -1) {
+                    clearInterval(gifInt);
+                    autoProducerPick(randomGifin);
+                }
+            }, 10);
         }
-    }, 100);
+    }, 50);
 }());

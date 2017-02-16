@@ -9,7 +9,9 @@ javascript:
     }
 
     function getKeyByValue(object, value) {
-        return Object.keys(object).find(key => object[key] === value);
+        return Object.keys(object).find(function (key) {
+                return object[key] === value;
+        });
     }
 
     serialize = function(obj, prefix) {
@@ -132,7 +134,10 @@ javascript:
             if ((typeof options['related'] != 'undefined' && options['related'] == true) || related == true) {
                 relatedPrimaryTag();
             }
-            if (typeof options['check-sections'] != 'undefined'){
+            if (typeof options['title'] == 'Weather Story') {
+                weatherWidget();
+            }
+            if (typeof options['check-sections'] != 'undefined') {
                 checkSections(options['check-sections']);
             }
             if (typeof options['add-tags'] != 'undefined') {
@@ -151,6 +156,14 @@ javascript:
             var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
             bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/related-tag.min.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function weatherWidget() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather.js?v='+secs);
             document.body.appendChild(bookmarkletSource);
         }
 

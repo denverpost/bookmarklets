@@ -97,10 +97,10 @@ javascript:
         }
 
         function primaryOptions(sectionPrimary,tagPrimary){
-            if ( (typeof sectionPrimary != 'undefined' || sectionPrimary == '') && document.getElementById(sectionSelect).value != '')  {
+            if ( (typeof sectionPrimary != 'undefined' && sectionPrimary != '') && document.getElementById(sectionSelect).value == '' )  {
                 document.getElementById(sectionSelect).value = sectionPrimary;
             }
-            if ( (typeof tagPrimary != 'undefined' || tagPrimary == '') && document.getElementById(tagSelect).value != '') {
+            if ( (typeof tagPrimary != 'undefined' && tagPrimary != '') && document.getElementById(tagSelect).value == '' ) {
                 document.getElementById(tagSelect).value = tagPrimary;
             }
         }

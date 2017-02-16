@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.5.6';
+    var APversion = ' v0.6.2';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -485,14 +485,14 @@ javascript:
                 },
                 {
                     id: "btnOne",
-                    text: "🤖 AUTO-PRODUCE™!",
+                    text: "AUTO🤖PRODUCE™!",
                     click: function () {
                         processAPform();
                     },
                     tabindex: 12
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-PRODUCER™' + APversion,
+            title: 'Denver Post AUTO🤖PRODUCER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,
@@ -602,14 +602,14 @@ javascript:
                 },
                 {
                     id: "btnOne",
-                    text: "🤖 AUTO-SEARCHER™!",
+                    text: "AUTO🤖SEARCH™!",
                     click: function () {
                         processAPform();
                     },
                     tabindex: 3
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-SEARCHER™' + APversion,
+            title: 'Denver Post AUTO🤖SEARCHER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,
@@ -717,14 +717,14 @@ javascript:
                 },
                 {
                     id: "btnOne",
-                    text: "🤖 AUTO-SEARCHER™!",
+                    text: "AUTO🤖SEARCH™!",
                     click: function () {
                         processAPform();
                     },
                     tabindex: 4
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-SEARCHER™' + APversion,
+            title: 'Denver Post AUTO🤖SEARCHER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,
@@ -766,14 +766,14 @@ javascript:
                 },
                 /*{
                     id: "btnOne",
-                    text: "🤖 AUTO-SEARCHER™!",
+                    text: "AUTO🤖SEARCH™!",
                     click: function () {
                         processAPform();
                     },
                     tabindex: 4
                 }*/
             ],
-            title: 'Denver Post 🤖 AUTO-SEARCHER™' + APversion,
+            title: 'Denver Post AUTO🤖SEARCHER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,

@@ -349,6 +349,18 @@ javascript:
                 'help-sections': 'Latest News, Travel',
                 'help-primary-section': 'Travel',
             },
+            '55': {
+                'title': 'Books',
+                'check-sections': ['30','32','48'],
+                'add-tags': ['book reviews'],
+                'primary-section': '32',
+                'primary-tag': '6989',
+                'apple-news': ['entertainment'],
+                'related': true,
+                'help-primary-tag': 'book reviews',
+                'help-sections': 'Entertainment, Books, Latest News',
+                'help-primary-section': 'Books',
+            },
             '61': {
                 'title': 'YourHub Crime Blotter',
                 'check-sections': ['48','2222','40'],
@@ -752,6 +764,7 @@ javascript:
             jQuery("input[name=searchname]:checked").focus();*/
         }
 
+        //jQuery('#auto-producer').html(APdialogText(options));
         jQuery('#auto-producer').html(APsuccessText);
         jQuery('#auto-producer').dialog({
             autoOpen: false,

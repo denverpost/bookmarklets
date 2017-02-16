@@ -668,6 +668,7 @@ javascript:
             output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
             output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
             output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
+            output += '</div>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
             return output;

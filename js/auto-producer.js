@@ -350,7 +350,7 @@ javascript:
                 'help-primary-section': 'Travel',
             },
             '55': {
-                'title': 'Books',
+                'title': 'Book Review',
                 'check-sections': ['30','32','48'],
                 'add-tags': ['book reviews'],
                 'primary-section': '32',

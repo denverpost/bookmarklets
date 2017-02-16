@@ -652,7 +652,6 @@ javascript:
                 }
             });
             jQuery("input[name=searchname]:checked").focus();
-
         }
 
         function APdialogText(options){
@@ -733,8 +732,53 @@ javascript:
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerSearch() {
-        alert('Search function chosen!');
+    function autoProducerSearch(randomGif) {
+        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">This isn\'t a thing yet!</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+
+        function modifyDialog() {
+            jQuery(".ui-dialog-titlebar-close").hide();
+            jQuery(".ui-widget-content").css('background','#fff');
+            jQuery(".ui-widget-header").css('border','1px solid #aaa');
+            jQuery(".ui-widget-header").css('color','#222');
+            jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
+            jQuery(".ui-dialog").css('z-index','99999999');
+            /*jQuery('#auto-producer').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    jQuery("#btnOne").trigger("click");
+                    return false;
+                }
+            });
+            jQuery("input[name=searchname]:checked").focus();*/
+        }
+
+        jQuery('#auto-producer').html(APsuccessText);
+        jQuery('#auto-producer').dialog({
+            autoOpen: false,
+            buttons: [
+                {
+                    id: "btnCancel",
+                    text: "Cancel",
+                    click: function(){
+                        jQuery(this).dialog('close');
+                    },
+                    tabindex: 5
+                },
+                /*{
+                    id: "btnOne",
+                    text: "🤖 AUTO-SEARCHER™!",
+                    click: function () {
+                        processAPform();
+                    },
+                    tabindex: 4
+                }*/
+            ],
+            title: 'Denver Post 🤖 AUTO-SEARCHER™' + APversion,
+            resize: 'auto',
+            modal: true,
+            minWidth: 900,
+            open: function(event, ui) { modifyDialog(); }
+        });
+        jQuery('#auto-producer').dialog('open');
     }
 
     function autoProducerPick(randomGif) {

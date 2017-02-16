@@ -8,8 +8,83 @@ javascript:
     }
 
     function pad(n) {
-    return (n < 10 && n >= 0) ? ("&nbsp;&nbsp;" + n) : n;
-}
+        return (n < 10 && n >= 0) ? ("&nbsp;&nbsp;" + n) : n;
+    }
+
+    function getKeyByValue(object, value) {
+        return Object.keys(object).find(key => object[key] === value);
+    }
+
+    serialize = function(obj, prefix) {
+        var str = [], p;
+        for(p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+                str.push((v !== null && typeof v === "object") ?
+                serialize(v, k) :
+                encodeURIComponent(k) + "=" + encodeURIComponent(v));
+            }
+        }
+        return str.join("&");
+    }
+
+    function captureSections() {
+        var output = [];
+        jQuery('#categorychecklist input:checked').each(function(){
+            output.push(jQuery(this).attr('value'));
+        });
+        return output;
+    }
+
+    function captureSectionsHelp() {
+        var output = [];
+        jQuery('#categorychecklist input:checked').each(function(){
+            var secName = jQuery(this).parent().clone().children().remove().end().text();
+            output.push(secName.trim());
+        });
+        return output;
+    }
+
+    function captureTags() {
+        var output = [];
+        jQuery('#tagsdiv-post_tag .tagchecklist > span').each(function(){
+            var tempTag = jQuery(this).clone().children().remove().end().text();
+            output.push(tempTag.trim());
+        });
+        return output;
+    }
+
+    function captureAppleNews() {
+        var output = [];
+        jQuery('#apple-news-publish div.section input:checked').each(function() {
+            var checked = getKeyByValue(appleNewsSections, jQuery(this).attr('id'));
+            if (typeof checked != 'undefined') {
+                output.push(checked);
+            }
+        });
+        return output;
+    }
+
+    function captureNew() {
+        var optionObject = {};
+        var newTitle = prompt('What should we call this option?\n\n','');
+        var newRelated = confirm('Should Related by Primary Tag be added to stories automatically?');
+        optionObject['title'] = newTitle;
+        optionObject['check-sections'] = captureSections();
+        optionObject['add-tags'] = captureTags();
+        optionObject['primary-section'] = document.getElementById(sectionSelect).value;
+        optionObject['primary-tag'] = document.getElementById(tagSelect).value;
+        optionObject['apple-news'] = captureAppleNews();
+        optionObject['related'] = newRelated;
+        var tagString = '#'+tagSelect+' option[value="'+optionObject['primary-tag']+'"]';                        
+        optionObject['help-primary-tag'] = jQuery(tagString).text();
+        optionObject['help-sections'] = captureSectionsHelp();
+        var secString = '#'+sectionSelect+' option[value="'+optionObject['primary-section']+'"]';
+        optionObject['help-primary-section'] = jQuery(secString).text();
+        var i = document.createElement("img");
+        i.style.cssText = 'display:none;';
+        i.src = 'http://www.denverpostplus.com/app/autoproducer/ap-new.php?'+serialize(optionObject);
+    }
 
     function checkSections(tags){
         for (var i=0,len=tags.length;i<len;i++){
@@ -23,9 +98,10 @@ javascript:
         }
     }
 
+    var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
+    var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
+
     function primaryOptions(sectionPrimary,tagPrimary){
-        var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
-        var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
         if ( (typeof sectionPrimary != 'undefined' || sectionPrimary == '') && document.getElementById(sectionSelect).value != '')  {
             document.getElementById(sectionSelect).value = sectionPrimary;
         }
@@ -383,7 +459,7 @@ javascript:
                     id: "btnCapture",
                     text: "Capture New",
                     click: function () {
-                        captureSettings();
+                        captureNew();
                     },
                     tabindex: 10
                 },
@@ -404,7 +480,7 @@ javascript:
                     tabindex: 12
                 }
             ],
-            title: 'Denver Post 🤖 AUTO-PRODUCER™ v0.5.1',
+            title: 'Denver Post 🤖 AUTO-PRODUCER™ v0.5.2',
             resize: 'auto',
             modal: true,
             minWidth: 900,

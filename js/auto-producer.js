@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.6.2';
+    var APversion = ' v0.7.0';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -415,7 +415,7 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO-PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
+            var output = '<p>Welcome to The Denver Post AUTO🤖PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
             output += '<div style="width:33%;float:left;display:inline-block;">';
             output += '<ul>';
             var i = 0;
@@ -508,6 +508,7 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
+            position: { my: 'center', at: 'top+10%', of: window },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');
@@ -572,7 +573,7 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO-SEARCHER™ for CONTENT HUB. Here\'s what I can do for you:</p>';
+            var output = '<p>Welcome to The Denver Post AUTO🤖SEARCHER™ for CONTENT HUB. Here\'s what I can do for you:</p>';
             output += '<p>';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
@@ -625,6 +626,7 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
+            position: { my: 'center', at: 'top+10%', of: window },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');
@@ -648,7 +650,7 @@ javascript:
                 'default': false,
             }
         };
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Content Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Wire Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
 
         function modifyDialog() {
             jQuery(".ui-dialog-titlebar-close").hide();
@@ -667,7 +669,7 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO-SEARCHER™ for WIRE HUB. Here\'s what I can do for you:</p>';
+            var output = '<p>Welcome to The Denver Post AUTO🤖SEARCHER™ for WIRE HUB. Here\'s what I can do for you:</p>';
             output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a news source:</strong></p>';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
@@ -740,13 +742,21 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
+            position: { my: 'center', at: 'top+10%', of: window },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');
     }
 
     function autoProducerSearch(randomGif) {
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">This isn\'t a thing yet!</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+        var options = {
+            '1': {
+                'title': 'Associated Press',
+                'search-term': 'associated press',
+                'default': ' checked',
+            }
+        };
+        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for the freakin\' Article Search...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
 
         function modifyDialog() {
             jQuery(".ui-dialog-titlebar-close").hide();
@@ -764,8 +774,56 @@ javascript:
             jQuery("input[name=searchname]:checked").focus();*/
         }
 
-        //jQuery('#auto-producer').html(APdialogText(options));
-        jQuery('#auto-producer').html(APsuccessText);
+        function APdialogText(options){
+            var output = '<p>Welcome to The Denver Post AUTO🤖SEARCHER™ for ARTICLES. Here\'s what I can do for you:</p>';
+            /* output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a news source:</strong></p>';
+            for(var object in options){
+                if (options.hasOwnProperty(object)) {
+                    var tabind = (options[object]['default']) ? ' tabindex="1"' : ' tabindex="-1"';
+                    output += '<input type="radio" name="searchname" value="' + options[object]['search-term'] + '" ' + tabind + options[object]['default'] + '> ' + options[object]['title'] + '<br />';
+                }
+            }
+            output += '</div>'; */
+            output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a date range:</strong></p>';
+            output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
+            output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
+            output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
+            output += '</div>';
+            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+            output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
+            return output;
+        }
+
+        function fillDates(days) {
+            var now = new Date();
+            var backup = now - 1000 * 60 * 60 * 24 * days;
+            var then = new Date(backup);
+            jQuery('select[name="dfm_start_mm"]').val(padNum(then.getMonth() + 1));
+            jQuery('select[name="dfm_start_dd"]').val(padNum(then.getDate()));
+            jQuery('select[name="dfm_start_yyyy"]').val(then.getFullYear());
+            jQuery('select[name="dfm_end_mm"]').val(padNum(now.getMonth() + 1));
+            jQuery('select[name="dfm_end_dd"]').val(padNum(now.getDate()));
+            jQuery('select[name="dfm_end_yyyy"]').val(now.getFullYear());
+        }
+
+        function processAPform() {
+            var searchLength = jQuery('input[name=searchlength]:checked').val();
+            var selectFunction = jQuery('#APoptionSelect').val();
+            /* var selectSearch = jQuery("input[name=searchname]:checked").val(); 
+            var searchString = (selectFunction != '') ? selectSearch + ' ' + selectFunction : selectSearch; */
+            fillDates(searchLength);
+            jQuery('#post-search-input').val(selectFunction);
+            jQuery('#auto-producer').html(APsuccessText);
+            var imageLoad = setInterval(function(){
+                console.log(jQuery('#waiting-gif').height());
+                if (jQuery('#waiting-gif').height() > 10) {
+                    clearInterval(imageLoad);
+                    jQuery('#post-query-submit').trigger("click");
+                }
+            },500);
+        }
+
+        jQuery('#auto-producer').html(APdialogText(options));
         jQuery('#auto-producer').dialog({
             autoOpen: false,
             buttons: [
@@ -777,19 +835,20 @@ javascript:
                     },
                     tabindex: 5
                 },
-                /*{
+                {
                     id: "btnOne",
                     text: "AUTO🤖SEARCH™!",
                     click: function () {
                         processAPform();
                     },
                     tabindex: 4
-                }*/
+                }
             ],
             title: 'Denver Post AUTO🤖SEARCHER™' + APversion,
             resize: 'auto',
             modal: true,
             minWidth: 900,
+            position: { my: 'center', at: 'top+10%', of: window },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');

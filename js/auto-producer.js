@@ -979,9 +979,11 @@ javascript:
     }
 
     if (!document.body.contains(document.getElementById('auto-producer'))) {
+        var dt = new Date();
+        var secs = dt.getSeconds() + (60 * dt.getMinutes());
         var APstyle = window.document.createElement('link');
         APstyle.setAttribute('rel','stylesheet');
-        APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css');
+        APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css?v='+secs);
         window.document.body.appendChild(APstyle);
         var s2 = window.document.createElement('script');
         s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');

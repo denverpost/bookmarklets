@@ -1,7 +1,7 @@
 #auto-producer .ui-dialog-titlebar-close {
 	display:none;
 }
-#auto-producer .ui-dialog {
+.ui-dialog {
 	z-index:99999999;
 	top:5%;
 }

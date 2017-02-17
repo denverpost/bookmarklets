@@ -979,16 +979,16 @@ javascript:
     }
 
     if (!document.body.contains(document.getElementById('auto-producer'))) {
+        var APstyle = window.document.createElement('link');
+        APstyle.setAttribute('rel','stylesheet');
+        APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css');
+        window.document.body.appendChild(APstyle);
         var s2 = window.document.createElement('script');
         s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
         window.document.body.appendChild(s2);
         var APdiv = window.document.createElement('div');
         APdiv.setAttribute('id','auto-producer');
         window.document.body.appendChild(APdiv);
-        var APstyle = window.document.createElement('link');
-        APstyle.setAttribute('type','text/css');
-        APstyle.setAttribute('rel','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css');
-        window.document.body.appendChild(APstyle);
     }
 
     var UILoaded = setInterval(function() {

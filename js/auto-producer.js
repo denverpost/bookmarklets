@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.7.0';
+    var APversion = ' v0.7.1';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }

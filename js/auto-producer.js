@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.7.1';
+    var APversion = ' v0.8.0';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -129,21 +129,27 @@ javascript:
             jQuery('.suggest.coauthor-row:first-child').append('<input id="coauthors_hidden_input" name="coauthors[]" value="the-washington-post" type="hidden">');
         }
 
-        function trumpThatBitch(options,related,APauthorSelect,WaPoauthorSelect) {
-            if (typeof WaPoauthorSelect != 'undefined' && WaPoauthorSelect == true) {
+        function trumpThatBitch(options,args) {
+            if (typeof args['WaPoauthorSelect'] != 'undefined' && args['WaPoauthorSelect'] == true) {
                 addWaPoauthor();
             }
-            if (typeof APauthorSelect != 'undefined' && APauthorSelect == true) {
+            if (typeof args['APauthorSelect'] != 'undefined' && args['APauthorSelect'] == true) {
                 addAPauthor();
             }
-            if ((typeof options['related'] != 'undefined' && options['related'] == true) || related == true) {
+            if ((typeof options['related'] != 'undefined' && options['related'] == true) || args['selectRelated'] == true) {
                 relatedPrimaryTag();
             }
             if (options['title'] == 'Weather Story') {
                 weatherWidget();
             }
-            if (options['title'] == 'Crime Story') {
+            if (options['title'] == 'Crime Story' && !args['homicideSelect']) {
                 insertCrime();
+            }
+            if (args['informSelect']) {
+                insertInform();
+            }
+            if (args['promoSelect']) {
+                insertPromos();
             }
             if (typeof options['check-sections'] != 'undefined') {
                 checkSections(options['check-sections']);
@@ -494,28 +500,38 @@ javascript:
             output += '<div class="tipGraf" style="display:none;"></div>';
             output += '</div>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
-            output += '<div style="width:50%;float:left;display:inline-block;">';
+            output += '<div style="width:33%;float:left;display:inline-block;">';
             output += '<p>Enter selection: <input type="text" id="APoptionSelect" tabindex="1"></p>';
             output += '</div>';
-            output += '<div style="width:50%;float:left;display:inline-block;">';
+            output += '<div style="width:33%;float:left;display:inline-block;">';
             output += '<p>Insert Related by Primary Tag?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
             output += 'Change author to AP?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /><br />';
             output += 'Change author to WaPo?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
             output += '</div>';
+            output += '<div style="width:33%;float:left;display:inline-block;">';
+            output += '<p>Insert in-article Promos? <input type="checkbox" id="promoSelect" tabindex="2" /><br />';
+            output += 'Insert Inform video? <input type="checkbox" id="informSelect" tabindex="3" /><br />';
+            output += 'Insert Homicide Report?<span style="color:magenta;font-weight:bold;">*</span> <input type="checkbox" id="homicideSelect" tabindex="4" /></p>';
+            output += '</div>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
             output += '<p style="font-size:85%;color:darkred;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
             output += '<p style="font-size:85%;color:darkblue;">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
+            output += '<p style="font-size:85%;color:magenta;">Overrides the Crime Map if inserting with the "Crime Story" option.</p>';
             return output;
         }
 
         function processAPform() {
+            var args = [];
             var selectFunction = jQuery('#APoptionSelect').val();
-            var selectRelated = jQuery('#relatedSelect').prop('checked');
-            var APauthorSelect = jQuery('#APauthorSelect').prop('checked');
-            var WaPoauthorSelect = jQuery('#WaPoauthorSelect').prop('checked');
+            args['selectRelated'] = jQuery('#relatedSelect').prop('checked');
+            args['APauthorSelect'] = jQuery('#APauthorSelect').prop('checked');
+            args['WaPoauthorSelect'] = jQuery('#WaPoauthorSelect').prop('checked');
+            args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
+            args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
+            args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
             if (validOptions.indexOf(selectFunction) != -1) {
                 jQuery('#auto-producer').html(APsuccessText);
-                trumpThatBitch(options[selectFunction],selectRelated,APauthorSelect,WaPoauthorSelect);
+                trumpThatBitch(options[selectFunction],args);
                 setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);
             } else {
                 var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');

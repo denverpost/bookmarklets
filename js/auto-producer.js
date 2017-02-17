@@ -399,6 +399,7 @@ javascript:
         function modifyDialog() {
             jQuery(".ui-dialog-titlebar-close").hide();
             jQuery(".ui-dialog").css('z-index','99999999');
+            jQuery(".ui-dialog").css('top','10%');
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -508,7 +509,10 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
-            position: { my: 'center', at: 'top+10%', of: window },
+            position: { my: 'center', at: 'center', of: window, collision: "none" },
+            create: function (event, ui) {
+                jQuery(event.target).parent().css('position', 'fixed');
+            },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');
@@ -562,6 +566,7 @@ javascript:
             jQuery(".ui-widget-header").css('color','#222');
             jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
             jQuery(".ui-dialog").css('z-index','99999999');
+            jQuery(".ui-dialog").css('top','10%');
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -626,7 +631,10 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
-            position: { my: 'center', at: 'top+10%', of: window },
+            position: { my: 'center', at: 'center', of: window, collision: "none" },
+            create: function (event, ui) {
+                jQuery(event.target).parent().css('position', 'fixed');
+            },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');
@@ -659,6 +667,7 @@ javascript:
             jQuery(".ui-widget-header").css('color','#222');
             jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
             jQuery(".ui-dialog").css('z-index','99999999');
+            jQuery(".ui-dialog").css('top','10%');
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -742,7 +751,10 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
-            position: { my: 'center', at: 'top+10%', of: window },
+            position: { my: 'center', at: 'center', of: window, collision: "none" },
+            create: function (event, ui) {
+                jQuery(event.target).parent().css('position', 'fixed');
+            },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');
@@ -765,6 +777,7 @@ javascript:
             jQuery(".ui-widget-header").css('color','#222');
             jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
             jQuery(".ui-dialog").css('z-index','99999999');
+            jQuery(".ui-dialog").css('top','10%');
             /*jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -848,7 +861,10 @@ javascript:
             resize: 'auto',
             modal: true,
             minWidth: 900,
-            position: { my: 'center', at: 'top+10%', of: window },
+            position: { my: 'center', at: 'center', of: window, collision: "none" },
+            create: function (event, ui) {
+                jQuery(event.target).parent().css('position', 'fixed');
+            },
             open: function(event, ui) { modifyDialog(); }
         });
         jQuery('#auto-producer').dialog('open');

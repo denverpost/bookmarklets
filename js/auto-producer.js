@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.8.1';
+    var APversion = ' v0.8.2';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -17,6 +17,12 @@ javascript:
         return Object.keys(object).find(function (key) {
                 return object[key] === value;
         });
+    }
+
+    function vSec() {
+        var dt = new Date();
+        var secs = dt.getSeconds() + (60 * dt.getMinutes());
+        return secs;
     }
 
     serialize = function(obj, prefix) {
@@ -166,66 +172,50 @@ javascript:
         }
 
         function relatedPrimaryTag() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/related-tag.min.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/related-tag.min.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function weatherWidget() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function insertInform() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/vid_embed-src.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/vid_embed-src.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function insertCX() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/cx-src.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/cx-src.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function insertCrime() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/crime.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/crime.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function insertHomicides() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/homicidereport.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/homicidereport.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function insertClosures() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather-closures.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather-closures.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
         function insertPromos() {
-            var dt = new Date();
-            var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/inarticlepromo-src.js?v='+secs);
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/inarticlepromo-src.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
@@ -979,11 +969,9 @@ javascript:
     }
 
     if (!document.body.contains(document.getElementById('auto-producer'))) {
-        var dt = new Date();
-        var secs = dt.getSeconds() + (60 * dt.getMinutes());
         var APstyle = window.document.createElement('link');
         APstyle.setAttribute('rel','stylesheet');
-        APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css?v='+secs);
+        APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css?v='+vSec());
         window.document.body.appendChild(APstyle);
         var s2 = window.document.createElement('script');
         s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');

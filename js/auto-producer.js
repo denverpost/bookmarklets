@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.8.0';
+    var APversion = ' v0.8.1';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -473,7 +473,7 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO🤖PRODUCER™. Here\'s a list of helper functions I can perform for you:</p>';
+            var output = '<p style="margin-bottom:0;">Welcome to The Denver Post AUTO🤖PRODUCER™ for Articles. Here\'s a list of helper functions I can perform for you:</p>';
             output += '<div style="width:33%;float:left;display:inline-block;">';
             output += '<ul>';
             var i = 0;
@@ -514,9 +514,10 @@ javascript:
             output += 'Insert Homicide Report?<span style="color:magenta;font-weight:bold;">*</span> <input type="checkbox" id="homicideSelect" tabindex="4" /></p>';
             output += '</div>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
-            output += '<p style="font-size:85%;color:darkred;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
-            output += '<p style="font-size:85%;color:darkblue;">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
-            output += '<p style="font-size:85%;color:magenta;">Overrides the Crime Map if inserting with the "Crime Story" option.</p>';
+            output += '<p style="font-size:85%;color:darkred;margin-bottom:0;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
+            output += '<p style="font-size:85%;color:darkblue;margin-bottom:0;">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
+            output += '<p style="font-size:85%;color:magenta;margin-bottom:0;">Overrides the Crime Map if inserting with the "Crime Story" option.</p>';
+            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
             return output;
         }
 
@@ -704,6 +705,7 @@ javascript:
             output += '</p>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="2"></p>';
+            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
             return output;
         }
 
@@ -809,6 +811,7 @@ javascript:
             output += '</div>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
+            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
             return output;
         }
 
@@ -919,6 +922,7 @@ javascript:
             output += '</div>';
             output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
+            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
             return output;
         }
 

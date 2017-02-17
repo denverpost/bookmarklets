@@ -31,7 +31,7 @@ javascript:
         }
         return str.join("&");
     };
-
+    
     function autoProducerPost(randomGif) {
         function captureSections() {
             var output = [];
@@ -229,7 +229,7 @@ javascript:
             document.body.appendChild(bookmarkletSource);
         }
 
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">I can do that!</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
         var appleNewsSections = {
@@ -670,7 +670,7 @@ javascript:
             }
         };
 
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Content Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -751,7 +751,7 @@ javascript:
         var options = {
             '1': {
                 'title': 'Associated Press',
-                'search-term': 'associated press',
+                'search-term': 'AP',
                 'default': ' checked',
             },
             '2': {
@@ -765,7 +765,7 @@ javascript:
                 'default': false,
             }
         };
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Wire Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -869,7 +869,7 @@ javascript:
                 'default': ' checked',
             }
         };
-        var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for the freakin\' Article Search...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</strong></h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p ><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -896,7 +896,7 @@ javascript:
             output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
             output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
             output += '</div>';
-            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+            output += '<div class="clear"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
             output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
             return output;
@@ -987,7 +987,7 @@ javascript:
         window.document.body.appendChild(APdiv);
         var APstyle = window.document.createElement('link');
         APstyle.setAttribute('type','text/css');
-        APstyle.setAttribute('rel','https://extras.denverpost.com/app/bookmarklet/auto-producer.css');
+        APstyle.setAttribute('rel','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css');
         window.document.body.appendChild(APstyle);
     }
 

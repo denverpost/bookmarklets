@@ -139,8 +139,11 @@ javascript:
             if ((typeof options['related'] != 'undefined' && options['related'] == true) || related == true) {
                 relatedPrimaryTag();
             }
-            if (typeof options['title'] == 'Weather Story') {
+            if (options['title'] == 'Weather Story') {
                 weatherWidget();
+            }
+            if (options['title'] == 'Crime Story') {
+                insertCrime();
             }
             if (typeof options['check-sections'] != 'undefined') {
                 checkSections(options['check-sections']);
@@ -169,6 +172,54 @@ javascript:
             var secs = dt.getSeconds() + (60 * dt.getMinutes());
             var bookmarkletSource = document.createElement('script');
             bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function insertInform() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/vid_embed-src.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function insertCX() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/cx-src.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function insertCrime() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/crime.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function insertHomicides() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/homicidereport.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function insertClosures() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather-closures.js?v='+secs);
+            document.body.appendChild(bookmarkletSource);
+        }
+
+        function insertPromos() {
+            var dt = new Date();
+            var secs = dt.getSeconds() + (60 * dt.getMinutes());
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/inarticlepromo-src.js?v='+secs);
             document.body.appendChild(bookmarkletSource);
         }
 
@@ -482,15 +533,63 @@ javascript:
             buttons: [
                 {
                     id: "btnCapture",
-                    text: "Capture New",
+                    text: "CAPTURE",
                     click: function () {
                         captureNew();
                     },
-                    tabindex: 10
+                    tabindex: 17
+                },
+                {
+                    id: "btnClosures",
+                    text: "+Closures",
+                    click: function () {
+                        insertClosures();
+                    },
+                    tabindex: 16
+                },
+                {
+                    id: "btnHomicides",
+                    text: "+Homicides",
+                    click: function () {
+                        insertHomicides();
+                    },
+                    tabindex: 15
+                },
+                {
+                    id: "btnCrime",
+                    text: "+Crime Map",
+                    click: function () {
+                        insertCrime();
+                    },
+                    tabindex: 15
+                },
+                {
+                    id: "btnCX",
+                    text: "+CX",
+                    click: function () {
+                        insertCX();
+                    },
+                    tabindex: 14
+                },
+                {
+                    id: "btnInform",
+                    text: "+Inform",
+                    click: function () {
+                        insertInform();
+                    },
+                    tabindex: 13
+                },
+                {
+                    id: "btnPromos",
+                    text: "+Promos",
+                    click: function () {
+                        insertPromos();
+                    },
+                    tabindex: 12
                 },
                 {
                     id: "btnCancel",
-                    text: "Cancel",
+                    text: "CANCEL",
                     click: function(){
                         jQuery(this).dialog('close');
                     },
@@ -502,7 +601,7 @@ javascript:
                     click: function () {
                         processAPform();
                     },
-                    tabindex: 12
+                    tabindex: 10
                 }
             ],
             title: 'Denver Post AUTO🤖PRODUCER™' + APversion,

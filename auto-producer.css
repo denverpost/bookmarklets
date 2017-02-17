@@ -1,0 +1,15 @@
+#auto-producer .ui-dialog-titlebar-close {
+	display:none!important;
+}
+#auto-producer .ui-dialog {
+	z-index:99999999!important;
+	top:5%!important;
+}
+#auto-producer .ui-widget-content {
+	background:#fff!important;
+}
+#auto-producer .ui-widget-header {
+	border:1px solid #aaa!important;
+	color:#222!important;
+	background:#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x!important;
+}

@@ -454,9 +454,6 @@ javascript:
         }
 
         function modifyDialog() {
-            jQuery(".ui-dialog-titlebar-close").hide();
-            jQuery(".ui-dialog").css('z-index','99999999');
-            jQuery(".ui-dialog").css('top','10%');
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -676,13 +673,6 @@ javascript:
         var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Content Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
 
         function modifyDialog() {
-            jQuery(".ui-dialog-titlebar-close").hide();
-            jQuery(".ui-widget-content").css('background','#fff');
-            jQuery(".ui-widget-header").css('border','1px solid #aaa');
-            jQuery(".ui-widget-header").css('color','#222');
-            jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
-            jQuery(".ui-dialog").css('z-index','99999999');
-            jQuery(".ui-dialog").css('top','10%');
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -778,13 +768,6 @@ javascript:
         var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for freakin\' Wire Hub...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
 
         function modifyDialog() {
-            jQuery(".ui-dialog-titlebar-close").hide();
-            jQuery(".ui-widget-content").css('background','#fff');
-            jQuery(".ui-widget-header").css('border','1px solid #aaa');
-            jQuery(".ui-widget-header").css('color','#222');
-            jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
-            jQuery(".ui-dialog").css('z-index','99999999');
-            jQuery(".ui-dialog").css('top','10%');
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -889,20 +872,13 @@ javascript:
         var APsuccessText = '<h3 style="text-align:center;"><strong style="color:#067a51;">Waiting for the freakin\' Article Search...</strong></h3><p style="text-align:center">Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p style="text-align:center;"><img src="' + randomGif + '" style="margin:1em auto;width:60%;" id="waiting-gif" /></p><p style="text-align:center;"><input name="readonly" value="' + randomGif + '" readonly style="width:60%;background:#efefef;border:1px solid #d5d5d5;text-align:center;" /></p>';
 
         function modifyDialog() {
-            jQuery(".ui-dialog-titlebar-close").hide();
-            jQuery(".ui-widget-content").css('background','#fff');
-            jQuery(".ui-widget-header").css('border','1px solid #aaa');
-            jQuery(".ui-widget-header").css('color','#222');
-            jQuery(".ui-widget-header").css('background','#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x');
-            jQuery(".ui-dialog").css('z-index','99999999');
-            jQuery(".ui-dialog").css('top','10%');
-            /*jQuery('#auto-producer').keydown(function (event) {
+            jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
                     return false;
                 }
             });
-            jQuery("input[name=searchname]:checked").focus();*/
+            jQuery("input[name=searchlength]:checked").focus();
         }
 
         function APdialogText(options){
@@ -1009,6 +985,10 @@ javascript:
         var APdiv = window.document.createElement('div');
         APdiv.setAttribute('id','auto-producer');
         window.document.body.appendChild(APdiv);
+        var APstyle = window.document.createElement('link');
+        APstyle.setAttribute('type','text/css');
+        APstyle.setAttribute('rel','https://extras.denverpost.com/app/bookmarklet/auto-producer.css');
+        window.document.body.appendChild(APstyle);
     }
 
     var UILoaded = setInterval(function() {

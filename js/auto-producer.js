@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.8.3';
+    var APversion = ' v0.8.4';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -431,7 +431,67 @@ javascript:
                 'help-primary-tag': 'YourHub business profile',
                 'help-sections': 'Latest News, YourHub, Business',
                 'help-primary-section': 'YourHub',
-            }
+            },
+            '71': {
+                'title': 'Broncos Story',
+                'check-sections': ['48','94','97'],
+                'add-tags': ['More Broncos News'],
+                'primary-section': '97',
+                'primary-tag': '7681',
+                'apple-news': ['broncos','sports'],
+                'related': true,
+                'help-primary-tag': 'More Broncos News',
+                'help-sections': 'Latest News, Sports, Denver Broncos',
+                'help-primary-section': 'Denver Broncos',
+            },
+            '72': {
+                'title': 'Rockies Story',
+                'check-sections': ['48','94','114'],
+                'add-tags': ['More Rockies News'],
+                'primary-section': '114',
+                'primary-tag': '9321',
+                'apple-news': ['sports'],
+                'related': true,
+                'help-primary-tag': 'More Rockies News',
+                'help-sections': 'Latest News, Sports, Colorado Rockies',
+                'help-primary-section': 'Colorado Rockies',
+            },
+            '73': {
+                'title': 'Nuggets Story',
+                'check-sections': ['48','94','109'],
+                'add-tags': ['More Nuggets News'],
+                'primary-section': '109',
+                'primary-tag': '9690',
+                'apple-news': ['sports'],
+                'related': true,
+                'help-primary-tag': 'More Nuggets News',
+                'help-sections': 'Latest News, Sports, Denver Nuggets',
+                'help-primary-section': 'Denver Nuggets',
+            },
+            '74': {
+                'title': 'Avalanche Story',
+                'check-sections': ['48','94','95'],
+                'add-tags': ['More Avalanche News'],
+                'primary-section': '95',
+                'primary-tag': '9684',
+                'apple-news': ['sports'],
+                'related': true,
+                'help-primary-tag': 'More Avalanche News',
+                'help-sections': 'Latest News, Sports, Colorado Avalanche',
+                'help-primary-section': 'Colorado Avalanche',
+            },
+            '75': {
+                'title': 'Rapids Story',
+                'check-sections': ['48','94','113','6574'],
+                'add-tags': ['More Rapids news'],
+                'primary-section': '113',
+                'primary-tag': '11853',
+                'apple-news': ['sports'],
+                'related': true,
+                'help-primary-tag': 'More Rapids news',
+                'help-sections': 'Latest News, Sports, Colorado Rapids, Soccer',
+                'help-primary-section': 'Colorado Rapids',
+            },
         };
 
         var optsLength = Object.keys(options).length;

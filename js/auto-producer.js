@@ -470,13 +470,13 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p style="margin-bottom:0;">Welcome to The Denver Post AUTO🤖PRODUCER™ for Articles. Here\'s a list of helper functions I can perform for you:</p>';
-            output += '<div style="width:33%;float:left;display:inline-block;">';
+            var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖PRODUCER™ for Articles. Here\'s a list of helper functions I can perform for you:</p>';
+            output += '<div class="one-third">';
             output += '<ul>';
             var i = 0;
             var nobreak = true;
             for(var object in options){
-                var relStar = (options[object]['related']) ? ' <span style="color:darkred;font-weight:bold;">*</span>' : ' ';
+                var relStar = (options[object]['related']) ? ' <span class="red-star">*</span>' : ' ';
                 var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
                 tooltipString += '<p>Sets <strong>Primary Tag</strong> to:<br />' + options[object]['help-primary-tag'] + '</p>';
                 tooltipString += '<p>Selects these <strong>Sections</strong>:<br />' + options[object]['help-sections'] + '</p>';
@@ -486,35 +486,35 @@ javascript:
                     output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
                 }
                 if (i > (optsLength / 2) && i > 10 && nobreak == true) {
-                    output += '</ul></div><div style="width:33%;float:left;display:inline-block;"><ul>';
+                    output += '</ul></div><div class="one-third"><ul>';
                     nobreak = false;
                 }
                 i++;
             }
             output += '</ul>';
             output += '</div>';
-            output += '<div style="width:33%;float:left;display:inline-block;">';
+            output += '<div class="one-third">';
             output += '<div class="tipGraf" style="display:none;"></div>';
             output += '</div>';
-            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
-            output += '<div style="width:33%;float:left;display:inline-block;">';
+            output += '<div class="clear"></div>';
+            output += '<div class="one-third">';
             output += '<p>Enter selection: <input type="text" id="APoptionSelect" tabindex="1"></p>';
             output += '</div>';
-            output += '<div style="width:33%;float:left;display:inline-block;">';
-            output += '<p>Insert Related by Primary Tag?<span style="color:darkred;font-weight:bold;">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
-            output += 'Change author to AP?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /><br />';
-            output += 'Change author to WaPo?<span style="color:darkblue;font-weight:bold;">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
+            output += '<div class="one-third">';
+            output += '<p>Insert Related by Primary Tag? <span class="red-star">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
+            output += 'Change author to AP? <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /><br />';
+            output += 'Change author to WaPo? <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
             output += '</div>';
-            output += '<div style="width:33%;float:left;display:inline-block;">';
+            output += '<div class="one-third">';
             output += '<p>Insert in-article Promos? <input type="checkbox" id="promoSelect" tabindex="2" /><br />';
             output += 'Insert Inform video? <input type="checkbox" id="informSelect" tabindex="3" /><br />';
-            output += 'Insert Homicide Report?<span style="color:magenta;font-weight:bold;">*</span> <input type="checkbox" id="homicideSelect" tabindex="4" /></p>';
+            output += 'Insert Homicide Report? <span class="mag-star">*</span> <input type="checkbox" id="homicideSelect" tabindex="4" /></p>';
             output += '</div>';
-            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
-            output += '<p style="font-size:85%;color:darkred;margin-bottom:0;">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
-            output += '<p style="font-size:85%;color:darkblue;margin-bottom:0;">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
-            output += '<p style="font-size:85%;color:magenta;margin-bottom:0;">Overrides the Crime Map if inserting with the "Crime Story" option.</p>';
-            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
+            output += '<div class="clear"></div>';
+            output += '<p class="red-small">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
+            output += '<p class="blue-small">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
+            output += '<p class="mag-small">Overrides the Crime Map if inserting with the "Crime Story" option.</p>';
+            output += '<div class="ap-help"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div></div>';
             return output;
         }
 
@@ -684,7 +684,7 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO🤖SEARCHER™ for CONTENT HUB. Here\'s what I can do for you:</p>';
+            var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖SEARCHER™ for CONTENT HUB. Here\'s what I can do for you:</p>';
             output += '<p>';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
@@ -693,9 +693,9 @@ javascript:
                 }
             }
             output += '</p>';
-            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+            output += '<div class="clear"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="2"></p>';
-            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
+            output += '<div class="ap-help"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div></div>';
             return output;
         }
 
@@ -778,8 +778,8 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO🤖SEARCHER™ for WIRE HUB. Here\'s what I can do for you:</p>';
-            output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a news source:</strong></p>';
+            var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖SEARCHER™ for WIRE HUB. Here\'s what I can do for you:</p>';
+            output += '<div class="one-half"><p><strong>Select a news source:</strong></p>';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
                     var tabind = (options[object]['default']) ? ' tabindex="1"' : ' tabindex="-1"';
@@ -787,14 +787,14 @@ javascript:
                 }
             }
             output += '</div>';
-            output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a date range:</strong></p>';
+            output += '<div class="one-half"><p><strong>Select a date range:</strong></p>';
             output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
             output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
             output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
             output += '</div>';
-            output += '<div style="width:100%;height:0;display:block;clear:both;"></div>';
+            output += '<div class="clear"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
-            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
+            output += '<div class="ap-help"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div></div>';
             return output;
         }
 
@@ -882,8 +882,8 @@ javascript:
         }
 
         function APdialogText(options){
-            var output = '<p>Welcome to The Denver Post AUTO🤖SEARCHER™ for ARTICLES. Here\'s what I can do for you:</p>';
-            /* output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a news source:</strong></p>';
+            var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖SEARCHER™ for ARTICLES. Here\'s what I can do for you:</p>';
+            /* output += '<div class="one-half"><p><strong>Select a news source:</strong></p>';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
                     var tabind = (options[object]['default']) ? ' tabindex="1"' : ' tabindex="-1"';
@@ -891,14 +891,14 @@ javascript:
                 }
             }
             output += '</div>'; */
-            output += '<div style="width:50%;float:left;display:inline-block;"><p><strong>Select a date range:</strong></p>';
+            output += '<div class="one-half"><p><strong>Select a date range:</strong></p>';
             output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
             output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
             output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
             output += '</div>';
             output += '<div class="clear"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
-            output += '<div style="text-align:right;font-size:85%;margin-bottom:0;"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div>';
+            output += '<div class="ap-help"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div></div>';
             return output;
         }
 

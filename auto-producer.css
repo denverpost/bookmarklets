@@ -1,5 +1,5 @@
-.ui-dialog-titlebar-close {
-	display:none;
+.ui-button.ui-dialog-titlebar-close {
+	display:none!important;
 }
 .ui-dialog {
 	z-index:99999999;

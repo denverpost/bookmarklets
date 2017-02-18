@@ -14,7 +14,7 @@ function getTheContent(){
 	return content.split('\n\n');
 }
 var grafs = getTheContent();
-badGraf = grafs.indexOf("&mdash;&mdash;&mdash;");
+badGraf = ( grafs.indexOf("&mdash;&mdash;&mdash;") != -1) ? grafs.indexOf("&mdash;&mdash;&mdash;") : grafs.length;
 grafs.length = badGraf;
 var markup = '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]';
 var len = grafs.length;

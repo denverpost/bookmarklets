@@ -219,7 +219,7 @@ javascript:
             document.body.appendChild(bookmarkletSource);
         }
 
-        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
+        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
         var appleNewsSections = {
@@ -900,7 +900,7 @@ javascript:
             }
         };
 
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -995,7 +995,7 @@ javascript:
                 'default': false,
             }
         };
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1018,9 +1018,11 @@ javascript:
             }
             output += '</div>';
             output += '<div class="one-half"><p><strong>Select a date range:</strong></p>';
+            output += '<input type="radio" name="searchlength" value="0" tabindex="-1" /> No date range<br />';
             output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
             output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
             output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
+            output += '<input type="radio" name="searchlength" value="30" tabindex="-1" /> 30 days<br />';
             output += '</div>';
             output += '<div class="clear"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
@@ -1029,15 +1031,17 @@ javascript:
         }
 
         function fillDates(days) {
-            var now = new Date();
-            var backup = now - 1000 * 60 * 60 * 24 * days;
-            var then = new Date(backup);
-            document.getElementById('dfm_hub_start_mm').value = padNum(then.getMonth() + 1);
-            document.getElementById('dfm_hub_start_dd').value = padNum(then.getDate());
-            document.getElementById('dfm_hub_start_yyyy').value = then.getFullYear();
-            document.getElementById('dfm_hub_end_mm').value = padNum(now.getMonth() + 1);
-            document.getElementById('dfm_hub_end_dd').value = padNum(now.getDate());
-            document.getElementById('dfm_hub_end_yyyy').value = now.getFullYear();
+            if (days != 0) {
+                var now = new Date();
+                var backup = now - 1000 * 60 * 60 * 24 * days;
+                var then = new Date(backup);
+                document.getElementById('dfm_hub_start_mm').value = padNum(then.getMonth() + 1);
+                document.getElementById('dfm_hub_start_dd').value = padNum(then.getDate());
+                document.getElementById('dfm_hub_start_yyyy').value = then.getFullYear();
+                document.getElementById('dfm_hub_end_mm').value = padNum(now.getMonth() + 1);
+                document.getElementById('dfm_hub_end_dd').value = padNum(now.getDate());
+                document.getElementById('dfm_hub_end_yyyy').value = now.getFullYear();
+            }
         }
 
         function processAPform() {
@@ -1099,7 +1103,7 @@ javascript:
                 'default': ' checked',
             }
         };
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</strong></h3><p>Here\'s a random GIF while you wait...blame Giphy if it\'s ... bad.</p><p ><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</strong></h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p ><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1122,9 +1126,11 @@ javascript:
             }
             output += '</div>'; */
             output += '<div class="one-half"><p><strong>Select a date range:</strong></p>';
+            output += '<input type="radio" name="searchlength" value="0" tabindex="-1" /> No date range<br />';
             output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
             output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
             output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
+            output += '<input type="radio" name="searchlength" value="30" tabindex="-1" /> 30 days<br />';
             output += '</div>';
             output += '<div class="clear"></div>';
             output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';

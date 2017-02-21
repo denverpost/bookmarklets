@@ -1,11 +1,14 @@
-.ui-button.ui-dialog-titlebar-close {
+.ui-button.ui-dialog-titlebar-close,
+.ui-dialog[aria-describedby="auto-producer"] .ui-button.ui-dialog-titlebar-close {
 	display:none!important;
 }
-.ui-dialog {
+.ui-dialog,
+.ui-dialog[aria-describedby="auto-producer"] {
 	z-index:99999999;
 	top:5%;
 }
-#auto-producer .ui-widget-content {
+#auto-producer .ui-widget-content,
+.ui-dialog[aria-describedby="auto-producer"] .ui-widget-content {
 	background:#fff;
 }
 #auto-producer .ui-widget-header {

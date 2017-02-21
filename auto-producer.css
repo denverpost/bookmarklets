@@ -11,7 +11,8 @@
 .ui-dialog[aria-describedby="auto-producer"] .ui-widget-content {
 	background:#fff;
 }
-#auto-producer .ui-widget-header {
+#auto-producer .ui-widget-header,
+.ui-dialog[aria-describedby="auto-producer"] .ui-widget-header {
 	border:1px solid #aaa;
 	color:#222;
 	background:#ccc url(/wp-content/plugins/fieldmanager/css/jquery-ui/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;

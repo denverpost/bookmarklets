@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.8.4';
+    var APversion = ' v0.8.5';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -263,6 +263,18 @@ javascript:
                 'help-primary-tag': '',
                 'help-sections': 'Latest News, News, Nation and World News',
                 'help-primary-section': 'Nation and World News',
+            },
+            '11': {
+                'title': 'Obamacare',
+                'check-sections': ['48','15','21','39','44','75','81'],
+                'add-tags': ['Obamacare','health insurance'],
+                'primary-section': '21',
+                'primary-tag': '963',
+                'apple-news': ['politics'],
+                'related': true,
+                'help-primary-tag': 'Obamacare',
+                'help-sections': 'Latest News, Business, Healthcare, News, Health, Politics, National Politics',
+                'help-primary-section': 'Healthcare',
             },
             '20': {
                 'title': 'Colorado News',

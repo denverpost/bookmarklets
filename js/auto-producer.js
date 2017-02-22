@@ -1260,7 +1260,8 @@ javascript:
                 var credit = creditParent[0];
                 var re = /\((.*)\)/;
                 var photoCred = captionText.match(re)[1];
-                var captionTextNew = captionText.replace('('+photoCred+')','').trim();
+                var captionTextNew = captionText.replace('('+photoCred+')','').replace(', Colorado.','.').trim();
+                captionTextNew = captionTextNew.replace(' January ','Jan.').replace(' February ','Feb.').replace(' August ','Aug.').replace(' September ','Sept.').replace(' October ','Oct.').replace(' Novermber ','Nov.').replace(' December ','Dec.');
                 photoCredNew = photoCred.replace('Photo by ','').replace('/',', ');
                 credit.value = photoCredNew;
                 var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));

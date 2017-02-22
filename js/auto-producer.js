@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.8.5';
+    var APversion = ' v0.8.6';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -78,7 +78,15 @@ javascript:
 
         function captureNew() {
             var optionObject = {};
-            var newTitle = prompt('What should we call this option?\n\n','');
+            loop:
+            while(true) {
+                var newTitle = prompt('What should we call this option?\n\n','');
+                if (newTitle != '' && newTitle != null) {
+                    break loop;
+                } else {
+                    alert('You have to enter name, dude.');
+                }
+            }
             var newRelated = confirm('Should Related by Primary Tag be added to stories automatically?');
             optionObject['title'] = newTitle;
             optionObject['check-sections'] = captureSections();
@@ -92,9 +100,15 @@ javascript:
             optionObject['help-sections'] = captureSectionsHelp();
             var secString = '#'+sectionSelect+' option[value="'+optionObject['primary-section']+'"]';
             optionObject['help-primary-section'] = jQuery(secString).text();
-            var i = document.createElement("img");
-            i.style.cssText = 'display:none;';
-            i.src = 'http://www.denverpostplus.com/app/autoproducer/ap-new.php?'+serialize(optionObject);
+            if (newTitle != '' && newTitle != null) {
+                if (confirm('You\'re about to submit a new option called ' + newTitle + '. Are you sure?')) {
+                    var i = document.createElement("img");
+                    i.style.cssText = 'display:none;';
+                    i.src = 'http://www.denverpostplus.com/app/autoproducer/ap-new.php?'+serialize(optionObject);
+                }
+            } else {
+                alert('Sorry, something went wrong. Try again. \n\n\nOh, and next time -- don\'t do whatever you did that broke it this time.');
+            }
         }
 
         function checkSections(tags){

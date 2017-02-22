@@ -1,5 +1,6 @@
 function getTheContent(){
 	var content = jQuery('#content').text();
+	content.replace('(AP) —','--');
 	content = content.replace(new RegExp("<p>", 'g'),"\n\n");
 	content = content.replace(new RegExp("</p>", 'g'),"\n\n");
 	content = content.replace(new RegExp("  ", 'g')," ");

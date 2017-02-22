@@ -150,6 +150,13 @@ javascript:
         }
 
         function trumpThatBitch(options,args) {
+            var content = jQuery('#content').text();
+            content = content.replace('(AP) —','--');
+            jQuery('#content').text(content);
+            var excerpt = jQuery('#excerpt').text();
+            var excerptDateline = excerpt.substring(0,excerpt.indexOf('(AP) —'));
+            var excerptTextNew = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
+            jQuery('#excerpt').text(excerptTextNew);
             if (typeof args['WaPoauthorSelect'] != 'undefined' && args['WaPoauthorSelect'] == true) {
                 addWaPoauthor();
             }

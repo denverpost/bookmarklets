@@ -171,6 +171,9 @@ javascript:
             if (args['promoSelect']) {
                 insertPromos();
             }
+            if (args['title'] == 'YourHub Crime Blotter') {
+                document.getElementById('fm-mason_post_settings-0-schema-0-featured_image_settings-0').value = 'hide';
+            }
             if (typeof options['check-sections'] != 'undefined') {
                 checkSections(options['check-sections']);
             }

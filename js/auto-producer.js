@@ -1,4 +1,3 @@
-javascript:
 (function() {
     var APversion = ' v0.9.3';
     function HTMLescape(html){
@@ -36,7 +35,7 @@ javascript:
             }
         }
         return str.join("&");
-    };
+    }
     
     function autoProducerPost(randomGif) {
         function captureSections() {
@@ -90,10 +89,11 @@ javascript:
 
         function captureNew() {
             var optionObject = {};
+            var newTitle = null;
             loop:
             while(true) {
-                var newTitle = prompt('What should we call this option?\n\n','');
-                if (newTitle != '' && newTitle != null) {
+                newTitle = prompt('What should we call this option?\n\n','');
+                if (newTitle !== '' && newTitle !== null) {
                     break loop;
                 } else {
                     alert('You have to enter name, dude.');
@@ -113,7 +113,7 @@ javascript:
             optionObject['help-sections'] = captureSectionsHelp();
             var secString = '#'+sectionSelect+' option[value="'+optionObject['primary-section']+'"]';
             optionObject['help-primary-section'] = jQuery(secString).text();
-            if (newTitle != '' && newTitle != null) {
+            if (newTitle !== '' && newTitle !== null) {
                 if (confirm('You\'re about to submit a new option called ' + newTitle + '. Are you sure?')) {
                     var i = document.createElement("img");
                     i.style.cssText = 'display:none;';
@@ -137,10 +137,10 @@ javascript:
         }
 
         function primaryOptions(sectionPrimary,tagPrimary){
-            if ( (typeof sectionPrimary != 'undefined' && sectionPrimary != '') && document.getElementById(sectionSelect).value == '' )  {
+            if ( (typeof sectionPrimary != 'undefined' && sectionPrimary !== '') && document.getElementById(sectionSelect).value === '' )  {
                 document.getElementById(sectionSelect).value = sectionPrimary;
             }
-            if ( (typeof tagPrimary != 'undefined' && tagPrimary != '') && document.getElementById(tagSelect).value == '' ) {
+            if ( (typeof tagPrimary != 'undefined' && tagPrimary !== '') && document.getElementById(tagSelect).value === '' ) {
                 document.getElementById(tagSelect).value = tagPrimary;
             }
         }
@@ -148,14 +148,14 @@ javascript:
         function addTag(newTags){
             for(var i=0,len=newTags.length;i<len;i++){
                 document.getElementById('new-tag-post_tag').value = newTags[i];
-                var button = jQuery('#post_tag .ajaxtag input.button.tagadd').click();
+                jQuery('#post_tag .ajaxtag input.button.tagadd').click();
             }
         }
 
         function addFeatures(newFeatures){
             for(var i=0,len=newFeatures.length;i<len;i++){
                 document.getElementById('new-tag-feature').value = newFeatures[i];
-                var button = jQuery('#feature .ajaxtag input.button.tagadd').click();
+                jQuery('#feature .ajaxtag input.button.tagadd').click();
             }
         }
 
@@ -177,13 +177,13 @@ javascript:
             var excerptDateline = excerpt.substring(0,excerpt.indexOf('(AP) —'));
             var excerptTextNew = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
             jQuery('#excerpt').text(excerptTextNew);
-            if (typeof args['WaPoauthorSelect'] != 'undefined' && args['WaPoauthorSelect'] == true) {
+            if (typeof args['WaPoauthorSelect'] != 'undefined' && args['WaPoauthorSelect'] === true) {
                 addWaPoauthor();
             }
-            if (typeof args['APauthorSelect'] != 'undefined' && args['APauthorSelect'] == true) {
+            if (typeof args['APauthorSelect'] != 'undefined' && args['APauthorSelect'] === true) {
                 addAPauthor();
             }
-            if ((typeof options['related'] != 'undefined' && options['related'] == true) || args['selectRelated'] == true) {
+            if ((typeof options['related'] != 'undefined' && options['related'] === true) || args['selectRelated'] === true) {
                 relatedPrimaryTag();
             }
             if (options['title'] == 'Weather Story') {
@@ -799,8 +799,8 @@ javascript:
             output += '<div class="one-quarter">';
             output += '<ul>';
             var optsLength = Object.keys(options).length;
-            var oneThird = Math.ceil(optsLength *.33);
-            var twoThird = Math.ceil(optsLength *.66);
+            var oneThird = Math.ceil(optsLength * 0.33);
+            var twoThird = Math.ceil(optsLength * 0.66);
             var i = 0;
             for(var object in options){
                 var relStar = (options[object]['related']) ? ' <span class="red-star">*</span>' : ' ';
@@ -860,7 +860,7 @@ javascript:
                 setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);
             } else {
                 var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');
-                if (again == false) {
+                if (again === false) {
                     jQuery('#auto-producer').dialog('close');
                 } else {
                     return false;
@@ -1029,7 +1029,7 @@ javascript:
         function processAPform() {
             var selectFunction = jQuery('#APoptionSelect').val();
             var selectSearch = jQuery("input[name=searchname]:checked").val();
-            var searchString = (selectFunction != '') ? selectSearch + ' ' + selectFunction : selectSearch;
+            var searchString = (selectFunction !== '') ? selectSearch + ' ' + selectFunction : selectSearch;
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);
             var imageLoad = setInterval(function(){
@@ -1128,7 +1128,7 @@ javascript:
         }
 
         function fillDates(days) {
-            if (days != 0) {
+            if (days !== 0) {
                 var now = new Date();
                 var backup = now - 1000 * 60 * 60 * 24 * days;
                 var then = new Date(backup);
@@ -1145,7 +1145,7 @@ javascript:
             var searchLength = jQuery('input[name=searchlength]:checked').val();
             var selectFunction = jQuery('#APoptionSelect').val();
             var selectSearch = jQuery("input[name=searchname]:checked").val();
-            var searchString = (selectFunction != '') ? selectSearch + ' ' + selectFunction : selectSearch;
+            var searchString = (selectFunction !== '') ? selectSearch + ' ' + selectFunction : selectSearch;
             fillDates(searchLength);
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);
@@ -1311,12 +1311,10 @@ javascript:
     }
 
     var loc = window.location.href;
-    if (loc.indexOf('post.php') > -1) {
-        if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/photo-cleanup.min.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
+    if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
+        var bookmarkletSource = document.createElement('script');
+        bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/photo-cleanup.min.js?v='+vSec());
+        document.body.appendChild(bookmarkletSource);
     } else {
         if (!document.body.contains(document.getElementById('auto-producer'))) {
             var APstyle = window.document.createElement('link');
@@ -1335,7 +1333,7 @@ javascript:
             if (typeof jQuery.ui.dialog != 'undefined') {
                 clearInterval(UILoaded);
                 var randomGifin = '';
-                var randomGiphy = jQuery.ajax({
+                jQuery.ajax({
                     url:'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
                     type: 'GET',
                     success: function(response) {

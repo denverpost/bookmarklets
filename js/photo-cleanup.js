@@ -1,4 +1,3 @@
-javascript:
 (function() {
 	var locate = window.location.href;
 	function trim_words(theString, numWords) {

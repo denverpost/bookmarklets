@@ -17,12 +17,16 @@
     var captionText = caption.textContent;
     description.value = captionText;
     var creditParent = document.querySelectorAll('.compat-field-credit td.field input[type="text"]');
-    var credit = creditParent[0];
+    var credit = (creditParent[0] != 'undefined') ? creditParent[0] : false;
     var re = /\(([^\(\)]{4,})\)/;
     var photoCred = '';
     var captionTextNew = '';
-	if (document.body.classList.contains('modal-open')) {
-        photoCred = captionText.match(re)[1];
+	if (locate.indexOf('upload.php') > -1) {
+        photoCred = (re.test(captionText)) ? '('+captionText.match(re)[1]+')' : '';
+        captionTextNew = captionText.replace(photoCred,'').replace(', Colorado.','.').trim();
+        captionTextNew = abbrevMonths(captionTextNew);
+    } else if (document.body.classList.contains('modal-open')) {
+        photoCred = (re.test(captionText)) ? captionText.match(re)[1] : '';
         captionTextNew = captionText.replace('('+photoCred+')','').replace(', Colorado.','.').trim();
         captionTextNew = abbrevMonths(captionTextNew);
         var photoCredNew = '';
@@ -35,18 +39,17 @@
         } else if (photoCred.match(/Photo by/)) {
         	photoCredNew = photoCred.replace('Photo by ','').replace('/',', ');
         }
-        credit.value = photoCredNew;
-    } else if (locate.indexOf('upload.php') > -1) {
-        photoCred = '('+captionText.match(re)[1]+')';
-        captionTextNew = captionText.replace(photoCred,'').replace(', Colorado.','.').trim();
-        captionTextNew = abbrevMonths(captionTextNew);
+        if (credit !== false) {
+            credit.value = photoCredNew;
+        }
     }
     var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));
     if (dateline.length === 0 || /[a-z]/.test(dateline) === false) {
         captionTextNew = captionTextNew.replace(dateline,'').replace(':','').trim();
         caption.value = captionTextNew;
     }
-    var altText = trim_words(captionTextNew,6) + ' ...';
+    var elipsis = (captionTextNew.length <= 6) ? ' ...' : '';
+    var altText = trim_words(captionTextNew,6) + elipsis;
     alt.value = altText;
     var titleParent = document.querySelectorAll('[data-setting="title"] input[type="text"]');
     var title = titleParent[0];

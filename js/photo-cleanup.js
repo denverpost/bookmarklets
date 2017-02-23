@@ -55,4 +55,4 @@
     	title.value = titleText.replace('APTOPIX ','');
     }
     altParent.focus;
-});
+}());

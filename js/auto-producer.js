@@ -1,6 +1,6 @@
 javascript:
 (function() {
-    var APversion = ' v0.9.2';
+    var APversion = ' v0.9.3';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -771,8 +771,6 @@ javascript:
             },
         };
 
-        var optsLength = Object.keys(options).length;
-
         var validOptions = [];
         for(var object in options){
             if (options.hasOwnProperty(object)) {
@@ -800,8 +798,10 @@ javascript:
             var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖PRODUCER™ for Articles. Here\'s a list of helper functions I can perform for you:</p>';
             output += '<div class="one-quarter">';
             output += '<ul>';
+            var optsLength = Object.keys(options).length;
+            var oneThird = Math.ceil(optsLength *.33);
+            var twoThird = Math.ceil(optsLength *.66);
             var i = 0;
-            var nobreak = true;
             for(var object in options){
                 var relStar = (options[object]['related']) ? ' <span class="red-star">*</span>' : ' ';
                 var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
@@ -813,9 +813,8 @@ javascript:
                 if (options.hasOwnProperty(object)) {
                     output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
                 }
-                if (i >= (optsLength / 3) && i > 10 && nobreak == true) {
+                if (i == oneThird || i == twoThird) {
                     output += '</ul></div><div class="one-quarter"><ul>';
-                    nobreak = false;
                 }
                 i++;
             }
@@ -1302,67 +1301,13 @@ javascript:
     function autoProducerPick(randomGif) {
         var loc = window.location.href;
         if (loc.indexOf('post.php') > -1) {
-            if (document.body.classList.contains('modal-open')) {
-                function trim_words(theString, numWords) {
-                    expString = theString.split(/\s+/,numWords);
-                    theNewString=expString.join(" ");
-                    return theNewString;
-                }
-                var captionParent = document.querySelectorAll('[data-setting="caption"] textarea');
-                var caption = captionParent[0];
-                var descriptionParent = document.querySelectorAll('[data-setting="description"] textarea');
-                var description = descriptionParent[0];
-                var altParent = document.querySelectorAll('[data-setting="alt"] input[type="text"]');
-                var alt = altParent[0];
-                var captionText = caption.textContent;
-                var altText = trim_words(captionText,6) + ' ...';
-                description.value = captionText;
-                alt.value = altText;
-                var creditParent = document.querySelectorAll('.compat-field-credit td.field input[type="text"]');
-                var credit = creditParent[0];
-                var re = /\((.*)\)/;
-                var photoCred = captionText.match(re)[1];
-                var captionTextNew = captionText.replace('('+photoCred+')','').replace(', Colorado.','.').trim();
-                captionTextNew = captionTextNew.replace(' January ','Jan.').replace(' February ','Feb.').replace(' August ','Aug.').replace(' September ','Sept.').replace(' October ','Oct.').replace(' Novermber ','Nov.').replace(' December ','Dec.');
-                photoCredNew = photoCred.replace('Photo by ','').replace('/',', ');
-                credit.value = photoCredNew;
-                var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));
-                if (dateline.length == 0 || /[a-z]/.test(dateline) == false) {
-                    captionTextNew = captionTextNew.replace(dateline,'').replace(':','').trim();
-                    caption.value = captionTextNew;
-                }
-                var titleParent = document.querySelectorAll('[data-setting="title"] input[type="text"]');
-                titleParent.focus;
+            if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
+                var bookmarkletSource = document.createElement('script');
+                bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/photo-cleanup.min.js?v='+vSec());
+                document.body.appendChild(bookmarkletSource);
             } else {
                 autoProducerPost(randomGif);
             }
-        } else if (loc.indexOf('upload.php') > -1) {
-            function trim_words(theString, numWords) {
-                expString = theString.split(/\s+/,numWords);
-                theNewString=expString.join(" ");
-                return theNewString;
-            }
-            var captionParent = document.querySelectorAll('[data-setting="caption"] textarea');
-            var caption = captionParent[0];
-            var descriptionParent = document.querySelectorAll('[data-setting="description"] textarea');
-            var description = descriptionParent[0];
-            var altParent = document.querySelectorAll('[data-setting="alt"] input[type="text"]');
-            var alt = altParent[0];
-            var captionText = caption.textContent;
-            var altText = trim_words(captionText,6) + ' ...';
-            description.value = captionText;
-            alt.value = altText;
-            var re = /\((.*)\)/;
-            var photoCred = (re.test(captionText)) ? '('+captionText.match(re)[1]+')' : '';
-            var captionTextNew = captionText.replace(photoCred,'').replace(', Colorado.','.').trim();
-            captionTextNew = captionTextNew.replace(' January ','Jan.').replace(' February ','Feb.').replace(' August ','Aug.').replace(' September ','Sept.').replace(' October ','Oct.').replace(' Novermber ','Nov.').replace(' December ','Dec.');
-            var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));
-            if (dateline.length == 0 || /[a-z]/.test(dateline) == false) {
-                captionTextNew = captionTextNew.replace(dateline,'').replace(':','').trim();
-                caption.value = captionTextNew;
-            }
-            var titleParent = document.querySelectorAll('[data-setting="title"] input[type="text"]');
-            titleParent.focus;
         } else if (loc.indexOf('edit.php') >-1) {
             autoProducerSearch(randomGif);
         } else if (loc.indexOf('content_hub_view') >-1) {

@@ -65,6 +65,18 @@ javascript:
             return output;
         }
 
+        function captureFeatures() {
+            var output = [];
+            jQuery('#tagsdiv-feature .tagchecklist > span').each(function(){
+                var tempTag = jQuery(this).clone().children().remove().end().text();
+                if (tempTag.match(/Outstream/)) {
+                    output.push(tempTag.trim());
+                }
+            });
+            console.log(output);
+            return output;
+        }
+
         function captureAppleNews() {
             var output = [];
             jQuery('#apple-news-publish div.section input:checked').each(function() {
@@ -93,9 +105,10 @@ javascript:
             optionObject['add-tags'] = captureTags();
             optionObject['primary-section'] = document.getElementById(sectionSelect).value;
             optionObject['primary-tag'] = document.getElementById(tagSelect).value;
+            optionObject['features'] = captureFeatures();
             optionObject['apple-news'] = captureAppleNews();
             optionObject['related'] = newRelated;
-            var tagString = '#'+tagSelect+' option[value="'+optionObject['primary-tag']+'"]';                        
+            var tagString = '#'+tagSelect+' option[value="'+optionObject['primary-tag']+'"]';
             optionObject['help-primary-tag'] = jQuery(tagString).text();
             optionObject['help-sections'] = captureSectionsHelp();
             var secString = '#'+sectionSelect+' option[value="'+optionObject['primary-section']+'"]';
@@ -136,6 +149,13 @@ javascript:
             for(var i=0,len=newTags.length;i<len;i++){
                 document.getElementById('new-tag-post_tag').value = newTags[i];
                 var button = jQuery('#post_tag .ajaxtag input.button.tagadd').click();
+            }
+        }
+
+        function addFeatures(newFeatures){
+            for(var i=0,len=newFeatures.length;i<len;i++){
+                document.getElementById('new-tag-feature').value = newFeatures[i];
+                var button = jQuery('#feature .ajaxtag input.button.tagadd').click();
             }
         }
 
@@ -186,6 +206,9 @@ javascript:
             }
             if (typeof options['add-tags'] != 'undefined') {
                 addTag(options['add-tags']);
+            }
+            if (typeof options['features'] != 'undefined') {
+                addFeatures(options['features']);
             }
             if (typeof options['primary-section'] != 'undefined' || typeof options['primary-tag'] != 'undefined') {
                 primaryOptions(options['primary-section'],options['primary-tag']);
@@ -261,6 +284,7 @@ javascript:
             '0': {
                 'title': 'Do Nothing',
                 'add-tags': [],
+                'features': [],
                 'help-sections': 'Does not add sections or tags!',
                 'related' : false,
             },
@@ -270,6 +294,7 @@ javascript:
                 'add-tags': ['Donald Trump'],
                 'primary-section': '11580',
                 'primary-tag': '1276',
+                'features': [],
                 'apple-news': ['politics'],
                 'related' : true,
                 'help-primary-tag': 'Donald Trump',
@@ -282,6 +307,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '59',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': [],
                 'related' : false,
                 'help-primary-tag': '',
@@ -294,6 +320,7 @@ javascript:
                 'add-tags': ['Obamacare','health insurance'],
                 'primary-section': '21',
                 'primary-tag': '963',
+                'features': [],
                 'apple-news': ['politics'],
                 'related': true,
                 'help-primary-tag': 'Obamacare',
@@ -306,6 +333,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '47',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['colorado-news'],
                 'related' : true,
                 'help-primary-tag': '',
@@ -318,6 +346,7 @@ javascript:
                 'add-tags': ['wildfires','Colorado wildfires 2017'],
                 'primary-section': '65',
                 'primary-tag': '11673',
+                'features': [],
                 'apple-news': ['colorado-news'],
                 'related' : true,
                 'help-primary-tag': 'Colorado wildfires 2017',
@@ -330,6 +359,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '40',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['colorado-news'],
                 'related' : false,
                 'help-primary-tag': '',
@@ -342,6 +372,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '64',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['colorado-news'],
                 'related' : true,
                 'help-primary-tag': '',
@@ -354,6 +385,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '79',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['politics'],
                 'related' : false,
                 'help-primary-tag': '',
@@ -366,6 +398,7 @@ javascript:
                 'add-tags': ['More Business News'],
                 'primary-section': '15',
                 'primary-tag': '7864',
+                'features': [],
                 'apple-news': ['business'],
                 'related' : false,
                 'help-primary-tag': 'More Business News',
@@ -378,6 +411,7 @@ javascript:
                 'add-tags': ['More Business News'],
                 'primary-section': '27',
                 'primary-tag': '7864',
+                'features': [],
                 'apple-news': ['business'],
                 'related' : false,
                 'help-primary-tag': 'More Business News',
@@ -390,6 +424,7 @@ javascript:
                 'add-tags': ['advice','Ask Amy','relationship advice'],
                 'primary-section': '85',
                 'primary-tag': '7819',
+                'features': [],
                 'apple-news': ['lifestyle'],
                 'related' : true,
                 'help-primary-tag': 'Ask Amy, advice, relationship advice',
@@ -402,6 +437,7 @@ javascript:
                 'add-tags': ['movie reviews'],
                 'primary-section': '33',
                 'primary-tag': '4289',
+                'features': ['Outstream'],
                 'apple-news': ['entertainment'],
                 'related' : false,
                 'help-primary-tag': 'movie reviews',
@@ -414,6 +450,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '90',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['entertainment'],
                 'related' : true,
                 'help-primary-tag': '',
@@ -426,6 +463,7 @@ javascript:
                 'add-tags': [],
                 'primary-section': '93',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['entertainment','lifestyle'],
                 'related' : false,
                 'help-primary-tag': '',
@@ -438,6 +476,7 @@ javascript:
                 'add-tags': ['book reviews'],
                 'primary-section': '32',
                 'primary-tag': '6989',
+                'features': [],
                 'apple-news': ['entertainment'],
                 'related': true,
                 'help-primary-tag': 'book reviews',
@@ -450,6 +489,7 @@ javascript:
                 'add-tags': ['crime blotter'],
                 'primary-section': '2222',
                 'primary-tag': '4241',
+                'features': [],
                 'apple-news': ['colorado-news'],
                 'related' : true,
                 'help-primary-tag': 'crime blotter',
@@ -462,6 +502,7 @@ javascript:
                 'add-tags': ['YourHub business profile'],
                 'primary-section': '2222',
                 'primary-tag': '4280',
+                'features': [],
                 'apple-news': ['colorado-news'],
                 'related' : true,
                 'help-primary-tag': 'YourHub business profile',
@@ -474,6 +515,7 @@ javascript:
                 'add-tags': ['Mark Kiszla'],
                 'primary-section': '105',
                 'primary-tag': '4297',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Mark Kiszla',
@@ -486,6 +528,7 @@ javascript:
                 'add-tags': ['More Broncos News'],
                 'primary-section': '97',
                 'primary-tag': '7681',
+                'features': [],
                 'apple-news': ['broncos','sports'],
                 'related': true,
                 'help-primary-tag': 'More Broncos News',
@@ -498,6 +541,7 @@ javascript:
                 'add-tags': ['More Rockies News'],
                 'primary-section': '114',
                 'primary-tag': '9321',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'More Rockies News',
@@ -510,6 +554,7 @@ javascript:
                 'add-tags': ['More Nuggets News'],
                 'primary-section': '109',
                 'primary-tag': '9690',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'More Nuggets News',
@@ -522,6 +567,7 @@ javascript:
                 'add-tags': ['More Avalanche News'],
                 'primary-section': '95',
                 'primary-tag': '9684',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'More Avalanche News',
@@ -534,6 +580,7 @@ javascript:
                 'add-tags': ['More Rapids news'],
                 'primary-section': '113',
                 'primary-tag': '11853',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'More Rapids news',
@@ -546,6 +593,7 @@ javascript:
                 'add-tags': [''],
                 'primary-section': '106',
                 'primary-tag': '',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': ' ',
@@ -558,6 +606,7 @@ javascript:
                 'add-tags': ['NASCAR'],
                 'primary-section': '108',
                 'primary-tag': '5590',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'NASCAR',
@@ -570,6 +619,7 @@ javascript:
                 'add-tags': ['U.S. Soccer','USMNT'],
                 'primary-section': '6574',
                 'primary-tag': '6022',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'USMNT',
@@ -582,6 +632,7 @@ javascript:
                 'add-tags': ['Terry Wickstrom'],
                 'primary-section': '111',
                 'primary-tag': '7851',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': false,
                 'help-primary-tag': 'Terry Wickstrom',
@@ -594,6 +645,7 @@ javascript:
                 'add-tags': ['college football','CU Buffs football'],
                 'primary-section': '102',
                 'primary-tag': '11865',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'CU Buffs football',
@@ -606,6 +658,7 @@ javascript:
                 'add-tags': ['college football','Colorado State football'],
                 'primary-section': '101',
                 'primary-tag': '11870',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Colorado State football',
@@ -618,6 +671,7 @@ javascript:
                 'add-tags': ['college basketball','CU Buffs basketball'],
                 'primary-section': '102',
                 'primary-tag': '11945',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'CU Buffs basketball',
@@ -630,6 +684,7 @@ javascript:
                 'add-tags': ['college basketball','Colorado State basketball'],
                 'primary-section': '101',
                 'primary-tag': '12071',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Colorado State basketball',
@@ -642,6 +697,7 @@ javascript:
                 'add-tags': ['college hockey','Denver Pioneers hockey'],
                 'primary-section': '103',
                 'primary-tag': '11929',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Denver Pioneers hockey',
@@ -654,6 +710,7 @@ javascript:
                 'add-tags': ['college basketball','Denver Pioneers basketball'],
                 'primary-section': '103',
                 'primary-tag': '12072',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Denver Pioneers basketball',
@@ -666,6 +723,7 @@ javascript:
                 'add-tags': ['college soccer','Denver Pioneers soccer'],
                 'primary-section': '103',
                 'primary-tag': '12074',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Denver Pioneers soccer',
@@ -678,6 +736,7 @@ javascript:
                 'add-tags': ['college lacrosse','Denver Pioneers Lacrosse'],
                 'primary-section': '103',
                 'primary-tag': '12073',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Denver Pioneers Lacrosse',
@@ -690,6 +749,7 @@ javascript:
                 'add-tags': ['Mikaela Shiffrin'],
                 'primary-section': '2221',
                 'primary-tag': '10089',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Mikaela Shiffrin',
@@ -702,6 +762,7 @@ javascript:
                 'add-tags': ['Lindsey Vonn'],
                 'primary-section': '2221',
                 'primary-tag': '9817',
+                'features': [],
                 'apple-news': ['sports'],
                 'related': true,
                 'help-primary-tag': 'Lindsey Vonn',
@@ -737,7 +798,7 @@ javascript:
 
         function APdialogText(options){
             var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖PRODUCER™ for Articles. Here\'s a list of helper functions I can perform for you:</p>';
-            output += '<div class="one-third">';
+            output += '<div class="one-quarter">';
             output += '<ul>';
             var i = 0;
             var nobreak = true;
@@ -748,18 +809,19 @@ javascript:
                 tooltipString += '<p>Selects these <strong>Sections</strong>:<br />' + options[object]['help-sections'] + '</p>';
                 tooltipString += '<p>Adds these <strong>Tags</strong>:<br />' + options[object]['add-tags'].join(', ') + '</p>';
                 tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
+                tooltipString += '<p>Adds these <strong>Features</strong>:<br />' + options[object]['features'].join(', ') + '</p>';
                 if (options.hasOwnProperty(object)) {
                     output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
                 }
-                if (i >= (optsLength / 2) && i > 10 && nobreak == true) {
-                    output += '</ul></div><div class="one-third"><ul>';
+                if (i >= (optsLength / 3) && i > 10 && nobreak == true) {
+                    output += '</ul></div><div class="one-quarter"><ul>';
                     nobreak = false;
                 }
                 i++;
             }
             output += '</ul>';
             output += '</div>';
-            output += '<div class="one-third">';
+            output += '<div class="one-quarter">';
             output += '<div class="tipGraf" style="display:none;"></div>';
             output += '</div>';
             output += '<div class="clear"></div>';

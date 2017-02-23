@@ -27,6 +27,9 @@
 	margin:0 0 .7em;
 	font-size:1em;
 }
+#auto-producer .ap-options .tipGraf p {
+	color:CadetBlue;
+}
 #auto-producer .ap-options p:first-child {
 	font-size:105%;
 }
@@ -65,6 +68,11 @@
 	color:darkmagenta;
 	font-size:85%;
 	margin:0 0 .4em;
+}
+#auto-producer .ap-options div.one-quarter {
+	width:25%;
+	float:left;
+	display:inline-block;
 }
 #auto-producer .ap-options div.one-third {
 	width:33%;

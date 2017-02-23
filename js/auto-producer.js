@@ -25,7 +25,7 @@ javascript:
         return secs;
     }
 
-    serialize = function(obj, prefix) {
+    function serialize(obj, prefix) {
         var str = [], p;
         for(p in obj) {
             if (obj.hasOwnProperty(p)) {
@@ -1299,55 +1299,57 @@ javascript:
     }
 
     function autoProducerPick(randomGif) {
-        var loc = window.location.href;
-        if (loc.indexOf('post.php') > -1) {
-            if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
-                var bookmarkletSource = document.createElement('script');
-                bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/photo-cleanup.min.js?v='+vSec());
-                document.body.appendChild(bookmarkletSource);
-            } else {
-                autoProducerPost(randomGif);
-            }
-        } else if (loc.indexOf('edit.php') >-1) {
+        if (loc.indexOf('edit.php') >-1) {
             autoProducerSearch(randomGif);
         } else if (loc.indexOf('content_hub_view') >-1) {
             autoProducerContentHub(randomGif);
         } else if (loc.indexOf('wire_hub_view') >-1) {
             autoProducerWireHub(randomGif);
+        } else {
+            autoProducerPost(randomGif);
         }
     }
 
-    if (!document.body.contains(document.getElementById('auto-producer'))) {
-        var APstyle = window.document.createElement('link');
-        APstyle.setAttribute('rel','stylesheet');
-        APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css?v='+vSec());
-        window.document.body.appendChild(APstyle);
-        var s2 = window.document.createElement('script');
-        s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
-        window.document.body.appendChild(s2);
-        var APdiv = window.document.createElement('div');
-        APdiv.setAttribute('id','auto-producer');
-        window.document.body.appendChild(APdiv);
-    }
-
-    var UILoaded = setInterval(function() {
-        if (typeof jQuery.ui.dialog != 'undefined') {
-            clearInterval(UILoaded);
-            var randomGifin = '';
-            var randomGiphy = jQuery.ajax({
-                url:'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
-                type: 'GET',
-                success: function(response) {
-                    randomGifin = response.data.image_url;
-                    randomGifin = randomGifin.replace('http:','https:');
-                }
-            });
-            var gifInt = setInterval(function() {
-                if (typeof randomGifin != 'undefined' && randomGifin.indexOf('giphy.gif') > -1) {
-                    clearInterval(gifInt);
-                    autoProducerPick(randomGifin);
-                }
-            }, 10);
+    var loc = window.location.href;
+    if (loc.indexOf('post.php') > -1) {
+        if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/photo-cleanup.min.js?v='+vSec());
+            document.body.appendChild(bookmarkletSource);
         }
-    }, 50);
+    } else {
+        if (!document.body.contains(document.getElementById('auto-producer'))) {
+            var APstyle = window.document.createElement('link');
+            APstyle.setAttribute('rel','stylesheet');
+            APstyle.setAttribute('href','https://extras.denverpost.com/app/bookmarklet/auto-producer.min.css?v='+vSec());
+            window.document.body.appendChild(APstyle);
+            var s2 = window.document.createElement('script');
+            s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
+            window.document.body.appendChild(s2);
+            var APdiv = window.document.createElement('div');
+            APdiv.setAttribute('id','auto-producer');
+            window.document.body.appendChild(APdiv);
+        }
+
+        var UILoaded = setInterval(function() {
+            if (typeof jQuery.ui.dialog != 'undefined') {
+                clearInterval(UILoaded);
+                var randomGifin = '';
+                var randomGiphy = jQuery.ajax({
+                    url:'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
+                    type: 'GET',
+                    success: function(response) {
+                        randomGifin = response.data.image_url;
+                        randomGifin = randomGifin.replace('http:','https:');
+                    }
+                });
+                var gifInt = setInterval(function() {
+                    if (typeof randomGifin != 'undefined' && randomGifin.indexOf('giphy.gif') > -1) {
+                        clearInterval(gifInt);
+                        autoProducerPick(randomGifin);
+                    }
+                }, 10);
+            }
+        }, 50);
+    }
 }());

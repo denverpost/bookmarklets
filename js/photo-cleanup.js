@@ -14,7 +14,7 @@
     var description = descriptionParent[0];
     var altParent = document.querySelectorAll('[data-setting="alt"] input[type="text"]');
     var alt = altParent[0];
-    var captionText = caption.textContent;
+    var captionText = caption.textContent.replace('FILE - ','');
     description.value = captionText;
     var creditParent = document.querySelectorAll('.compat-field-credit td.field input[type="text"]');
     var credit = (creditParent[0] != 'undefined') ? creditParent[0] : false;

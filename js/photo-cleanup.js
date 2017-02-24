@@ -8,6 +8,14 @@
     function abbrevMonths(captionTextAbbrev) {
     	return captionTextAbbrev.replace(' January ',' Jan. ').replace(' February ',' Feb. ').replace(' August ',' Aug. ').replace(' September ',' Sept. ').replace(' October ',' Oct. ').replace(' November ',' Nov. ').replace(' December ',' Dec. ');
     }
+    String.prototype.capitalizeFirstLetters = function() {
+        var words = this.split(/[\s]+/);
+        var wordsOut = [];
+        for(i=0,len=words.length;i<len;i++) {
+            wordsOut.push(words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase());
+        }
+        return wordsOut.join(' ');
+    }
     var captionParent = document.querySelectorAll('[data-setting="caption"] textarea');
     var caption = captionParent[0];
     var descriptionParent = document.querySelectorAll('[data-setting="description"] textarea');
@@ -16,9 +24,15 @@
     var alt = altParent[0];
     var captionText = caption.textContent.replace('FILE - ','');
     description.value = captionText;
+    var afpCredit = false;
+    if (captionText.match(/\/ AFP PHOTO \//)) {
+        captionSplit = captionText.split("/ AFP PHOTO /");
+        captionText = captionSplit[0]
+        afpCredit = captionSplit[1];
+    }
     var creditParent = document.querySelectorAll('.compat-field-credit td.field input[type="text"]');
     var credit = (creditParent[0] != 'undefined') ? creditParent[0] : false;
-    var re = /\(([^\(\)]{4,})\)/;
+    var re = /\(([^\(\)]{10,})\)/;
     var photoCred = '';
     var captionTextNew = '';
 	if (locate.indexOf('upload.php') > -1) {
@@ -30,14 +44,26 @@
         captionTextNew = captionText.replace('('+photoCred+')','').replace(', Colorado.','.').trim();
         captionTextNew = abbrevMonths(captionTextNew);
         var photoCredNew = '';
-        if (photoCred.match(/AP Photo by/)) {
-        	photoCredNew = photoCred.replace('AP Photo by ','') + ', The Associated Press';
-        } else if (photoCred.match(/AP Photo\//)) {
-        	photoCredNew = photoCred.replace('AP Photo/','') + ', The Associated Press';
-        } else if (photoCred.match(/Photo By/)) {
-        	photoCredNew = photoCred.replace('Photo By ','').replace('/',', ');
-        } else if (photoCred.match(/Photo by/)) {
-        	photoCredNew = photoCred.replace('Photo by ','').replace('/',', ');
+        if (afpCredit) {
+            afpCreditNew = afpCredit.replace('/AFP/Getty Images','').trim();
+            credlen = afpCreditNew.length / 2;
+            cred1 = afpCreditNew.substring(0,credlen).toLowerCase();
+            cred2 = afpCreditNew.substring(credlen,afpCreditNew.length).toLowerCase();
+            if (cred1 == cred2) {
+                photoCredNew = cred1.capitalizeFirstLetters() + ', AFP/Getty Images';
+            } else {
+                photoCredNew = afpCreditNew.toLowerCase().capitalizeFirstLetters() + ', AFP/Getty Images';
+            }
+        } else {
+            if (photoCred.match(/AP Photo by/)) {
+            	photoCredNew = photoCred.replace('AP Photo by ','') + ', The Associated Press';
+            } else if (photoCred.match(/AP Photo\//)) {
+            	photoCredNew = photoCred.replace('AP Photo/','') + ', The Associated Press';
+            } else if (photoCred.match(/Photo By/)) {
+            	photoCredNew = photoCred.replace('Photo By ','').replace('/',', ');
+            } else if (photoCred.match(/Photo by/)) {
+            	photoCredNew = photoCred.replace('Photo by ','').replace('/',', ');
+            }
         }
         if (credit !== false) {
             credit.value = photoCredNew;

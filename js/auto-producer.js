@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v0.9.3';
+    var APversion = ' v0.9.4';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -170,6 +170,7 @@
         }
 
         function trumpThatBitch(options,args) {
+            fixWireBylines();
             var content = jQuery('#content').text();
             content = content.replace('(AP) —','--');
             jQuery('#content').text(content);
@@ -216,6 +217,12 @@
             if (typeof options['apple-news'] != 'undefined') {
                 checkAppleNewsBoxes(options['apple-news']);
             }
+        }
+
+        function fixWireBylines() {
+            var bookmarkletSource = document.createElement('script');
+            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/ap-byline.min.js?v='+vSec());
+            document.body.appendChild(bookmarkletSource);
         }
 
         function relatedPrimaryTag() {

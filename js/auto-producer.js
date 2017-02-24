@@ -72,7 +72,6 @@
                     output.push(tempTag.trim());
                 }
             });
-            console.log(output);
             return output;
         }
 
@@ -170,10 +169,8 @@
         }
 
         function trumpThatBitch(options,args) {
-            fixWireBylines();
-            var content = jQuery('#content').text();
-            content = content.replace('(AP) —','--');
-            jQuery('#content').text(content);
+            var contentArgs = [];
+            contentArgs['wire'] = true;
             var excerpt = jQuery('#excerpt').text();
             var excerptDateline = excerpt.substring(0,excerpt.indexOf('(AP) —'));
             var excerptTextNew = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
@@ -185,19 +182,22 @@
                 addAPauthor();
             }
             if ((typeof options['related'] != 'undefined' && options['related'] === true) || args['selectRelated'] === true) {
-                relatedPrimaryTag();
+                contentArgs['related'] = true;
             }
             if (options['title'] == 'Weather Story') {
-                weatherWidget();
+                contentArgs['wx'] = true;
             }
             if (options['title'] == 'Crime Story' && !args['homicideSelect']) {
-                insertCrime();
+                contentArgs['crime'] = true;
+            }
+            if (args['homicideSelect']) {
+                contentArgs['homicide'] = true;
             }
             if (args['informSelect']) {
-                insertInform();
+                contentArgs['inform'] = true;
             }
             if (args['promoSelect']) {
-                insertPromos();
+                contentArgs['promos'] = true;
             }
             if (args['title'] == 'YourHub Crime Blotter') {
                 document.getElementById('fm-mason_post_settings-0-schema-0-featured_image_settings-0').value = 'hide';
@@ -217,30 +217,271 @@
             if (typeof options['apple-news'] != 'undefined') {
                 checkAppleNewsBoxes(options['apple-news']);
             }
+            processContent(contentArgs);
         }
 
-        function fixWireBylines() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/ap-byline.min.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
+        function processContent(args) {
+            String.prototype.capitalizeFirstLetters = function() {
+                var words = this.split(/[\s]+/);
+                var wordsOut = [];
+                for(i=0,len=words.length;i<len;i++) {
+                    wordsOut.push(words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase());
+                }
+                return wordsOut.join(' ');
+            };
+            var content = document.getElementById('content');
+            var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|    <p>|[\s]{2,5}|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
+            var grafs = content.textContent.split(splitters);
+            grafsClean = [];
+            for(i=0,len=grafs.length;i<len;i++) {
+                if (grafs[i].match(/<p \/>/) === null) {
+                    grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--'));
+                }
+            }
+            if (args['wire']) {                
+                if (grafsClean[0].toLowerCase().startsWith('by')) {
+                    var byline = grafsClean[0];
+                    var bylineSplit = '';
+                    if (byline.indexOf('(c)') > -1) {
+                        bylineSplit = byline.split('(c)')[0].split(',')[0].capitalizeFirstLetters().replace('By ','').trim();
+                    } else {
+                        bylineSplit = byline.split(',')[0].capitalizeFirstLetters().replace('By ','');
+                    }
+                }
+                var author = document.getElementById('coauthors_hidden_input').value;
+                if (author == 'the-associated-press') {
+                    grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Associated Press</em>';
+                } else if (author == 'the-washington-post') {
+                    grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Washington Post</em>';
+                }
+            }
+            if (args['related']) {
+                if (grafsClean.length >= 6) {
+                    grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
+                }
+            }
+            if (args['wx']) {
+                grafsClean.splice(3, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class=\'related alignright\'> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'590px\'] </aside>[cq comment="ASIDE PLACED ABOVE"]');
+                grafsClean.push('<a href="http://www.thedenverchannel.com/weather">Click here for more Denver7 weather coverage</a>.');
+            }
+            if (args['crime']) {
+                var crimemap = {
+                    neighborhoods: Array('Wellshire',  'CBD',  'University Hills',  'Overland',  'Speer',  'Gateway / Green Valley Ranch',  'Ruby Hill',  'Marston',  'North Capitol Hill',  'City Park',  'Indian Creek',  'Five Points',  'Sun Valley',  'Westwood',  'Cole',  'Washington Park West',  'Platt Park',  'Harvey Park South',  'Villa Park',  'Athmar Park',  'Skyland',  'North Park Hill',  'Sunnyside',  'Southmoor Park',  'Jefferson Park',  'Capitol Hill',  'Windsor',  'Barnum West',  'Virginia Village',  'Montbello',  'Bear Valley',  'Goldsmith',  'Stapleton',  'Chaffee Park',  'Cory-Merrill',  'Northeast Park Hill',  'Union Station',  'Washington Park',  'Barnum',  'Elyria-Swansea',  'Civic Center',  'Hampden South',  'Globeville',  'City Park West',  'Clayton',  'Cheesman Park',  'Country Club',  'Hale',  'Mar Lee',  'Lincoln Park',  'Berkeley',  'West Highland',  'Harvey Park',  'Regis',  'East Colfax',  'Whittier',  'Belcaro',  'Hampden',  'Fort Logan',  'College View / South Platte',  'West Colfax',  'Baker',  'Kennedy',  'Cherry Creek',  'DIA',  'Congress Park',  'South Park Hill',  'Rosedale',  'Valverde',  'Lowry Field',  'Washington Virginia Vale',  'Auraria',  'Hilltop',  'Highland',  'Montclair',  'University',  'University Park',  'Sloan Lake'),
+                    get_markup: function() {
+                        if ( this.type == '1' ) {
+                            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n\
+                            <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
+                            <p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>.</p>\n\
+                            <p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n\
+                            </aside>[cq comment="ASIDE PLACED ABOVE"]';
+                        }
+                        else if ( this.type === '' ) {
+                            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n\
+                            <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
+                            <div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="' + this.get_random_image() + '" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
+                            <p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">map, report and neighborhood rankings of ' + this.crime + ' in Denver</a>.</p>\n\
+                            <p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n\
+                            </aside>[cq comment="ASIDE PLACED ABOVE"]';
+                        }
+                    },
+                    image_list: ['http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map11.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map4.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map3.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map2.png', 'http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png'],
+                    get_random_image: function() {
+                        var ceiling = this.image_list.length;
+                        var index = Math.floor(Math.random() * ceiling);
+                        return this.image_list[index];
+                    },
+                    feature_list: [{'compare crime rates across Denver neighborhoods': 'http://crime.denverpost.com/neighborhood/compare/'}, {'see our Denver crime map': 'http://crime.denverpost.com/map/'}, {'see the Denver-city crime report': 'http://crime.denverpost.com/city/'}, {'see our list of neighborhood crime reports': 'http://crime.denverpost.com/neighborhood/'}],
+                    get_random_feature: function () {
+                        // Pull a random item from this.feature_list
+                        var ceiling = this.feature_list.length;
+                        var index = Math.floor(Math.random() * ceiling);
+                        var item = this.feature_list[index];
+                        var key = Object.keys(item)[0];
+                        return '<a href="' + item[key] + '">' + key + '</a>';
+                    },
+                    get_type: function () {
+                        this.type = prompt('Enter 1 for a neighborhood crime promo or hit enter for a crime-specific promo');
+                        return this.type;
+                    },
+                    get_neighborhood: function(message) {
+                        message = (typeof message == 'undefined') ? '' : message;
+                        this.neighborhood = prompt(message + 'Type in the name of the neighborhood');
+                        if ( this.neighborhoods.indexOf(this.neighborhood) === -1 ) {
+                            if ( message === '' ) this.get_neighborhood("That's not a valid neighborhood\n");
+                            else this.get_neighborhood("This is a list of valid neighborhoods: " + this.neighborhoods.join(", "));
+                        }
+                        this.slug = this.slugify(this.neighborhood);
+                    },
+                    get_crime: function() {
+                        crime_id = prompt('Hit enter for Violent Crimes, type 1 for Assaults, 2 for Bank Robberies, 3 for Bike Thefts, \
+                            4 for Burglaries, 5 for Car Thefts, 6 for DUIs, \
+                            7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes, \
+                            11 for Sexual Assault, 12 for Rape, 13 for Robberies, 14 for Drug & Alcohol, 15 for Larceny');
+                        this.crime = 'violent crimes'; this.slug = 'violent';
+                        if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'property crimes'; this.slug = 'property'; }
+                        else if ( crime_id.indexOf('11') >= 0 ) { this.crime = 'sexual assaults'; this.slug = 'sexual-assault'; }
+                        else if ( crime_id.indexOf('12') >= 0 ) { this.crime = 'rapes'; this.slug = 'sexual-assault/rape'; }
+                        else if ( crime_id.indexOf('13') >= 0 ) { this.crime = 'robberies'; this.slug = 'robbery'; }
+                        else if ( crime_id.indexOf('14') >= 0 ) { this.crime = 'drug and alcohol crimes'; this.slug = 'drug-alcohol'; }
+                        else if ( crime_id.indexOf('15') >= 0 ) { this.crime = 'larceny'; this.slug = 'larceny'; }
+                        else if ( crime_id.indexOf('16') >= 0 ) { this.crime = ''; this.slug = ''; }
+                        else if ( crime_id.indexOf('17') >= 0 ) { this.crime = ''; this.slug = ''; }
+                        else if ( crime_id.indexOf('18') >= 0 ) { this.crime = ''; this.slug = ''; }
+                        else if ( crime_id.indexOf('19') >= 0 ) { this.crime = ''; this.slug = ''; }
+                        else if ( crime_id.indexOf('20') >= 0 ) { this.crime = ''; this.slug = ''; }
+                        else if ( crime_id.indexOf('1') >= 0 ) { this.crime = 'assaults'; this.slug = 'assault'; }
+                        else if ( crime_id.indexOf('2') >= 0 ) { this.crime = 'bank robberies'; this.slug = 'robbery/robbery-bank'; }
+                        else if ( crime_id.indexOf('3') >= 0 ) { this.crime = 'bike thefts'; this.slug = 'theft-bicycle'; }
+                        else if ( crime_id.indexOf('4') >= 0 ) { this.crime = 'burglaries'; this.slug = 'burglary'; }
+                        else if ( crime_id.indexOf('5') >= 0 ) { this.crime = 'car thefts'; this.slug = 'auto-theft'; }
+                        else if ( crime_id.indexOf('6') >= 0 ) { this.crime = 'DUIs'; this.slug = 'traffic-accident-dui-duid'; }
+                        else if ( crime_id.indexOf('7') >= 0 ) { this.crime = 'hit-and-runs'; this.slug = 'traffic-accident-hit-and-run'; }
+                        else if ( crime_id.indexOf('8') >= 0 ) { this.crime = 'domestic violence'; this.slug = 'dv'; }
+                        else if ( crime_id.indexOf('9') >= 0 ) { this.crime = 'homicides'; this.slug = 'homicide'; }
+                    },
+                    init: function () {
+                        if ( grafsClean.length > 5 ) this.pos = grafsClean.length - 3;
 
-        function relatedPrimaryTag() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/related-tag.min.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
+                        if ( this.get_type() == '1' ) this.get_neighborhood();
+                        else this.get_crime();
 
-        function weatherWidget() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
+                        grafsClean.splice(this.pos, 0, this.get_markup());
+                    },
+                    slugify: function(str) {
+                        // Cribbed from https://github.com/andrefarzat/slugify/blob/master/slugify.js
+                        var from = 'àáäãâèéëêìíïîòóöôõùúüûñç·/_,:;',
+                        to = 'aaaaaeeeeiiiiooooouuuunc------';
 
-        function insertInform() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/vid_embed-src.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
+                        var i = 0,
+                            len = from.length;
+                        
+                        str = str.toLowerCase();
+
+                        for ( ; i < len; i++ )
+                        {
+                            str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                        }
+
+                        return str.replace(/^\s+|\s+$/g, '') //trim
+                            .replace(/[^-a-zA-Z0-9\s]+/ig, '')
+                            .replace(/\s/gi, "-");
+                        }
+                    };
+                    crimemap.init();
+                }
+            if (args['inform']) {
+                loop:
+                while(true) {
+                    var vidId = prompt('What is the Inform ID of the video you want to embed?\n\nNote: Embeds always appear at the top of a story, but can be moved with CTRL+X and CTRL+V\n\n','');
+                    if (vidId.length == 8 && vidId.match(/^[0-9]+$/) !== null) {
+                        break loop;
+                    } else {
+                        alert('You must enter an 8-digit number.');
+                    }
+                }
+                loop:
+                while(true) {
+                    var listId = prompt('What is the Inform ID of the video you want to embed? (Hit ENTER for "News")\n\n\
+                        Here are some of the most common playlist IDs:\n\n\
+                            Business: 18444\n\
+                            The Cannabist: 18445\n\
+                            DPTV - Up To Date: 18457\n\
+                            News: 18464 (default)\n\
+                            News - Guns: 18548\n\
+                            Politics: 18470\n\
+                            Politics - Elections: 18471\n\
+                            Sports: 18474\n\
+                            Sports - Broncos: 18477\n\n','18464');
+                    if (listId.length == 5 && listId.match(/^[0-9]+$/) !== null) {
+                        break loop;
+                    } else {
+                        alert('You must enter an 5-digit number.');
+                    }
+                }
+                loop:
+                while(true) {
+                    var autoPlay = prompt('Should it Autoplay? (Hit ENTER for "NO")\n\n\
+                        Options:\n\n\
+                            No Autoplay: 0 (default)\n\
+                            Autoplay: 1\n\
+                            Play on mouse-over: 3\n\
+                            Play when scrolled into view: 7\n\
+                            ','0');
+                    if (autoPlay === '0' || autoPlay === '1' || autoPlay === '7' || autoPlay === '3') {
+                        break loop;
+                    } else {
+                        alert('You must enter an 1-digit number.');
+                    }
+                }
+                var markup = '[cq  comment="VIDEO PLACED BELOW"]\n\
+                    <div class="ndn_embed" style="width:100%;" data-config-pb="0" data-config-widget-id="' + autoPlay + '" data-config-type="VideoPlayer/Single" data-config-tracking-group="90115" data-config-playlist-id="' + listId + '" data-config-video-id="' + vidId + '" data-config-site-section="denverpost" data-config-width="100%" data-config-height="9/16w"></div> \n\
+                    [cq  comment="VIDEO PLACED ABOVE"]';
+                grafsClean.splice(0, 0, markup);
+            }
+            if (args['promos']) {
+                var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); });
+                promos.pop(); promos.pop();
+                var item = promos.pop();
+                var editing = true;
+                var ceiling = 10;
+                if ( content.textContent.indexOf('in-article-promo') !== -1 ) {
+                    promos = [];
+                    item = undefined;
+                }
+                if ( typeof item !== 'undefined' ) {
+                    var section_id = prompt('Select the type of news to insert:\n\n\n\
+                    News:\n\
+                        (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) Politics, (23) Colo. Leg.\n\n\
+                    Sports:\n\
+                        (Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n\
+                    Features:\n\
+                        (6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel\n\n\
+                    Misc:\n\
+                        (13) YourHub, (14) Editorials, (21) Season to Share, (22) Stock Show, (420) Marijuana\n\n\n\
+                    Selection:', '');
+                    var section = 'sports';
+                    if ( section_id.indexOf('420') >= 0 ) { section = 'marijuana'; item = 'map'; }
+                    else if ( section_id.indexOf('10') >= 0 ) { section = 'books'; }
+                    else if ( section_id.indexOf('11') >= 0 ) { section = 'movies'; }
+                    else if ( section_id.indexOf('12') >= 0 ) { section = 'home-garden'; }
+                    else if ( section_id.indexOf('13') >= 0 ) { section = 'yourhub'; }
+                    else if ( section_id.indexOf('14') >= 0 ) { section = 'editorials'; }
+                    else if ( section_id.indexOf('15') >= 0 ) { section = 'politics'; }
+                    else if ( section_id.indexOf('16') >= 0 ) { section = 'travel'; }
+                    else if ( section_id.indexOf('17') >= 0 ) { section = 'real-estate'; }
+                    else if ( section_id.indexOf('18') >= 0 ) { section = 'business'; }
+                    else if ( section_id.indexOf('19') >= 0 ) { section = 'tech'; }
+                    else if ( section_id.indexOf('20') >= 0 ) { section = 'featured-homes'; }
+                    else if ( section_id.indexOf('21') >= 0 ) { section = 'season-to-share'; }
+                    else if ( section_id.indexOf('22') >= 0 ) { section = 'stock-show'; }
+                    else if ( section_id.indexOf('23') >= 0 ) { section = 'colorado-legislature'; }
+                    else if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; }
+                    else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; }
+                    else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; }
+                    else if ( section_id.indexOf('4') >= 0 ) { section = 'nuggets'; }
+                    else if ( section_id.indexOf('5') >= 0 ) { section = 'rockies'; }
+                    else if ( section_id.indexOf('6') >= 0 ) { section = 'entertainment'; }
+                    else if ( section_id.indexOf('7') >= 0 ) { section = 'restaurants'; }
+                    else if ( section_id.indexOf('8') >= 0 ) { section = 'food'; }
+                    else if ( section_id.indexOf('9') >= 0 ) { section = 'ask-amy'; }
+                }
+                if ( grafsClean.length > 12 ) {
+                    grafsClean.splice(6, 0, '[dfm_iframe src=\'https://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
+                    item = promos.pop();
+                    if ( grafsClean.length > 18 ) {
+                        grafsClean.splice(Math.floor(grafsClean.length/2) + 1, 0, '[dfm_iframe src=\'https://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\' scrolling=\'no\']');
+                        item = promos.pop();
+                    }
+                }
+                if ( typeof item !== 'undefined' && grafsClean[grafsClean.length-1].indexOf('in-article') === -1 ) {
+                    grafsClean.splice(grafsClean.length, 0, '[dfm_iframe src=\'https://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\' scrolling=\'no\']');
+                }
+            }
+            if (args['homicide']) {
+                grafsClean.splice(3, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class=\'related alignright\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2>\n\
+<div style="width:100%;height: 150px;overflow:hidden"><a href=\'/denver-homicides/\'><img src=\'http://www.denverpost.com/wp-content/uploads/2016/10/homicide-map-denver.png\' alt=\'Denver Homicide Map\' border=\'0\'></a></div> <p>Follow this year\'s <a href=\'/denver-homicides/\'>homicides in Denver</a>, and track the city\'s homicide rate. See also: <a href="http://crime.denverpost.com/map/">Denver crime map</a>.</p> </aside>[cq comment="ASIDE PLACED ABOVE"]');
+            }
+            document.getElementById('content').value = grafsClean.join('\n\n');
         }
 
         function insertCX() {
@@ -249,27 +490,9 @@
             document.body.appendChild(bookmarkletSource);
         }
 
-        function insertCrime() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/crime.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
-
-        function insertHomicides() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/homicidereport.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
-
         function insertClosures() {
             var bookmarkletSource = document.createElement('script');
             bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/weather-closures.js?v='+vSec());
-            document.body.appendChild(bookmarkletSource);
-        }
-
-        function insertPromos() {
-            var bookmarkletSource = document.createElement('script');
-            bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/inarticlepromo-src.js?v='+vSec());
             document.body.appendChild(bookmarkletSource);
         }
 
@@ -874,7 +1097,7 @@
             args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
             args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
             args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
-            if (validOptions.indexOf(String(selectFunction)) != -1) {
+            if (validOptions.indexOf(String(selectFunction)) !== -1) {
                 jQuery('#auto-producer').html(APsuccessText);
                 trumpThatBitch(options[selectFunction],args);
                 setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);
@@ -909,44 +1132,12 @@
                     tabindex: 16
                 },
                 {
-                    id: "btnHomicides",
-                    text: "+Homicides",
-                    click: function () {
-                        insertHomicides();
-                    },
-                    tabindex: 15
-                },
-                {
-                    id: "btnCrime",
-                    text: "+Crime Map",
-                    click: function () {
-                        insertCrime();
-                    },
-                    tabindex: 15
-                },
-                {
                     id: "btnCX",
                     text: "+CX",
                     click: function () {
                         insertCX();
                     },
                     tabindex: 14
-                },
-                {
-                    id: "btnInform",
-                    text: "+Inform",
-                    click: function () {
-                        insertInform();
-                    },
-                    tabindex: 13
-                },
-                {
-                    id: "btnPromos",
-                    text: "+Promos",
-                    click: function () {
-                        insertPromos();
-                    },
-                    tabindex: 12
                 },
                 {
                     id: "btnCancel",
@@ -1170,7 +1361,6 @@
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);
             var imageLoad = setInterval(function(){
-                console.log(jQuery('#waiting-gif').height());
                 if (jQuery('#waiting-gif').height() > 10) {
                     clearInterval(imageLoad);
                     jQuery('#search-submit').trigger("click");
@@ -1276,7 +1466,6 @@
             jQuery('#post-search-input').val(selectFunction);
             jQuery('#auto-producer').html(APsuccessText);
             var imageLoad = setInterval(function(){
-                console.log(jQuery('#waiting-gif').height());
                 if (jQuery('#waiting-gif').height() > 10) {
                     clearInterval(imageLoad);
                     jQuery('#post-query-submit').trigger("click");

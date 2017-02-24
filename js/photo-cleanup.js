@@ -15,26 +15,25 @@
             wordsOut.push(words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase());
         }
         return wordsOut.join(' ');
+    };
+    var title = document.querySelectorAll('[data-setting="title"] input[type="text"]')[0];
+    var titleText = title.value;
+    if (titleText.match(/APTOPIX/)) {
+        title.value = titleText.replace('APTOPIX ','');
     }
-    var captionParent = document.querySelectorAll('[data-setting="caption"] textarea');
-    var caption = captionParent[0];
-    var descriptionParent = document.querySelectorAll('[data-setting="description"] textarea');
-    var description = descriptionParent[0];
-    var altParent = document.querySelectorAll('[data-setting="alt"] input[type="text"]');
-    var alt = altParent[0];
+    var caption = document.querySelectorAll('[data-setting="caption"] textarea')[0];
+    document.querySelectorAll('[data-setting="description"] textarea')[0].value = caption.textContent;
     var captionText = caption.textContent.replace('FILE - ','');
-    description.value = captionText;
     var afpCredit = false;
     if (captionText.match(/\/ AFP PHOTO \//)) {
         captionSplit = captionText.split("/ AFP PHOTO /");
-        captionText = captionSplit[0]
+        captionText = captionSplit[0];
         afpCredit = captionSplit[1];
     }
-    var creditParent = document.querySelectorAll('.compat-field-credit td.field input[type="text"]');
-    var credit = (creditParent[0] != 'undefined') ? creditParent[0] : false;
     var re = /\(([^\(\)]{10,})\)/;
     var photoCred = '';
     var captionTextNew = '';
+    var photoCredNew = '';
 	if (locate.indexOf('upload.php') > -1) {
         photoCred = (re.test(captionText)) ? '('+captionText.match(re)[1]+')' : '';
         captionTextNew = captionText.replace(photoCred,'').replace(', Colorado.','.').trim();
@@ -43,8 +42,7 @@
         photoCred = (re.test(captionText)) ? captionText.match(re)[1] : '';
         captionTextNew = captionText.replace('('+photoCred+')','').replace(', Colorado.','.').trim();
         captionTextNew = abbrevMonths(captionTextNew);
-        var photoCredNew = '';
-        if (afpCredit) {
+        if (afpCredit !== false) {
             afpCreditNew = afpCredit.replace('/AFP/Getty Images','').trim();
             credlen = afpCreditNew.length / 2;
             cred1 = afpCreditNew.substring(0,credlen).toLowerCase();
@@ -65,23 +63,18 @@
             	photoCredNew = photoCred.replace('Photo by ','').replace('/',', ').replace('The Denver Post via Getty Images','The Denver Post');
             }
         }
-        if (credit !== false) {
-            credit.value = photoCredNew;
-        }
     }
+    document.querySelectorAll('.compat-field-credit td.field input[type="text"]')[0].value = photoCredNew;
     var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));
     if (dateline.length === 0 || /[a-z]/.test(dateline) === false) {
         captionTextNew = captionTextNew.replace(dateline,'').replace(':','').trim();
         caption.value = captionTextNew;
     }
+    var altParent = document.querySelectorAll('[data-setting="alt"] input[type="text"]');
+    var alt = altParent[0];
     var elipsis = (captionTextNew.length <= 6) ? ' ...' : '';
     var altText = trim_words(captionTextNew,6) + elipsis;
     alt.value = altText;
-    var titleParent = document.querySelectorAll('[data-setting="title"] input[type="text"]');
-    var title = titleParent[0];
-    var titleText = title.value;
-    if (titleText.match(/APTOPIX/)) {
-    	title.value = titleText.replace('APTOPIX ','');
-    }
-    altParent.focus;
+    var customCaption = document.querySelectorAll('.compat-field-custom_caption td.field textarea')[0];
+    customCaption.focus();
 }());

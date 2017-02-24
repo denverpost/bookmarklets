@@ -64,14 +64,16 @@
             }
         }
     }
-    var credit = document.querySelectorAll('.compat-field-credit td.field input[type="text"]')[0];
-    credit.value = photoCredNew;
-    jQuery(credit).keydown();
-    jQuery(credit).keypress();
-    jQuery(credit).keyup();
-    jQuery(credit).blur();
-    jQuery(credit).focus();
-    jQuery(credit).change();
+    if (typeof document.querySelectorAll('.compat-field-credit td.field input[type="text"]')[0] != 'undefined') {
+        var credit = document.querySelectorAll('.compat-field-credit td.field input[type="text"]')[0];
+        credit.value = photoCredNew;
+        jQuery(credit).keydown();
+        jQuery(credit).keypress();
+        jQuery(credit).keyup();
+        jQuery(credit).blur();
+        jQuery(credit).focus();
+        jQuery(credit).change();
+    }
     var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));
     if (dateline.length === 0 || /[a-z]/.test(dateline) === false) {
         captionTextNew = captionTextNew.replace(dateline,'').replace(':','').trim();

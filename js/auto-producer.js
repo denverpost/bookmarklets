@@ -392,6 +392,19 @@
                 'help-sections': 'Latest News, News, Colorado News, Politics, Local Politics, Colorado Legislature',
                 'help-primary-section': 'Colorado Legislature',
             },
+            '32': {
+                'title': 'National Politics',
+                'check-sections': ['48','75','81'],
+                'add-tags': [''],
+                'primary-section': '81',
+                'primary-tag': '',
+                'features': [''],
+                'apple-news': [''],
+                'related': true,
+                'help-primary-tag': ' ',
+                'help-sections': 'Latest News, Politics, National Politics',
+                'help-primary-section': 'National Politics',
+            },
             '40': {
                 'title': 'Business Story',
                 'check-sections': ['48','15'],
@@ -854,7 +867,7 @@
             args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
             args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
             args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
-            if (validOptions.indexOf(selectFunction) != -1) {
+            if (validOptions.indexOf(String(selectFunction)) != -1) {
                 jQuery('#auto-producer').html(APsuccessText);
                 trumpThatBitch(options[selectFunction],args);
                 setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);

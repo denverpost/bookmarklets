@@ -13,7 +13,7 @@ javascript:(function(){
     grafsClean = [];
     for(i=0,len=grafs.length;i<len;i++) {
         if (grafs[i].match(/<p \/>/) === null) {
-            grafsClean.push(grafs[i]);
+            grafsClean.push(grafs[i].replace('</p>',''));
         }
     }
     if (grafsClean[0].toLowerCase().startsWith('by')) {

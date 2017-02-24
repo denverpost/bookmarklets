@@ -8,6 +8,7 @@ javascript:(function(){
         return wordsOut.join(' ');
     }
     var content = document.getElementById('content');
+    content = content.replace('(AP) —','--');
     var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|    <p>|[\s]{2,5}|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
     var grafs = content.textContent.split(splitters);
     grafsClean = [];

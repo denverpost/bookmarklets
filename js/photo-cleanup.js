@@ -54,19 +54,17 @@
             }
         } else {
             if (photoCred.match(/AP Photo by/)) {
-                var byAP = ', The Associated Press';
-                if (photoCred.match(/, File/)) {
-                    photoCred.replace(', File','');
-                    byAP = ', Associated Press file';
+                if (photoCred.indexOf(', File') > -1) {
+                    photoCredNew = photoCred.replace('AP Photo by ','').replace(', File','') + ', Associated Press file';
+                } else {
+                	photoCredNew = photoCred.replace('AP Photo by ','') + byAP;
                 }
-            	photoCredNew = photoCred.replace('AP Photo by ','') + byAP;
             } else if (photoCred.match(/AP Photo\//)) {
-                var byAP = ', The Associated Press';
-                if (photoCred.match(/, File/)) {
-                    photoCred.replace(', File','');
-                    byAP = ', Associated Press file';
+                if (photoCred.indexOf(', File') > -1) {
+                    photoCredNew = photoCred.replace('AP Photo/','').replace(', File','') + ', Associated Press file';
+                } else {
+                	photoCredNew = photoCred.replace('AP Photo/','') + byAP;
                 }
-            	photoCredNew = photoCred.replace('AP Photo/','') + byAP;
             } else if (photoCred.match(/Photo By/)) {
             	photoCredNew = photoCred.replace('Photo By ','').replace('/',', ').replace('The Denver Post via Getty Images','The Denver Post');
             } else if (photoCred.match(/Photo by/)) {

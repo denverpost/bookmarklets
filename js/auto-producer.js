@@ -631,7 +631,7 @@
                 'primary-section': '81',
                 'primary-tag': '',
                 'features': [''],
-                'apple-news': [''],
+                'apple-news': ['politics'],
                 'related': true,
                 'help-primary-tag': ' ',
                 'help-sections': 'Latest News, Politics, National Politics',

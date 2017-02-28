@@ -251,16 +251,16 @@
                             bylineSplit = byline.split(',')[0].capitalizeFirstLetters().replace('By ','');
                         }
                     }
-                }
-                var author = document.getElementById('coauthors_hidden_input').value;
-                if (author == 'the-associated-press') {
-                    if (bylineSplit == 'APonly') {
-                        grafsClean.shift();
-                    } else {
-                        grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Associated Press</em>';
+                    var author = document.getElementById('coauthors_hidden_input').value;
+                    if (author == 'the-associated-press') {
+                        if (bylineSplit == 'APonly') {
+                            grafsClean.shift();
+                        } else {
+                            grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Associated Press</em>';
+                        }
+                    } else if (author == 'the-washington-post') {
+                        grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Washington Post</em>';
                     }
-                } else if (author == 'the-washington-post') {
-                    grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Washington Post</em>';
                 }
             }
             if (args['related']) {
@@ -1440,7 +1440,7 @@
                 document.getElementById('dfm_hub_start_dd').value = padNum(then.getDate());
                 document.getElementById('dfm_hub_start_yyyy').value = then.getFullYear();
                 document.getElementById('dfm_hub_end_mm').value = padNum(now.getMonth() + 1);
-                document.getElementById('dfm_hub_end_dd').value = padNum(now.getDate());
+                document.getElementById('dfm_hub_end_dd').value = padNum(now.getDate() + 1);
                 document.getElementById('dfm_hub_end_yyyy').value = now.getFullYear();
             }
         }
@@ -1546,7 +1546,7 @@
             jQuery('select[name="dfm_start_dd"]').val(padNum(then.getDate()));
             jQuery('select[name="dfm_start_yyyy"]').val(then.getFullYear());
             jQuery('select[name="dfm_end_mm"]').val(padNum(now.getMonth() + 1));
-            jQuery('select[name="dfm_end_dd"]').val(padNum(now.getDate()));
+            jQuery('select[name="dfm_end_dd"]').val(padNum(now.getDate()) + 1);
             jQuery('select[name="dfm_end_yyyy"]').val(now.getFullYear());
         }
 

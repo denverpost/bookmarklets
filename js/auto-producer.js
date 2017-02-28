@@ -242,15 +242,23 @@
                 if (grafsClean[0].toLowerCase().startsWith('by')) {
                     var byline = grafsClean[0];
                     var bylineSplit = '';
-                    if (byline.indexOf('(c)') > -1) {
-                        bylineSplit = byline.split('(c)')[0].split(',')[0].capitalizeFirstLetters().replace('By ','').trim();
+                    if (byline == 'by the associated press') {
+                        bylineSplit = 'APonly';
                     } else {
-                        bylineSplit = byline.split(',')[0].capitalizeFirstLetters().replace('By ','');
+                        if (byline.indexOf('(c)') > -1) {
+                            bylineSplit = byline.split('(c)')[0].split(',')[0].capitalizeFirstLetters().replace('By ','').trim();
+                        } else {
+                            bylineSplit = byline.split(',')[0].capitalizeFirstLetters().replace('By ','');
+                        }
                     }
                 }
                 var author = document.getElementById('coauthors_hidden_input').value;
                 if (author == 'the-associated-press') {
-                    grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Associated Press</em>';
+                    if (bylineSplit == 'APonly') {
+                        grafsClean.shift();
+                    } else {
+                        grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Associated Press</em>';
+                    }
                 } else if (author == 'the-washington-post') {
                     grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Washington Post</em>';
                 }
@@ -1374,17 +1382,17 @@
             },
             '1': {
                 'title': 'Associated Press',
-                'search-term': 'AP',
+                'search-term': 'AP ',
                 'default': ' checked',
             },
             '2': {
                 'title': 'Washington Post',
-                'search-term': 'washington post',
+                'search-term': 'washington post ',
                 'default': false,
             },
             '3': {
                 'title': 'Bloomberg (experimental)',
-                'search-term': 'bloomberg',
+                'search-term': 'bloomberg ',
                 'default': false,
             }
         };
@@ -1441,7 +1449,7 @@
             var searchLength = jQuery('input[name=searchlength]:checked').val();
             var selectFunction = jQuery('#APoptionSelect').val();
             var selectSearch = jQuery("input[name=searchname]:checked").val();
-            var searchString = (selectFunction !== '') ? selectSearch + ' ' + selectFunction : selectSearch;
+            var searchString = (selectFunction !== '') ? selectSearch + selectFunction : selectSearch;
             fillDates(searchLength);
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);

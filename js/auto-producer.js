@@ -230,7 +230,7 @@
                 return wordsOut.join(' ');
             };
             var content = document.getElementById('content');
-            var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<\/p> <p>|<\/p> <p \/> <p>/;
+            var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
             var grafs = content.textContent.split(splitters);
             grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {

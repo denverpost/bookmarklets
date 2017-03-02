@@ -187,8 +187,12 @@
             if (options['title'] == 'Weather Story') {
                 contentArgs['wx'] = true;
             }
+            if (options['title'] == 'Recipes') {
+                contentArgs['rel-section'] = true;
+            }
             if (options['title'] == 'Crime Story' && !args['homicideSelect']) {
                 contentArgs['crime'] = true;
+                contentArgs['related-override'] = true;
             }
             if (args['homicideSelect']) {
                 contentArgs['homicide'] = true;
@@ -264,8 +268,10 @@
                 }
             }
             if (args['related']) {
-                if (grafsClean.length >= 6) {
+                if (grafsClean.length >= 6 || contentArgs['related-override']) {
                     grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
+                } else if (contentArgs['rel-section']) {
+                    grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-section"]');
                 }
             }
             if (args['wx']) {
@@ -439,11 +445,11 @@
                 if ( typeof item !== 'undefined' ) {
                     var section_id = prompt('Select the type of news to insert:\n\n\n\
                     News:\n\
-                        (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) Politics, (23) Colo. Leg.\n\n\
+                        (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg.\n\n\
                     Sports:\n\
                         (Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n\
                     Features:\n\
-                        (6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel\n\n\
+                        (6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel, (25) Lifestyle\n\n\
                     Misc:\n\
                         (13) YourHub, (14) Editorials, (21) Season to Share, (22) Stock Show, (420) Marijuana\n\n\n\
                     Selection:', '');
@@ -463,6 +469,8 @@
                     else if ( section_id.indexOf('21') >= 0 ) { section = 'season-to-share'; }
                     else if ( section_id.indexOf('22') >= 0 ) { section = 'stock-show'; }
                     else if ( section_id.indexOf('23') >= 0 ) { section = 'colorado-legislature'; }
+                    else if ( section_id.indexOf('24') >= 0 ) { section = 'trump-administration'; }
+                    else if ( section_id.indexOf('25') >= 0 ) { section = 'lifestyle'; }
                     else if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; }
                     else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; }
                     else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; }
@@ -735,6 +743,19 @@
                 'help-primary-tag': 'book reviews',
                 'help-sections': 'Entertainment, Books, Latest News',
                 'help-primary-section': 'Books',
+            },
+            '56': {
+                'title': 'Recipes',
+                'check-sections': ['48','83','88','89'],
+                'add-tags': ['recipes'],
+                'primary-section': '89',
+                'primary-tag': '',
+                'features': [''],
+                'apple-news': ['entertainment','lifestyle'],
+                'related': true,
+                'help-primary-tag': '',
+                'help-sections': 'Latest News, Lifestyle, Food & Drink, Recipes',
+                'help-primary-section': 'Food & Drink',
             },
             '61': {
                 'title': 'YourHub Crime Blotter',

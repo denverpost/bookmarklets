@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v0.9.8';
+    var APversion = ' v0.9.9';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -195,7 +195,6 @@
             }
             if (options['title'] == 'Crime Story' && !args['homicideSelect']) {
                 contentArgs['crime'] = true;
-                contentArgs['related-override'] = true;
             }
             if (args['homicideSelect']) {
                 contentArgs['homicide'] = true;
@@ -206,7 +205,8 @@
             if (args['promoSelect']) {
                 contentArgs['promos'] = true;
             }
-            if (args['title'] == 'YourHub Crime Blotter') {
+            if (options['title'] == 'YourHub Crime Blotter') {
+                contentArgs['related-override'] = true;
                 document.getElementById('fm-mason_post_settings-0-schema-0-featured_image_settings-0').value = 'hide';
             }
             if (typeof options['check-sections'] != 'undefined') {
@@ -244,7 +244,7 @@
             newExcerpt = (grafs[0].toLowerCase().startsWith('by')) ? grafs[1] : grafs[0];
             grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {
-                if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0) {
+                if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {
                     grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--'));
                 }
             }
@@ -280,10 +280,11 @@
                 document.getElementById('excerpt').value = newExcerptText;
             }
             if (args['related']) {
+                var relPlace = (grafsClean.length-4 < 2) ? 2 : grafsClean.length-4;
                 if (grafsClean.length >= 6 || args['related-override']) {
-                    grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
+                    grafsClean.splice(relPlace, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
                 } else if (args['rel-section']) {
-                    grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-section"]');
+                    grafsClean.splice(relPlace, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-section"]');
                 }
             }
             if (args['wx']) {
@@ -690,6 +691,19 @@
                 'help-primary-tag': 'More Business News',
                 'help-sections': 'Latest News, Business, Technology',
                 'help-primary-section': 'Technology',
+            },
+            '42': {
+                'title': 'Featured Homes',
+                'check-sections': ['15','25','4452','9101','48','39','47','91'],
+                'add-tags': ['Colorado real estate photos','Featured Homes','Vail Mountain'],
+                'primary-section': '25',
+                'primary-tag': '307',
+                'features': [''],
+                'apple-news': ['business','lifestyle'],
+                'related': true,
+                'help-primary-tag': 'Featured Homes',
+                'help-sections': 'Business, Real Estate, Don\'t Miss, Entertainment / Lifestyle, Latest News, News, Colorado News, Home & Garden',
+                'help-primary-section': 'Real Estate',
             },
             '51': {
                 'title': 'Ask Amy',

@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v0.9.7';
+    var APversion = ' v0.9.8';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -168,13 +168,13 @@
             jQuery('.suggest.coauthor-row:first-child').append('<input id="coauthors_hidden_input" name="coauthors[]" value="the-washington-post" type="hidden">');
         }
 
+        function checkDPSPOnline() {
+            document.getElementById('following_usergroups12195').checked = true;
+        }
+
         function trumpThatBitch(options,args) {
             var contentArgs = [];
             contentArgs['wire'] = true;
-            var excerpt = jQuery('#excerpt').text();
-            var excerptDateline = excerpt.substring(0,excerpt.indexOf('(AP) —'));
-            var excerptTextNew = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
-            jQuery('#excerpt').text(excerptTextNew);
             if (typeof args['WaPoauthorSelect'] != 'undefined' && args['WaPoauthorSelect'] === true) {
                 addWaPoauthor();
             }
@@ -183,6 +183,9 @@
             }
             if ((typeof options['related'] != 'undefined' && options['related'] === true) || args['selectRelated'] === true) {
                 contentArgs['related'] = true;
+            }
+            if (options['check-sections'].indexOf('94') > -1) {
+                checkDPSPOnline();
             }
             if (options['title'] == 'Weather Story') {
                 contentArgs['wx'] = true;
@@ -233,9 +236,12 @@
                 }
                 return wordsOut.join(' ');
             };
+            var excerpt = document.getElementById('excerpt').textContent;
+            var newExcerpt = false;
             var content = document.getElementById('content');
             var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
             var grafs = content.textContent.split(splitters);
+            newExcerpt = (grafs[0].toLowerCase().startsWith('by')) ? grafs[1] : grafs[0];
             grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0) {
@@ -266,11 +272,17 @@
                         grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Washington Post</em>';
                     }
                 }
+                if (excerpt.length < 10) {
+                    excerpt = newExcerpt;
+                }
+                var excerptDateline = excerpt.substring(0,excerpt.indexOf('(AP) —'));
+                var newExcerptText = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
+                document.getElementById('excerpt').value = newExcerptText;
             }
             if (args['related']) {
-                if (grafsClean.length >= 6 || contentArgs['related-override']) {
+                if (grafsClean.length >= 6 || args['related-override']) {
                     grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
-                } else if (contentArgs['rel-section']) {
+                } else if (args['rel-section']) {
                     grafsClean.splice(grafsClean.length-4, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-section"]');
                 }
             }
@@ -534,7 +546,7 @@
                 'add-tags': [],
                 'features': [],
                 'help-sections': 'Does not add sections or tags!',
-                'related' : false,
+                'related': false,
             },
             '1': {
                 'title': 'Trump Story',
@@ -756,6 +768,32 @@
                 'help-primary-tag': '',
                 'help-sections': 'Latest News, Lifestyle, Food & Drink, Recipes',
                 'help-primary-section': 'Food & Drink',
+            },
+            '57': {
+                'title': 'Gardening',
+                'check-sections': ['48','83','91'],
+                'add-tags': ['Punch List'],
+                'primary-section': '91',
+                'primary-tag': '7729',
+                'features': [''],
+                'apple-news': [''],
+                'related': true,
+                'help-primary-tag': 'Gardening',
+                'help-sections': 'Latest News, Lifestyle, Home & Garden',
+                'help-primary-section': 'Home & Garden',
+            },
+            '58': {
+                'title': 'Television',
+                'check-sections': ['30','36','9101','48'],
+                'add-tags': [''],
+                'primary-section': '36',
+                'primary-tag': '',
+                'features': [''],
+                'apple-news': [''],
+                'related': true,
+                'help-primary-tag': ' ',
+                'help-sections': 'Entertainment, Television, Entertainment / Lifestyle, Latest News',
+                'help-primary-section': 'Television',
             },
             '61': {
                 'title': 'YourHub Crime Blotter',

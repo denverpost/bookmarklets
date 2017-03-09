@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v0.9.9';
+    var APversion = ' v1.0.0';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -184,16 +184,16 @@
             if ((typeof options['related'] != 'undefined' && options['related'] === true) || args['selectRelated'] === true) {
                 contentArgs['related'] = true;
             }
-            if (options['check-sections'].indexOf('94') > -1) {
+            if (typeof options['check-sections'] != 'undefined' && options['check-sections'].indexOf('94') > -1) {
                 checkDPSPOnline();
             }
-            if (options['title'] == 'Weather Story') {
+            if (typeof options['title'] != 'undefined' && options['title'] == 'Weather Story') {
                 contentArgs['wx'] = true;
             }
-            if (options['title'] == 'Recipes') {
+            if (typeof options['title'] != 'undefined' && options['title'] == 'Recipes') {
                 contentArgs['rel-section'] = true;
             }
-            if (options['title'] == 'Crime Story' && !args['homicideSelect']) {
+            if (typeof options['title'] != 'undefined' && options['title'] == 'Crime Story' && !args['homicideSelect']) {
                 contentArgs['crime'] = true;
             }
             if (args['homicideSelect']) {
@@ -249,7 +249,15 @@
             var content = document.getElementById('content');
             var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
             var grafs = content.textContent.split(splitters);
-            newExcerpt = (grafs[0].toLowerCase().startsWith('by')) ? grafs[1] : grafs[0];
+            if (grafs[0].toLowerCase().startsWith('by') || grafs[0].toLowerCase().startsWith('[caption')) {
+                if (grafs[1].toLowerCase().startsWith('by') || grafs[1].toLowerCase().startsWith('[caption')) {
+                    newExcerpt = grafs[2];    
+                } else {
+                    newExcerpt = grafs[1];
+                }
+            } else {
+                newExcerpt = grafs[0];
+            }
             grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {

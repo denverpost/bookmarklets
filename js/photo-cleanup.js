@@ -25,10 +25,16 @@
     document.querySelectorAll('[data-setting="description"] textarea')[0].value = caption.textContent;
     var captionText = caption.textContent.replace('FILE - ','');
     var afpCredit = false;
+    var wapoCredit = false;
     if (captionText.match(/\/ AFP PHOTO \//)) {
         captionSplit = captionText.split("/ AFP PHOTO /");
         captionText = captionSplit[0];
         afpCredit = captionSplit[1];
+    }
+    if (captionText.match(/ MUST CREDIT\: /)) {
+        captionSplit = captionText.split(" MUST CREDIT\: ");
+        captionText = captionSplit[0];
+        wapoCredit = captionSplit[1];
     }
     var re = /\(([^\(\)]{10,})\)/;
     var photoCred = '';
@@ -52,6 +58,8 @@
             } else {
                 photoCredNew = afpCreditNew.toLowerCase().capitalizeFirstLetters() + ', AFP/Getty Images';
             }
+        } else if (wapoCredit !== false) {
+            photoCredNew = wapoCredit;
         } else {
             if (photoCred.match(/AP Photo by/)) {
                 if (photoCred.indexOf(', File') > -1) {
@@ -84,13 +92,24 @@
     }
     var dateline = captionTextNew.substring(0,captionTextNew.indexOf(':'));
     if (dateline.length === 0 || /[a-z]/.test(dateline) === false) {
-        captionTextNew = captionTextNew.replace(dateline,'').replace(':','').trim();
+        captionTextNew = captionTextNew.replace(dateline,'').replace(':','').replace('(L-r) ','').trim();
         caption.value = captionTextNew;
     }
     var altParent = document.querySelectorAll('[data-setting="alt"] input[type="text"]');
     var alt = altParent[0];
-    var elipsis = (captionTextNew.length <= 6) ? ' ...' : '';
-    var altText = trim_words(captionTextNew,6) + elipsis;
+    var altText = '';
+    var elipsis = (captionTextNew.length >= 6) ? ' ...' : '';
+    if (captionTextNew.indexOf('file photo,') > -1 || captionTextNew.indexOf('In this photo taken') > -1) {
+        if (captionTextNew.indexOf('In this photo taken') > -1) {
+            altText = trim_words(captionTextNew.replace(/([^\,]*\,){3}/, ''),6);
+        } else if (captionTextNew.indexOf('file photo,') > -1) {
+            altText = trim_words(captionTextNew.replace(/([^\,]*\,){3}/, ''),6);
+        }
+        altText = altText.trim() + elipsis;
+        altText = altText.charAt(0).toUpperCase() + altText.slice(1);
+    } else {
+        altText = trim_words(captionTextNew,6) + elipsis;
+    }
     alt.value = altText;
     var customCaption = document.querySelectorAll('.compat-field-custom_caption td.field textarea')[0];
     customCaption.focus();

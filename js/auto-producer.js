@@ -229,12 +229,20 @@
 
         function processContent(args) {
             String.prototype.capitalizeFirstLetters = function() {
-                var words = this.split(/[\s]+/);
+                var words = this.replace(/,(?=[^\s])/g, ", ").split(/[\s]+/);
                 var wordsOut = [];
                 for(i=0,len=words.length;i<len;i++) {
-                    wordsOut.push(words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase());
+                    if (words[i].toLowerCase() == 'and') {
+                        wordsOut.push(words[i].toLowerCase())
+                    } else {
+                        wordsOut.push(words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase());
+                    }
                 }
-                return wordsOut.join(' ');
+                wordsOut = wordsOut.join(' ');
+                if (wordsOut.match(/,\s*$/)) {
+                    wordsOut = wordsOut.replace(/,\s*$/, "");
+                }
+                return wordsOut;
             };
             var excerpt = document.getElementById('excerpt').textContent;
             var newExcerpt = false;
@@ -245,20 +253,22 @@
             grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {
-                    grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--'));
+                    grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('&#8212;',' '));
                 }
             }
             if (args['wire']) {                
                 if (grafsClean[0].toLowerCase().startsWith('by')) {
                     var byline = grafsClean[0];
                     var bylineSplit = '';
-                    if (byline == 'by the associated press') {
+                    if (byline.toLowerCase() == 'by the associated press') {
                         bylineSplit = 'APonly';
                     } else {
+                        var index = byline.lastIndexOf(',');
                         if (byline.indexOf('(c)') > -1) {
-                            bylineSplit = byline.split('(c)')[0].split(',')[0].capitalizeFirstLetters().replace('By ','').trim();
+                            console.log(byline.split('(c)')[0]);
+                            bylineSplit = byline.split('(c)')[0].substr(0,index).capitalizeFirstLetters().replace('By ','').trim();
                         } else {
-                            bylineSplit = byline.split(',')[0].capitalizeFirstLetters().replace('By ','');
+                            bylineSplit = byline.substr(0,index).capitalizeFirstLetters().replace('By ','');
                         }
                     }
                     var author = document.getElementById('coauthors_hidden_input').value;
@@ -1464,12 +1474,12 @@
             '0': {
                 'title': 'None',
                 'search-term': '',
-                'default': false,
+                'default': ' checked',
             },
             '1': {
                 'title': 'Associated Press',
                 'search-term': 'AP ',
-                'default': ' checked',
+                'default': false,
             },
             '2': {
                 'title': 'Washington Post',

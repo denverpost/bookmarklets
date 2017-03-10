@@ -36,6 +36,16 @@
         }
         return str.join("&");
     }
+
+    function stripTheHTML(html) {
+       var tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent || tmp.innerText || "";
+    }
+    
+    function slugItUp(inText) {
+        return inText.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+    }
     
     function autoProducerPost(randomGif) {
         function captureSections() {
@@ -172,6 +182,30 @@
             document.getElementById('following_usergroups12195').checked = true;
         }
 
+        function suggestSomeTags(tags) {
+            tagsHTML = '<script>';
+            tagsHTML += 'function slugItUp(inText) {';
+            tagsHTML += 'return inText.toLowerCase().replace(/[^\w ]+/g,\'\').replace(/ +/g,\'-\');';
+            tagsHTML += '}';
+            tagsHTML += 'function addSuggestedTag(newSuggestedTag) {';
+            tagsHTML += 'document.getElementById(\'new-tag-post_tag\').value = newSuggestedTag;';
+            tagsHTML += 'jQuery(\'#post_tag .ajaxtag input.button.tagadd\').click();';
+            tagsHTML += 'var delTag = \'#tagSuggest_\' + slugItUp(newSuggestedTag);';
+            tagsHTML += 'jQuery(\'delTag\').remove();';
+            tagsHTML += '}';
+            tagsHTML += '</script>'
+            tagsHTML += '<div style="width:88%;padding:.5em 1em;border:1px solid DarkRed;font-size:1em;color:DarkRed;">';
+            tagsHTML += '<p style="color:black;font-size:1.1em;">I have some suggested tags for you -- click to add them!</p>';
+            tagsHTML += '<ul style="list-style-type:none;text-indent:none;font-size:1.2em;">';
+            for (var i=0,len=tags.length;i<len;i++){
+                var slug = slugItUp(tags[i]);
+                tagsHTML += '<li id="tagSuggest_'+slug+'" onClick="javascript:addSuggestedTag(\''+tags[i]+'\')" style="cursor:pointer;margin:0 0 .25em;padding:0;">'+tags[i]+'</li>';
+            }
+            tagsHTML += '</ul>';
+            tagsHTML += '</div>';
+            jQuery('#tagsdiv-post_tag .inside').prepend(tagsHTML);
+        }
+
         function trumpThatBitch(options,args) {
             var contentArgs = [];
             contentArgs['wire'] = true;
@@ -227,7 +261,8 @@
             if (typeof options['apple-news'] != 'undefined') {
                 checkAppleNewsBoxes(options['apple-news']);
             }
-            processContent(contentArgs);
+            var tagsSuggested = processContent(contentArgs);
+            suggestSomeTags(tagsSuggested);
         }
 
         function processContent(args) {
@@ -250,18 +285,26 @@
             var excerpt = document.getElementById('excerpt').textContent;
             var newExcerpt = false;
             var content = document.getElementById('content');
+            var tagLen = autoProducerTagList.length;
+            var suggestedTags = [];
+            var tagContent = content.textContent.toLowerCase();
+            while(tagLen--) {
+                if (tagContent.indexOf(autoProducerTagList[tagLen].toLowerCase()) != -1) {
+                    suggestedTags.push(autoProducerTagList[tagLen]);
+                }
+            }
             var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
             var grafs = content.textContent.split(splitters);
             if (grafs[0].toLowerCase().startsWith('by') || grafs[0].toLowerCase().startsWith('[caption')) {
                 if (grafs[1].toLowerCase().startsWith('by') || grafs[1].toLowerCase().startsWith('[caption')) {
-                    newExcerpt = grafs[2];    
+                    newExcerpt = stripTheHTML(grafs[2].replace(/\[.+\]/g,''));    
                 } else {
-                    newExcerpt = grafs[1];
+                    newExcerpt = stripTheHTML(grafs[1].replace(/\[.+\]/g,''));
                 }
             } else {
-                newExcerpt = grafs[0];
+                newExcerpt = stripTheHTML(grafs[0].replace(/\[.+\]/g,''));
             }
-            grafsClean = [];
+            var grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {
                     grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('&#8212;',' '));
@@ -271,26 +314,29 @@
                 if (grafsClean[0].toLowerCase().startsWith('by')) {
                     var byline = grafsClean[0];
                     var bylineSplit = '';
+                    var author = document.getElementById('coauthors_hidden_input').value;
                     if (byline.toLowerCase() == 'by the associated press') {
                         bylineSplit = 'APonly';
                     } else {
+                        console.log(byline);
                         var index = byline.lastIndexOf(',');
                         if (byline.indexOf('(c)') > -1) {
-                            console.log(byline.split('(c)')[0]);
                             bylineSplit = byline.split('(c)')[0].substr(0,index).capitalizeFirstLetters().replace('By ','').trim();
-                        } else {
+                        } else if (author != 'the-associated-press') {
+                            console.log(author);
                             bylineSplit = byline.substr(0,index).capitalizeFirstLetters().replace('By ','');
+                        } else {
+                            bylineSplit = byline.capitalizeFirstLetters().replace('By ','');
                         }
                     }
-                    var author = document.getElementById('coauthors_hidden_input').value;
                     if (author == 'the-associated-press') {
                         if (bylineSplit == 'APonly') {
                             grafsClean.shift();
                         } else {
-                            grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Associated Press</em>';
+                            grafsClean[0] = '<strong>By ' + bylineSplit + '</strong>, <em>The Associated Press</em>';
                         }
                     } else if (author == 'the-washington-post') {
-                        grafsClean[0] = 'By <strong>' + bylineSplit + '</strong>, <em>The Washington Post</em>';
+                        grafsClean[0] = '<strong>By ' + bylineSplit + '</strong>, <em>The Washington Post</em>';
                     }
                 }
                 if (excerpt.length < 10) {
@@ -471,6 +517,26 @@
                     '1': {
                         'which': 'news',
                         'name': 'Mile High Roundup'
+                    },
+                    '2': {
+                        'which': 'sportsdaily',
+                        'name': 'Sports Daily newsletter'
+                    },
+                    '3': {
+                        'which': 'bronxinsider',
+                        'name': 'Broncos Insider'
+                    },
+                    '4': {
+                        'which': 'marijuana',
+                        'name': 'Cannabist Newsletter'
+                    },
+                    '5': {
+                        'which': 'theknow',
+                        'name': 'entertainment, dining and things to do newsletter'
+                    },
+                    '6': {
+                        'which': 'techplus',
+                        'name': 'Tech+ newsletter'
                     }
                 }
                 var newsletterPromptText = 'Which newsletter do you want to plug? (Hit ENTER for the Roundup)\n\n\
@@ -480,6 +546,7 @@
                         newsletterPromptText += '        ( ' + object + ' ) ' + newsletters[object]['name'] + '\n';
                     }
                 }
+                newsletterPromptText += '\nEnter your selection:\n\n';
                 loop:
                 while(true) {
                     var newsletterId = prompt(newsletterPromptText,'1');
@@ -562,6 +629,7 @@
 <div style="width:100%;height: 150px;overflow:hidden"><a href=\'/denver-homicides/\'><img src=\'http://www.denverpost.com/wp-content/uploads/2016/10/homicide-map-denver.png\' alt=\'Denver Homicide Map\' border=\'0\'></a></div> <p>Follow this year\'s <a href=\'/denver-homicides/\'>homicides in Denver</a>, and track the city\'s homicide rate. See also: <a href="http://crime.denverpost.com/map/">Denver crime map</a>.</p> </aside>[cq comment="ASIDE PLACED ABOVE"]');
             }
             document.getElementById('content').value = grafsClean.join('\n\n');
+            return suggestedTags;
         }
 
         function insertCX() {
@@ -590,653 +658,7 @@
             'cannabist':'apple-news-section-aa2f2d08-860e-32b4-a1d3-765ea19a85d7',
             'opinion':'apple-news-section-4c9d0650-2499-3637-b87f-f9355a2a3471',
         };
-        var options = {
-            '0': {
-                'title': 'Do Nothing',
-                'add-tags': [],
-                'features': [],
-                'help-sections': 'Does not add sections or tags!',
-                'related': false,
-            },
-            '1': {
-                'title': 'Trump Story',
-                'check-sections': ['48','11580','75','81','39','59'],
-                'add-tags': ['Donald Trump'],
-                'primary-section': '11580',
-                'primary-tag': '1276',
-                'features': [],
-                'apple-news': ['politics'],
-                'related' : true,
-                'help-primary-tag': 'Donald Trump',
-                'help-sections': 'Latest News, News, Nation and World News, Politics, National Politics, Trump Administration',
-                'help-primary-section': 'Trump Administration',
-            },
-            '2': {
-                'title': 'Cannabist Story',
-                'check-sections': ['48','39','47','53'],
-                'add-tags': ['marijuana politics'],
-                'primary-section': '53',
-                'primary-tag': '9769',
-                'features': [''],
-                'apple-news': ['cannabist'],
-                'related': true,
-                'help-primary-tag': 'marijuana politics',
-                'help-sections': 'Latest News, News, Colorado News, Marijuana',
-                'help-primary-section': 'Marijuana',
-            },
-            '10': {
-                'title': 'Nation / World Story',
-                'check-sections': ['48','39','59'],
-                'add-tags': [],
-                'primary-section': '59',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': [],
-                'related' : false,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, News, Nation and World News',
-                'help-primary-section': 'Nation and World News',
-            },
-            '11': {
-                'title': 'Obamacare',
-                'check-sections': ['48','15','21','39','44','75','81'],
-                'add-tags': ['Obamacare','health insurance'],
-                'primary-section': '21',
-                'primary-tag': '963',
-                'features': [],
-                'apple-news': ['politics'],
-                'related': true,
-                'help-primary-tag': 'Obamacare',
-                'help-sections': 'Latest News, Business, Healthcare, News, Health, Politics, National Politics',
-                'help-primary-section': 'Healthcare',
-            },
-            '20': {
-                'title': 'Colorado News',
-                'check-sections': ['48','39','47'],
-                'add-tags': [],
-                'primary-section': '47',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['colorado-news'],
-                'related' : true,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, News, Colorado News,',
-                'help-primary-section': 'Colorado News',
-            },
-            '21': {
-                'title': 'Colorado Wildfires',
-                'check-sections': ['48','39','47','65'],
-                'add-tags': ['wildfires','Colorado wildfires 2017'],
-                'primary-section': '65',
-                'primary-tag': '11673',
-                'features': [],
-                'apple-news': ['colorado-news'],
-                'related' : true,
-                'help-primary-tag': 'Colorado wildfires 2017',
-                'help-sections': 'Latest News, News, Colorado News, Colorado Wildfires',
-                'help-primary-section': 'Colorado Wildfires',
-            },
-            '22': {
-                'title': 'Crime Story',
-                'check-sections': ['48','40','47','39'],
-                'add-tags': [],
-                'primary-section': '40',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['colorado-news'],
-                'related' : false,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, News, Colorado News, Crime &amp; Courts',
-                'help-primary-section': 'Crime &amp; Courts',
-            },
-            '23': {
-                'title': 'Weather Story',
-                'check-sections': ['48','64','47','39'],
-                'add-tags': [],
-                'primary-section': '64',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['colorado-news'],
-                'related' : true,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, News, Colorado News, Weather',
-                'help-primary-section': 'Weather',
-            },
-            '31': {
-                'title': 'Colorado Legislature',
-                'check-sections': ['48','39','47','79','80','75'],
-                'add-tags': [],
-                'primary-section': '79',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['politics'],
-                'related' : false,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, News, Colorado News, Politics, Local Politics, Colorado Legislature',
-                'help-primary-section': 'Colorado Legislature',
-            },
-            '32': {
-                'title': 'National Politics',
-                'check-sections': ['48','75','81'],
-                'add-tags': [''],
-                'primary-section': '81',
-                'primary-tag': '',
-                'features': [''],
-                'apple-news': ['politics'],
-                'related': true,
-                'help-primary-tag': ' ',
-                'help-sections': 'Latest News, Politics, National Politics',
-                'help-primary-section': 'National Politics',
-            },
-            '40': {
-                'title': 'Business Story',
-                'check-sections': ['48','15'],
-                'add-tags': ['More Business News'],
-                'primary-section': '15',
-                'primary-tag': '7864',
-                'features': [],
-                'apple-news': ['business'],
-                'related' : false,
-                'help-primary-tag': 'More Business News',
-                'help-sections': 'Latest News, Business',
-                'help-primary-section': 'Business',
-            },
-            '41': {
-                'title': 'Technology Story',
-                'check-sections': ['48','15','27'],
-                'add-tags': ['More Business News'],
-                'primary-section': '27',
-                'primary-tag': '7864',
-                'features': [],
-                'apple-news': ['business'],
-                'related' : false,
-                'help-primary-tag': 'More Business News',
-                'help-sections': 'Latest News, Business, Technology',
-                'help-primary-section': 'Technology',
-            },
-            '42': {
-                'title': 'Featured Homes',
-                'check-sections': ['15','25','4452','9101','48','39','47','91'],
-                'add-tags': ['Colorado real estate photos','Featured Homes','Vail Mountain'],
-                'primary-section': '25',
-                'primary-tag': '307',
-                'features': [''],
-                'apple-news': ['business','lifestyle'],
-                'related': true,
-                'help-primary-tag': 'Featured Homes',
-                'help-sections': 'Business, Real Estate, Don\'t Miss, Entertainment / Lifestyle, Latest News, News, Colorado News, Home & Garden',
-                'help-primary-section': 'Real Estate',
-            },
-            '51': {
-                'title': 'Ask Amy',
-                'check-sections': ['48','85','83','84','6710','9101'],
-                'add-tags': ['advice','Ask Amy','relationship advice'],
-                'primary-section': '85',
-                'primary-tag': '7819',
-                'features': [],
-                'apple-news': ['lifestyle'],
-                'related' : true,
-                'help-primary-tag': 'Ask Amy, advice, relationship advice',
-                'help-sections': 'Latest News, Ask Amy, Lifestyle, Entertainment / Lifestyle, Family, Lifestyle Columnists',
-                'help-primary-section': 'Ask Amy',
-            },
-            '52': {
-                'title': 'Movie Review',
-                'check-sections': ['48','33','30','9101'],
-                'add-tags': ['movie reviews'],
-                'primary-section': '33',
-                'primary-tag': '4289',
-                'features': ['Outstream'],
-                'apple-news': ['entertainment'],
-                'related' : false,
-                'help-primary-tag': 'movie reviews',
-                'help-sections': 'Latest News, Movies, Entertainment, Entertainment / Lifestyle',
-                'help-primary-section': 'Movies',
-            },
-            '53': {
-                'title': 'Restaurants &amp; Dining',
-                'check-sections': ['48','83','90','9101'],
-                'add-tags': [],
-                'primary-section': '90',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['entertainment'],
-                'related' : true,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, Lifestyle, Restaurants &amp; Dining, Entertainment / Lifestyle',
-                'help-primary-section': 'Restaurants &amp; Dining',
-            },
-            '54': {
-                'title': 'Travel Story',
-                'check-sections': ['48','93'],
-                'add-tags': [],
-                'primary-section': '93',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['entertainment','lifestyle'],
-                'related' : false,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, Travel',
-                'help-primary-section': 'Travel',
-            },
-            '55': {
-                'title': 'Book Review',
-                'check-sections': ['30','32','48'],
-                'add-tags': ['book reviews'],
-                'primary-section': '32',
-                'primary-tag': '6989',
-                'features': [],
-                'apple-news': ['entertainment'],
-                'related': true,
-                'help-primary-tag': 'book reviews',
-                'help-sections': 'Entertainment, Books, Latest News',
-                'help-primary-section': 'Books',
-            },
-            '56': {
-                'title': 'Recipes',
-                'check-sections': ['48','83','88','89'],
-                'add-tags': ['recipes'],
-                'primary-section': '89',
-                'primary-tag': '',
-                'features': [''],
-                'apple-news': ['entertainment','lifestyle'],
-                'related': true,
-                'help-primary-tag': '',
-                'help-sections': 'Latest News, Lifestyle, Food & Drink, Recipes',
-                'help-primary-section': 'Food & Drink',
-            },
-            '57': {
-                'title': 'Gardening',
-                'check-sections': ['48','83','91'],
-                'add-tags': ['Punch List'],
-                'primary-section': '91',
-                'primary-tag': '7729',
-                'features': [''],
-                'apple-news': [''],
-                'related': true,
-                'help-primary-tag': 'Gardening',
-                'help-sections': 'Latest News, Lifestyle, Home & Garden',
-                'help-primary-section': 'Home & Garden',
-            },
-            '58': {
-                'title': 'Television',
-                'check-sections': ['30','36','9101','48'],
-                'add-tags': [''],
-                'primary-section': '36',
-                'primary-tag': '',
-                'features': [''],
-                'apple-news': [''],
-                'related': true,
-                'help-primary-tag': ' ',
-                'help-sections': 'Entertainment, Television, Entertainment / Lifestyle, Latest News',
-                'help-primary-section': 'Television',
-            },
-            '61': {
-                'title': 'YourHub Crime Blotter',
-                'check-sections': ['48','2222','40'],
-                'add-tags': ['crime blotter'],
-                'primary-section': '2222',
-                'primary-tag': '4241',
-                'features': [],
-                'apple-news': ['colorado-news'],
-                'related' : true,
-                'help-primary-tag': 'crime blotter',
-                'help-sections': 'Latest News, YourHub, Crime &amp; Courts',
-                'help-primary-section': 'YourHub',
-            },
-            '62': {
-                'title': 'YourHub Biz Profile',
-                'check-sections': ['48','2222','15'],
-                'add-tags': ['YourHub business profile'],
-                'primary-section': '2222',
-                'primary-tag': '4280',
-                'features': [],
-                'apple-news': ['colorado-news'],
-                'related' : true,
-                'help-primary-tag': 'YourHub business profile',
-                'help-sections': 'Latest News, YourHub, Business',
-                'help-primary-section': 'YourHub',
-            },
-            '70': {
-                'title': 'Mark Kiszla Column',
-                'check-sections': ['48','94','105'],
-                'add-tags': ['Mark Kiszla'],
-                'primary-section': '105',
-                'primary-tag': '4297',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Mark Kiszla',
-                'help-sections': 'Latest News, Sports, Sports Columnists',
-                'help-primary-section': 'Sports Columnists',
-            },
-            '71': {
-                'title': 'Broncos Story',
-                'check-sections': ['48','94','97'],
-                'add-tags': ['More Broncos News'],
-                'primary-section': '97',
-                'primary-tag': '7681',
-                'features': [],
-                'apple-news': ['broncos','sports'],
-                'related': true,
-                'help-primary-tag': 'More Broncos News',
-                'help-sections': 'Latest News, Sports, Denver Broncos',
-                'help-primary-section': 'Denver Broncos',
-            },
-            '72': {
-                'title': 'Rockies Story',
-                'check-sections': ['48','94','114'],
-                'add-tags': ['More Rockies News'],
-                'primary-section': '114',
-                'primary-tag': '9321',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'More Rockies News',
-                'help-sections': 'Latest News, Sports, Colorado Rockies',
-                'help-primary-section': 'Colorado Rockies',
-            },
-            '73': {
-                'title': 'Nuggets Story',
-                'check-sections': ['48','94','109'],
-                'add-tags': ['More Nuggets News'],
-                'primary-section': '109',
-                'primary-tag': '9690',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'More Nuggets News',
-                'help-sections': 'Latest News, Sports, Denver Nuggets',
-                'help-primary-section': 'Denver Nuggets',
-            },
-            '74': {
-                'title': 'Avalanche Story',
-                'check-sections': ['48','94','95'],
-                'add-tags': ['More Avalanche News'],
-                'primary-section': '95',
-                'primary-tag': '9684',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'More Avalanche News',
-                'help-sections': 'Latest News, Sports, Colorado Avalanche',
-                'help-primary-section': 'Colorado Avalanche',
-            },
-            '75': {
-                'title': 'Rapids Story',
-                'check-sections': ['48','94','113','6574'],
-                'add-tags': ['More Rapids news'],
-                'primary-section': '113',
-                'primary-tag': '11853',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'More Rapids news',
-                'help-sections': 'Latest News, Sports, Colorado Rapids, Soccer',
-                'help-primary-section': 'Colorado Rapids',
-            },
-            '76': {
-                'title': 'Golf Story',
-                'check-sections': ['48','94','106'],
-                'add-tags': [''],
-                'primary-section': '106',
-                'primary-tag': '',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': ' ',
-                'help-sections': 'Latest News, Sports, Golf',
-                'help-primary-section': 'Golf',
-            },
-            '77': {
-                'title': 'NASCAR Story',
-                'check-sections': ['48','94','108'],
-                'add-tags': ['NASCAR'],
-                'primary-section': '108',
-                'primary-tag': '5590',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'NASCAR',
-                'help-sections': 'Latest News, Sports, Motorsports',
-                'help-primary-section': 'Motorsports',
-            },
-            '78': {
-                'title': 'USMNT Soccer Story',
-                'check-sections': ['48','94','6574'],
-                'add-tags': ['U.S. Soccer','USMNT'],
-                'primary-section': '6574',
-                'primary-tag': '6022',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'USMNT',
-                'help-sections': 'Latest News, Sports, Soccer',
-                'help-primary-section': 'Soccer',
-            },
-            '79': {
-                'title': 'Terry Wickstrom',
-                'check-sections': ['48','94','111'],
-                'add-tags': ['Terry Wickstrom'],
-                'primary-section': '111',
-                'primary-tag': '7851',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': false,
-                'help-primary-tag': 'Terry Wickstrom',
-                'help-sections': 'Latest News, Sports, Outdoors',
-                'help-primary-section': 'Outdoors',
-            },
-            '80': {
-                'title': 'CU Buffs Football',
-                'check-sections': ['48','94','100','102'],
-                'add-tags': ['college football','CU Buffs football'],
-                'primary-section': '102',
-                'primary-tag': '11865',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'CU Buffs football',
-                'help-sections': 'Latest News, Sports, College Sports, Colorado Buffaloes',
-                'help-primary-section': 'Colorado Buffaloes',
-            },
-            '81': {
-                'title': 'CSU Rams Football',
-                'check-sections': ['48','94','100','101'],
-                'add-tags': ['college football','Colorado State football'],
-                'primary-section': '101',
-                'primary-tag': '11870',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Colorado State football',
-                'help-sections': 'Latest News, Sports, College Sports, Colorado State Rams',
-                'help-primary-section': 'Colorado State Rams',
-            },
-            '82': {
-                'title': 'CU Buffs Basketball',
-                'check-sections': ['48','94','100','102'],
-                'add-tags': ['college basketball','CU Buffs basketball'],
-                'primary-section': '102',
-                'primary-tag': '11945',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'CU Buffs basketball',
-                'help-sections': 'Latest News, Sports, College Sports, Colorado Buffaloes',
-                'help-primary-section': 'Colorado Buffaloes',
-            },
-            '83': {
-                'title': 'CSU Rams Basketball',
-                'check-sections': ['48','94','100','101'],
-                'add-tags': ['college basketball','Colorado State basketball'],
-                'primary-section': '101',
-                'primary-tag': '12071',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Colorado State basketball',
-                'help-sections': 'Latest News, Sports, College Sports, Colorado State Rams',
-                'help-primary-section': 'Colorado State Rams',
-            },
-            '84': {
-                'title': 'Denver Pioneers Hockey',
-                'check-sections': ['48','94','100','103'],
-                'add-tags': ['college hockey','Denver Pioneers hockey'],
-                'primary-section': '103',
-                'primary-tag': '11929',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Denver Pioneers hockey',
-                'help-sections': 'Latest News, Sports, College Sports, Denver Pioneers',
-                'help-primary-section': 'Denver Pioneers',
-            },
-            '85': {
-                'title': 'Denver Pioneers Basketball',
-                'check-sections': ['48','94','100','103'],
-                'add-tags': ['college basketball','Denver Pioneers basketball'],
-                'primary-section': '103',
-                'primary-tag': '12072',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Denver Pioneers basketball',
-                'help-sections': 'Latest News, Sports, College Sports, Denver Pioneers',
-                'help-primary-section': 'Denver Pioneers',
-            },
-            '86': {
-                'title': 'Denver Pioneers Soccer',
-                'check-sections': ['48','94','100','103','6574'],
-                'add-tags': ['college soccer','Denver Pioneers soccer'],
-                'primary-section': '103',
-                'primary-tag': '12074',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Denver Pioneers soccer',
-                'help-sections': 'Latest News, Sports, College Sports, Denver Pioneers, Soccer',
-                'help-primary-section': 'Denver Pioneers',
-            },
-            '87': {
-                'title': 'Denver Pioneers Lacrosse',
-                'check-sections': ['48','94','100','103'],
-                'add-tags': ['college lacrosse','Denver Pioneers Lacrosse'],
-                'primary-section': '103',
-                'primary-tag': '12073',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Denver Pioneers Lacrosse',
-                'help-sections': 'Latest News, Sports, College Sports, Denver Pioneers',
-                'help-primary-section': 'Denver Pioneers',
-            },
-            '88': {
-                'title': 'Mikaela Shiffrin story',
-                'check-sections': ['48','94','110','111','2221','4317'],
-                'add-tags': ['Mikaela Shiffrin'],
-                'primary-section': '2221',
-                'primary-tag': '10089',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Mikaela Shiffrin',
-                'help-sections': 'Latest News, Sports, Olympics, Outdoors, Skiing, Winter Sports',
-                'help-primary-section': 'Skiing',
-            },
-            '89': {
-                'title': 'Lindsey Vonn Story',
-                'check-sections': ['48','94','110','111','2221','4317'],
-                'add-tags': ['Lindsey Vonn'],
-                'primary-section': '2221',
-                'primary-tag': '9817',
-                'features': [],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'Lindsey Vonn',
-                'help-sections': 'Latest News, Sports, Olympics, Outdoors, Skiing, Winter Sports',
-                'help-primary-section': 'Skiing',
-            },
-            '90': {
-                'title': 'NFL Wire Story',
-                'check-sections': ['48','94','97'],
-                'add-tags': ['NFL'],
-                'primary-section': '97',
-                'primary-tag': '4687',
-                'features': [''],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'NFL',
-                'help-sections': 'Latest News, Sports, Denver Broncos',
-                'help-primary-section': 'Denver Broncos',
-            },
-            '91': {
-                'title': 'NBA Wire Story',
-                'check-sections': ['48','94','109'],
-                'add-tags': ['NBA'],
-                'primary-section': '109',
-                'primary-tag': '6448',
-                'features': [''],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'NBA',
-                'help-sections': 'Latest News, Sports, Denver Nuggets',
-                'help-primary-section': 'Denver Nuggets',
-            },
-            '92': {
-                'title': 'MLB Wire Story',
-                'check-sections': ['48','94','114'],
-                'add-tags': ['MLB'],
-                'primary-section': '114',
-                'primary-tag': '9000',
-                'features': [''],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'MLB',
-                'help-sections': 'Latest News, Sports, Colorado Rockies',
-                'help-primary-section': 'Colorado Rockies',
-            },
-            '93': {
-                'title': 'NHL Wire Story',
-                'check-sections': ['48','94','95'],
-                'add-tags': ['NHL'],
-                'primary-section': '95',
-                'primary-tag': '7258',
-                'features': [''],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'NHL',
-                'help-sections': 'Latest News, Sports, Colorado Avalanche',
-                'help-primary-section': 'Colorado Avalanche',
-            },
-            '94': {
-                'title': 'College Hoops Wire Story',
-                'check-sections': ['48','94','100'],
-                'add-tags': ['college basketball'],
-                'primary-section': '100',
-                'primary-tag': '7730',
-                'features': [''],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'college basketball',
-                'help-sections': 'Latest News, Sports, College Sports',
-                'help-primary-section': 'College Sports',
-            },
-            '95': {
-                'title': 'MLS wire story',
-                'check-sections': ['48','94','113','6574'],
-                'add-tags': ['MLS'],
-                'primary-section': '113',
-                'primary-tag': '6523',
-                'features': [''],
-                'apple-news': ['sports'],
-                'related': true,
-                'help-primary-tag': 'MLS',
-                'help-sections': 'Latest News, Sports, Colorado Rapids, Soccer',
-                'help-primary-section': 'Colorado Rapids',
-            },
-        };
-
+        var options = autoProducerOptions;
         var validOptions = [];
         for(var object in options){
             if (options.hasOwnProperty(object)) {
@@ -1750,6 +1172,7 @@
     }
 
     var loc = window.location.href;
+    var allTags = [];
     if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
         var bookmarkletSource = document.createElement('script');
         bookmarkletSource.setAttribute('src', 'https://extras.denverpost.com/app/bookmarklet/js/photo-cleanup.min.js?v='+vSec());
@@ -1763,10 +1186,28 @@
             var s2 = window.document.createElement('script');
             s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
             window.document.body.appendChild(s2);
+            var tagJS = window.document.createElement('script');
+            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-taglist.min.js');
+            window.document.body.appendChild(tagJS);
+            var optionsJS = window.document.createElement('script');
+            optionsJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-options.min.js');
+            window.document.body.appendChild(optionsJS);
             var APdiv = window.document.createElement('div');
             APdiv.setAttribute('id','auto-producer');
             window.document.body.appendChild(APdiv);
         }
+
+        var tagJSint = setInterval(function() {
+            if (typeof autoProducerTagList == 'undefined') {
+                clearInterval(tagJSint);
+            }
+        }, 20);
+
+        var optionsJSint = setInterval(function() {
+            if (typeof autoProducerOptions == 'undefined') {
+                clearInterval(optionsJSint);
+            }
+        }, 20);
 
         var UILoaded = setInterval(function() {
             if (typeof jQuery.ui.dialog != 'undefined') {

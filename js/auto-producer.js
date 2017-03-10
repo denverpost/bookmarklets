@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.0';
+    var APversion = ' v1.0.1';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -201,6 +201,9 @@
             }
             if (args['informSelect']) {
                 contentArgs['inform'] = true;
+            }
+            if (args['newsletterSelect']) {
+                contentArgs['newsletter'] = true;
             }
             if (args['promoSelect']) {
                 contentArgs['promos'] = true;
@@ -463,6 +466,34 @@
                     [cq  comment="VIDEO PLACED ABOVE"]';
                 grafsClean.splice(0, 0, markup);
             }
+            if (args['newsletter']) {
+                var newsletters = {
+                    '1': {
+                        'which': 'news',
+                        'name': 'Mile High Roundup'
+                    }
+                }
+                var newsletterPromptText = 'Which newsletter do you want to plug? (Hit ENTER for the Roundup)\n\n\
+                    Options:\n\n';
+                for(var object in newsletters){
+                    if (newsletters.hasOwnProperty(object)) {
+                        newsletterPromptText += '        ( ' + object + ' ) ' + newsletters[object]['name'] + '\n';
+                    }
+                }
+                loop:
+                while(true) {
+                    var newsletterId = prompt(newsletterPromptText,'1');
+                    if (newsletters[newsletterId]['which'] !== 'undefined') {
+                        break loop;
+                    } else {
+                        alert('I\'m afraid I can\'t do that, Dave.');
+                    }
+                }
+                var markup = '<aside>\n\
+[dfm_iframe src="http://extras.denverpost.com/app/mailer-rules/email-signup.html?which=' + newsletters[newsletterId]['which'] + '&name=' + encodeURIComponent(newsletters[newsletterId]['name']) + '" width="100%" height="120px"]\n\
+</aside>';
+                grafsClean.push(markup);
+            }
             if (args['promos']) {
                 var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); });
                 promos.pop(); promos.pop();
@@ -522,7 +553,7 @@
                         item = promos.pop();
                     }
                 }
-                if ( typeof item !== 'undefined' && grafsClean[grafsClean.length-1].indexOf('in-article') === -1 ) {
+                if ( typeof item !== 'undefined' && grafsClean[grafsClean.length-1].indexOf('in-article') === -1 && !(args['newsletter']) ) {
                     grafsClean.splice(grafsClean.length, 0, '[dfm_iframe src=\'https://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\' scrolling=\'no\']');
                 }
             }
@@ -1264,13 +1295,14 @@
             output += '</div>';
             output += '<div class="one-third">';
             output += '<p>Insert Related by Primary Tag? <span class="red-star">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
-            output += 'Change author to AP? <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="3" /><br />';
-            output += 'Change author to WaPo? <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="4" /></p>';
+            output += 'Insert Inform video? <input type="checkbox" id="informSelect" tabindex="4" /><br />';
+            output += 'Change author to AP? <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="6" /><br />';
+            output += 'Insert Homicide Report? <span class="mag-star">*</span> <input type="checkbox" id="homicideSelect" tabindex="8" /></p>';
             output += '</div>';
             output += '<div class="one-third">';
-            output += '<p>Insert in-article Promos? <input type="checkbox" id="promoSelect" tabindex="2" /><br />';
-            output += 'Insert Inform video? <input type="checkbox" id="informSelect" tabindex="3" /><br />';
-            output += 'Insert Homicide Report? <span class="mag-star">*</span> <input type="checkbox" id="homicideSelect" tabindex="4" /></p>';
+            output += '<p>Insert in-article Promos? <input type="checkbox" id="promoSelect" tabindex="3" /><br />';
+            output += 'Insert Newsletter widget? <input type="checkbox" id="newsletterSelect" tabindex="5" /><br />';
+            output += 'Change author to WaPo? <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="7" /></p>';
             output += '</div>';
             output += '<div class="clear"></div>';
             output += '<p class="red-small">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
@@ -1288,6 +1320,7 @@
             args['WaPoauthorSelect'] = jQuery('#WaPoauthorSelect').prop('checked');
             args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
             args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
+            args['newsletterSelect'] = jQuery('#newsletterSelect').prop('checked') ? true : false;
             args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
             if (validOptions.indexOf(String(selectFunction)) !== -1) {
                 jQuery('#auto-producer').html(APsuccessText);

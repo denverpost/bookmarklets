@@ -1190,10 +1190,10 @@
             s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
             window.document.body.appendChild(s2);
             var tagJS = window.document.createElement('script');
-            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-taglist.min.js');
+            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-taglist.min.js?v='+vSec());
             window.document.body.appendChild(tagJS);
             var optionsJS = window.document.createElement('script');
-            optionsJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-options.min.js');
+            optionsJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-options.min.js?v='+vSec());
             window.document.body.appendChild(optionsJS);
             var APdiv = window.document.createElement('div');
             APdiv.setAttribute('id','auto-producer');

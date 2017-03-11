@@ -44,7 +44,7 @@
     }
     
     function slugItUp(inText) {
-        return inText.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+        return inText.toLowerCase().replace(/[^\w\ ]+/g,'').replace(/ +/g,'-');
     }
     
     function autoProducerPost(randomGif) {
@@ -109,14 +109,14 @@
                 }
             }
             var newRelated = confirm('Should Related by Primary Tag be added to stories automatically?');
-            optionObject['title'] = newTitle;
+            optionObject.title = newTitle;
             optionObject['check-sections'] = captureSections();
             optionObject['add-tags'] = captureTags();
             optionObject['primary-section'] = document.getElementById(sectionSelect).value;
             optionObject['primary-tag'] = document.getElementById(tagSelect).value;
-            optionObject['features'] = captureFeatures();
+            optionObject.features = captureFeatures();
             optionObject['apple-news'] = captureAppleNews();
-            optionObject['related'] = newRelated;
+            optionObject.related = newRelated;
             var tagString = '#'+tagSelect+' option[value="'+optionObject['primary-tag']+'"]';
             optionObject['help-primary-tag'] = jQuery(tagString).text();
             optionObject['help-sections'] = captureSectionsHelp();
@@ -185,64 +185,69 @@
         function suggestSomeTags(tags) {
             tagsHTML = '<script>';
             tagsHTML += 'function slugItUp(inText) {';
-            tagsHTML += 'return inText.toLowerCase().replace(/[^\w ]+/g,\'\').replace(/ +/g,\'-\');';
+            tagsHTML += 'return inText.toLowerCase().replace(/[^\\\w\ ]+/g,\'\').replace(/ +/g,\'-\');';
             tagsHTML += '}';
             tagsHTML += 'function addSuggestedTag(newSuggestedTag) {';
             tagsHTML += 'document.getElementById(\'new-tag-post_tag\').value = newSuggestedTag;';
             tagsHTML += 'jQuery(\'#post_tag .ajaxtag input.button.tagadd\').click();';
             tagsHTML += 'var delTag = \'#tagSuggest_\' + slugItUp(newSuggestedTag);';
-            tagsHTML += 'jQuery(\'delTag\').remove();';
+            tagsHTML += 'jQuery(delTag).remove();';
             tagsHTML += '}';
-            tagsHTML += '</script>'
-            tagsHTML += '<div style="width:88%;padding:.5em 1em;border:1px solid DarkRed;font-size:1em;color:DarkRed;">';
+            tagsHTML += 'function closeSuggestedTags() {';
+            tagsHTML += 'jQuery(\'#autoProducerSuggestedTags\').remove();';
+            tagsHTML += '}';
+            tagsHTML += 'jQuery(\'body, html\').animate({ scrollTop: jQuery(\'#autoProducerSuggestedTags\').offset().top - 70 }, \'fast\');';
+            tagsHTML += '</script>';
+            tagsHTML += '<div style="width:88%;padding:.5em 1em;border:1px solid DarkRed;font-size:1em;color:DarkRed;" id="autoProducerSuggestedTags">';
             tagsHTML += '<p style="color:black;font-size:1.1em;">I have some suggested tags for you -- click to add them!</p>';
             tagsHTML += '<ul style="list-style-type:none;text-indent:none;font-size:1.2em;">';
             for (var i=0,len=tags.length;i<len;i++){
                 var slug = slugItUp(tags[i]);
-                tagsHTML += '<li id="tagSuggest_'+slug+'" onClick="javascript:addSuggestedTag(\''+tags[i]+'\')" style="cursor:pointer;margin:0 0 .25em;padding:0;">'+tags[i]+'</li>';
+                tagsHTML += '<li id="tagSuggest_'+slug+'" onClick="javascript:addSuggestedTag(\''+tags[i]+'\')" style="cursor:pointer;margin:0 0 .25em;padding:0;">+ '+tags[i]+'</li>';
             }
             tagsHTML += '</ul>';
+            tagsHTML += '<p style="color:black;margin-top:1em;font-size:1.1em;text-align:right;cursor:pointer;" onClick="javascript:closeSuggestedTags();"><strong>Close</strong></p>';
             tagsHTML += '</div>';
             jQuery('#tagsdiv-post_tag .inside').prepend(tagsHTML);
         }
 
         function trumpThatBitch(options,args) {
             var contentArgs = [];
-            contentArgs['wire'] = true;
-            if (typeof args['WaPoauthorSelect'] != 'undefined' && args['WaPoauthorSelect'] === true) {
+            contentArgs.wire = true;
+            if (typeof args.WaPoauthorSelect != 'undefined' && args.WaPoauthorSelect === true) {
                 addWaPoauthor();
             }
-            if (typeof args['APauthorSelect'] != 'undefined' && args['APauthorSelect'] === true) {
+            if (typeof args.APauthorSelect != 'undefined' && args.APauthorSelect === true) {
                 addAPauthor();
             }
-            if ((typeof options['related'] != 'undefined' && options['related'] === true) || args['selectRelated'] === true) {
-                contentArgs['related'] = true;
+            if ((typeof options.related != 'undefined' && options.related === true) || args.selectRelated === true) {
+                contentArgs.related = true;
             }
             if (typeof options['check-sections'] != 'undefined' && options['check-sections'].indexOf('94') > -1) {
                 checkDPSPOnline();
             }
-            if (typeof options['title'] != 'undefined' && options['title'] == 'Weather Story') {
-                contentArgs['wx'] = true;
+            if (typeof options.title != 'undefined' && options.title == 'Weather Story') {
+                contentArgs.wx = true;
             }
-            if (typeof options['title'] != 'undefined' && options['title'] == 'Recipes') {
+            if (typeof options.title != 'undefined' && options.title == 'Recipes') {
                 contentArgs['rel-section'] = true;
             }
-            if (typeof options['title'] != 'undefined' && options['title'] == 'Crime Story' && !args['homicideSelect']) {
-                contentArgs['crime'] = true;
+            if (typeof options.title != 'undefined' && options.title == 'Crime Story' && !args.homicideSelect) {
+                contentArgs.crime = true;
             }
-            if (args['homicideSelect']) {
-                contentArgs['homicide'] = true;
+            if (args.homicideSelect) {
+                contentArgs.homicide = true;
             }
-            if (args['informSelect']) {
-                contentArgs['inform'] = true;
+            if (args.informSelect) {
+                contentArgs.inform = true;
             }
-            if (args['newsletterSelect']) {
-                contentArgs['newsletter'] = true;
+            if (args.newsletterSelect) {
+                contentArgs.newsletter = true;
             }
-            if (args['promoSelect']) {
-                contentArgs['promos'] = true;
+            if (args.promoSelect) {
+                contentArgs.promos = true;
             }
-            if (options['title'] == 'YourHub Crime Blotter') {
+            if (options.title == 'YourHub Crime Blotter') {
                 contentArgs['related-override'] = true;
                 document.getElementById('fm-mason_post_settings-0-schema-0-featured_image_settings-0').value = 'hide';
             }
@@ -252,8 +257,8 @@
             if (typeof options['add-tags'] != 'undefined') {
                 addTag(options['add-tags']);
             }
-            if (typeof options['features'] != 'undefined') {
-                addFeatures(options['features']);
+            if (typeof options.features != 'undefined') {
+                addFeatures(options.features);
             }
             if (typeof options['primary-section'] != 'undefined' || typeof options['primary-tag'] != 'undefined') {
                 primaryOptions(options['primary-section'],options['primary-tag']);
@@ -271,7 +276,7 @@
                 var wordsOut = [];
                 for(i=0,len=words.length;i<len;i++) {
                     if (words[i].toLowerCase() == 'and') {
-                        wordsOut.push(words[i].toLowerCase())
+                        wordsOut.push(words[i].toLowerCase());
                     } else {
                         wordsOut.push(words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase());
                     }
@@ -288,8 +293,10 @@
             var tagLen = autoProducerTagList.length;
             var suggestedTags = [];
             var tagContent = content.textContent.toLowerCase();
+            console.log(tagLen);
             while(tagLen--) {
-                if (tagContent.indexOf(autoProducerTagList[tagLen].toLowerCase()) != -1) {
+                if (tagLen >= 0 && tagContent.indexOf(autoProducerTagList[tagLen].toLowerCase()) != -1) {
+                    console.log(autoProducerTagList[tagLen]);
                     suggestedTags.push(autoProducerTagList[tagLen]);
                 }
             }
@@ -310,7 +317,7 @@
                     grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('&#8212;',' '));
                 }
             }
-            if (args['wire']) {                
+            if (args.wire) {                
                 if (grafsClean[0].toLowerCase().startsWith('by')) {
                     var byline = grafsClean[0];
                     var bylineSplit = '';
@@ -346,7 +353,7 @@
                 var newExcerptText = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
                 document.getElementById('excerpt').value = newExcerptText;
             }
-            if (args['related']) {
+            if (args.related) {
                 var relPlace = (grafsClean.length-4 < 2) ? 2 : grafsClean.length-4;
                 if (grafsClean.length >= 6 || args['related-override']) {
                     grafsClean.splice(relPlace, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
@@ -354,28 +361,28 @@
                     grafsClean.splice(relPlace, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-section"]');
                 }
             }
-            if (args['wx']) {
+            if (args.wx) {
                 grafsClean.splice(3, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class=\'related alignright\'> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'590px\'] </aside>[cq comment="ASIDE PLACED ABOVE"]');
                 grafsClean.push('<a href="http://www.thedenverchannel.com/weather">Click here for more Denver7 weather coverage</a>.');
             }
-            if (args['crime'] && !args['wx']) {
+            if (args.crime && !args.wx) {
                 var crimemap = {
                     neighborhoods: Array('Wellshire',  'CBD',  'University Hills',  'Overland',  'Speer',  'Gateway / Green Valley Ranch',  'Ruby Hill',  'Marston',  'North Capitol Hill',  'City Park',  'Indian Creek',  'Five Points',  'Sun Valley',  'Westwood',  'Cole',  'Washington Park West',  'Platt Park',  'Harvey Park South',  'Villa Park',  'Athmar Park',  'Skyland',  'North Park Hill',  'Sunnyside',  'Southmoor Park',  'Jefferson Park',  'Capitol Hill',  'Windsor',  'Barnum West',  'Virginia Village',  'Montbello',  'Bear Valley',  'Goldsmith',  'Stapleton',  'Chaffee Park',  'Cory-Merrill',  'Northeast Park Hill',  'Union Station',  'Washington Park',  'Barnum',  'Elyria-Swansea',  'Civic Center',  'Hampden South',  'Globeville',  'City Park West',  'Clayton',  'Cheesman Park',  'Country Club',  'Hale',  'Mar Lee',  'Lincoln Park',  'Berkeley',  'West Highland',  'Harvey Park',  'Regis',  'East Colfax',  'Whittier',  'Belcaro',  'Hampden',  'Fort Logan',  'College View / South Platte',  'West Colfax',  'Baker',  'Kennedy',  'Cherry Creek',  'DIA',  'Congress Park',  'South Park Hill',  'Rosedale',  'Valverde',  'Lowry Field',  'Washington Virginia Vale',  'Auraria',  'Hilltop',  'Highland',  'Montclair',  'University',  'University Park',  'Sloan Lake'),
                     get_markup: function() {
                         if ( this.type == '1' ) {
-                            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n\
-                            <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
-                            <p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>.</p>\n\
-                            <p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n\
-                            </aside>[cq comment="ASIDE PLACED ABOVE"]';
+                            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n' +
+                            '<h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n' +
+                            '<p>See our <a href="http://crime.denverpost.com/neighborhood/' + this.slug + '/">index of reported crimes in Denver\'s ' + this.neighborhood + ' neighborhood</a>.</p>\n' +
+                            '<p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n' +
+                            '</aside>[cq comment="ASIDE PLACED ABOVE"]';
                         }
                         else if ( this.type === '' ) {
-                            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n\
-                            <h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n\
-                            <div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="' + this.get_random_image() + '" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n\
-                            <p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">map, report and neighborhood rankings of ' + this.crime + ' in Denver</a>.</p>\n\
-                            <p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n\
-                            </aside>[cq comment="ASIDE PLACED ABOVE"]';
+                            return '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related right alignright">\n' +
+                            '<h2 class="widget-title"><a href="http://crime.denverpost.com/">Denver Crime</a></h2>\n' +
+                            '<div style="width:100%;height: 150px;overflow:hidden"><a href="http://crime.denverpost.com/crime/' + this.slug + '/"><img src="' + this.get_random_image() + '" alt="Denver crime map" width="100%" style="width:100%;margin-top:-40px"></a></div>\n' +
+                            '<p>See our <a href="http://crime.denverpost.com/crime/' + this.slug + '/">map, report and neighborhood rankings of ' + this.crime + ' in Denver</a>.</p>\n' +
+                            '<p><strong>Also,</strong> ' + this.get_random_feature() + '.</p>\n' +
+                            '</aside>[cq comment="ASIDE PLACED ABOVE"]';
                         }
                     },
                     image_list: ['http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map11.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map4.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map3.png', 'http://www.denverpost.com/wp-content/uploads/2017/01/denver-crime-map2.png', 'http://www.denverpost.com/wp-content/uploads/2016/10/denver-crime-map.png'],
@@ -407,10 +414,7 @@
                         this.slug = this.slugify(this.neighborhood);
                     },
                     get_crime: function() {
-                        crime_id = prompt('Hit enter for Violent Crimes, type 1 for Assaults, 2 for Bank Robberies, 3 for Bike Thefts, \
-                            4 for Burglaries, 5 for Car Thefts, 6 for DUIs, \
-                            7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes, \
-                            11 for Sexual Assault, 12 for Rape, 13 for Robberies, 14 for Drug & Alcohol, 15 for Larceny');
+                        crime_id = prompt('Hit enter for Violent Crimes, type 1 for Assaults, 2 for Bank Robberies, 3 for Bike Thefts, 4 for Burglaries, 5 for Car Thefts, 6 for DUIs, 7 for hit and runs, 8 for Domestic Violence, 9 for Homicides, 10 for Property Crimes, 11 for Sexual Assault, 12 for Rape, 13 for Robberies, 14 for Drug & Alcohol, 15 for Larceny');
                         this.crime = 'violent crimes'; this.slug = 'violent';
                         if ( crime_id.indexOf('10') >= 0 ) { this.crime = 'property crimes'; this.slug = 'property'; }
                         else if ( crime_id.indexOf('11') >= 0 ) { this.crime = 'sexual assaults'; this.slug = 'sexual-assault'; }
@@ -463,7 +467,7 @@
                     };
                     crimemap.init();
                 }
-            if (args['inform']) {
+            if (args.inform) {
                 loop:
                 while(true) {
                     var vidId = prompt('What is the Inform ID of the video you want to embed?\n\nNote: Embeds always appear at the top of a story, but can be moved with CTRL+X and CTRL+V\n\n','');
@@ -475,17 +479,17 @@
                 }
                 loop:
                 while(true) {
-                    var listId = prompt('What is the Inform ID of the video you want to embed? (Hit ENTER for "News")\n\n\
-                        Here are some of the most common playlist IDs:\n\n\
-                            Business: 18444\n\
-                            The Cannabist: 18445\n\
-                            DPTV - Up To Date: 18457\n\
-                            News: 18464 (default)\n\
-                            News - Guns: 18548\n\
-                            Politics: 18470\n\
-                            Politics - Elections: 18471\n\
-                            Sports: 18474\n\
-                            Sports - Broncos: 18477\n\n','18464');
+                    var listId = prompt('What is the Inform ID of the video you want to embed? (Hit ENTER for "News")\n\n' +
+                        'Here are some of the most common playlist IDs:\n\n' +
+                            'Business: 18444\n' +
+                            'The Cannabist: 18445\n' +
+                            'DPTV - Up To Date: 18457\n' +
+                            'News: 18464 (default)\n' +
+                            'News - Guns: 18548\n' +
+                            'Politics: 18470\n' +
+                            'Politics - Elections: 18471\n' +
+                            'Sports: 18474\n' +
+                            'Sports - Broncos: 18477\n\n','18464');
                     if (listId.length == 5 && listId.match(/^[0-9]+$/) !== null) {
                         break loop;
                     } else {
@@ -494,25 +498,24 @@
                 }
                 loop:
                 while(true) {
-                    var autoPlay = prompt('Should it Autoplay? (Hit ENTER for "NO")\n\n\
-                        Options:\n\n\
-                            No Autoplay: 0 (default)\n\
-                            Autoplay: 1\n\
-                            Play on mouse-over: 3\n\
-                            Play when scrolled into view: 7\n\
-                            ','0');
+                    var autoPlay = prompt('Should it Autoplay? (Hit ENTER for "NO")\n\n' +
+                        'Options:\n\n' +
+                            'No Autoplay: 0 (default)\n' +
+                            'Autoplay: 1\n' +
+                            'Play on mouse-over: 3\n' +
+                            'Play when scrolled into view: 7\n','0');
                     if (autoPlay === '0' || autoPlay === '1' || autoPlay === '7' || autoPlay === '3') {
                         break loop;
                     } else {
                         alert('You must enter an 1-digit number.');
                     }
                 }
-                var markup = '[cq  comment="VIDEO PLACED BELOW"]\n\
-                    <div class="ndn_embed" style="width:100%;" data-config-pb="0" data-config-widget-id="' + autoPlay + '" data-config-type="VideoPlayer/Single" data-config-tracking-group="90115" data-config-playlist-id="' + listId + '" data-config-video-id="' + vidId + '" data-config-site-section="denverpost" data-config-width="100%" data-config-height="9/16w"></div> \n\
-                    [cq  comment="VIDEO PLACED ABOVE"]';
+                var markup = '[cq  comment="VIDEO PLACED BELOW"]\n' +
+'<div class="ndn_embed" style="width:100%;" data-config-pb="0" data-config-widget-id="' + autoPlay + '" data-config-type="VideoPlayer/Single" data-config-tracking-group="90115" data-config-playlist-id="' + listId + '" data-config-video-id="' + vidId + '" data-config-site-section="denverpost" data-config-width="100%" data-config-height="9/16w"></div> \n' +
+'[cq  comment="VIDEO PLACED ABOVE"]';
                 grafsClean.splice(0, 0, markup);
             }
-            if (args['newsletter']) {
+            if (args.newsletter) {
                 var newsletters = {
                     '1': {
                         'which': 'news',
@@ -538,31 +541,31 @@
                         'which': 'techplus',
                         'name': 'Tech+ newsletter'
                     }
-                }
-                var newsletterPromptText = 'Which newsletter do you want to plug? (Hit ENTER for the Roundup)\n\n\
-                    Options:\n\n';
+                };
+                var newsletterPromptText = 'Which newsletter do you want to plug? (Hit ENTER for the Roundup)\n\n' +
+                    'Options:\n\n';
                 for(var object in newsletters){
                     if (newsletters.hasOwnProperty(object)) {
-                        newsletterPromptText += '        ( ' + object + ' ) ' + newsletters[object]['name'] + '\n';
+                        newsletterPromptText += '        ( ' + object + ' ) ' + newsletters[object].name + '\n';
                     }
                 }
                 newsletterPromptText += '\nEnter your selection:\n\n';
                 loop:
                 while(true) {
                     var newsletterId = prompt(newsletterPromptText,'1');
-                    if (newsletters[newsletterId]['which'] !== 'undefined') {
+                    if (newsletters[newsletterId].which !== 'undefined') {
                         break loop;
                     } else {
                         alert('I\'m afraid I can\'t do that, Dave.');
                     }
                 }
-                var markup = '<aside>\n\
-[dfm_iframe src="http://extras.denverpost.com/app/mailer-rules/email-signup.html?which=' + newsletters[newsletterId]['which'] + '&name=' + encodeURIComponent(newsletters[newsletterId]['name']) + '" width="100%" height="120px"]\n\
-</aside>';
+                var markup = '<aside>\n' +
+'[dfm_iframe src="http://extras.denverpost.com/app/mailer-rules/email-signup.html?which=' + newsletters[newsletterId].which + '&name=' + encodeURIComponent(newsletters[newsletterId].name) + '" width="100%" height="120px"]\n' +
+'</aside>';
                 grafsClean.push(markup);
             }
-            if (args['promos']) {
-                var promos = [1,2,3,4,5].sort(function() { return .5 - Math.random(); });
+            if (args.promos) {
+                var promos = [1,2,3,4,5].sort(function() { return 0.5 - Math.random(); });
                 promos.pop(); promos.pop();
                 var item = promos.pop();
                 var editing = true;
@@ -572,16 +575,16 @@
                     item = undefined;
                 }
                 if ( typeof item !== 'undefined' ) {
-                    var section_id = prompt('Select the type of news to insert:\n\n\n\
-                    News:\n\
-                        (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg.\n\n\
-                    Sports:\n\
-                        (Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n\
-                    Features:\n\
-                        (6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel, (25) Lifestyle\n\n\
-                    Misc:\n\
-                        (13) YourHub, (14) Editorials, (21) Season to Share, (22) Stock Show, (420) Marijuana\n\n\n\
-                    Selection:', '');
+                    var section_id = prompt('Select the type of news to insert:\n\n\n' +
+                    'News:\n' +
+                        '(1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg.\n\n' +
+                    'Sports:\n' +
+                        '(Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n' +
+                    'Features:\n' +
+                        '(6) Entertainment, (7) Restaurants, (8) Food, (9) Ask Amy, (10) Books, (11) Movies, (12) Home & Garden, (16) Travel, (25) Lifestyle\n\n' +
+                    'Misc:\n' +
+                        '(13) YourHub, (14) Editorials, (21) Season to Share, (22) Stock Show, (420) Marijuana\n\n\n' +
+                    'Selection:', '');
                     var section = 'sports';
                     if ( section_id.indexOf('420') >= 0 ) { section = 'marijuana'; item = 'map'; }
                     else if ( section_id.indexOf('10') >= 0 ) { section = 'books'; }
@@ -610,8 +613,8 @@
                     else if ( section_id.indexOf('8') >= 0 ) { section = 'food'; }
                     else if ( section_id.indexOf('9') >= 0 ) { section = 'ask-amy'; }
                 }
-                var firstPromo = (args['crime'] || args['wx']) ? 9 : 4;
-                var nextPromo = (args['crime'] || args['wx']) ? 20 : 17;
+                var firstPromo = (args.crime || args.wx) ? 9 : 4;
+                var nextPromo = (args.crime || args.wx) ? 20 : 17;
                 if ( grafsClean.length > 12 ) {
                     grafsClean.splice(firstPromo, 0, '[dfm_iframe src=\'https://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\']');
                     item = promos.pop();
@@ -620,13 +623,13 @@
                         item = promos.pop();
                     }
                 }
-                if ( typeof item !== 'undefined' && grafsClean[grafsClean.length-1].indexOf('in-article') === -1 && !(args['newsletter']) ) {
+                if ( typeof item !== 'undefined' && grafsClean[grafsClean.length-1].indexOf('in-article') === -1 && !(args.newsletter) ) {
                     grafsClean.splice(grafsClean.length, 0, '[dfm_iframe src=\'https://extras.denverpost.com/app/in-article-promo/' + section + '-' + item + '.html\' width=\'100%\' height=\'100px\' scrolling=\'no\']');
                 }
             }
-            if (args['homicide'] && !(args['crime'] || args['wx'])) {
-                grafsClean.splice(3, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class=\'related alignright\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2>\n\
-<div style="width:100%;height: 150px;overflow:hidden"><a href=\'/denver-homicides/\'><img src=\'http://www.denverpost.com/wp-content/uploads/2016/10/homicide-map-denver.png\' alt=\'Denver Homicide Map\' border=\'0\'></a></div> <p>Follow this year\'s <a href=\'/denver-homicides/\'>homicides in Denver</a>, and track the city\'s homicide rate. See also: <a href="http://crime.denverpost.com/map/">Denver crime map</a>.</p> </aside>[cq comment="ASIDE PLACED ABOVE"]');
+            if (args.homicide && !(args.crime || args.wx)) {
+                grafsClean.splice(3, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class=\'related alignright\'> <h2 class=\'widget-title\'><a href=\'/denver-homicides/\'>Homicide Report</a></h2>\n' +
+'<div style="width:100%;height: 150px;overflow:hidden"><a href=\'/denver-homicides/\'><img src=\'http://www.denverpost.com/wp-content/uploads/2016/10/homicide-map-denver.png\' alt=\'Denver Homicide Map\' border=\'0\'></a></div> <p>Follow this year\'s <a href=\'/denver-homicides/\'>homicides in Denver</a>, and track the city\'s homicide rate. See also: <a href="http://crime.denverpost.com/map/">Denver crime map</a>.</p> </aside>\n[cq comment="ASIDE PLACED ABOVE"]');
             }
             document.getElementById('content').value = grafsClean.join('\n\n');
             return suggestedTags;
@@ -691,15 +694,15 @@
             var twoThird = Math.ceil(optsLength * 0.66);
             var i = 0;
             for(var object in options){
-                var relStar = (options[object]['related']) ? ' <span class="red-star">*</span>' : ' ';
+                var relStar = (options[object].related) ? ' <span class="red-star">*</span>' : ' ';
                 var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
                 tooltipString += '<p>Sets <strong>Primary Tag</strong> to:<br />' + options[object]['help-primary-tag'] + '</p>';
                 tooltipString += '<p>Selects these <strong>Sections</strong>:<br />' + options[object]['help-sections'] + '</p>';
                 tooltipString += '<p>Adds these <strong>Tags</strong>:<br />' + options[object]['add-tags'].join(', ') + '</p>';
                 tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
-                tooltipString += '<p>Adds these <strong>Features</strong>:<br />' + options[object]['features'].join(', ') + '</p>';
+                tooltipString += '<p>Adds these <strong>Features</strong>:<br />' + options[object].features.join(', ') + '</p>';
                 if (options.hasOwnProperty(object)) {
-                    output += '<li>( ' + pad(object) + ' ) ' + options[object]['title'] + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
+                    output += '<li>( ' + pad(object) + ' ) ' + options[object].title + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
                 }
                 if (i == oneThird || i == twoThird) {
                     output += '</ul></div><div class="one-quarter"><ul>';

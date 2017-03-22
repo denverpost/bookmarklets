@@ -118,10 +118,10 @@
             optionObject['apple-news'] = captureAppleNews();
             optionObject.related = newRelated;
             var tagString = '#'+tagSelect+' option[value="'+optionObject['primary-tag']+'"]';
-            optionObject['help-primary-tag'] = jQuery(tagString).text();
+            optionObject['help-primary-tag'] = (jQuery(tagString).text() == ' ') ? '' : jQuery(tagString).text();
             optionObject['help-sections'] = captureSectionsHelp();
             var secString = '#'+sectionSelect+' option[value="'+optionObject['primary-section']+'"]';
-            optionObject['help-primary-section'] = jQuery(secString).text();
+            optionObject['help-primary-section'] = (jQuery(secString).text() == ' ') ? '' : jQuery(secString).text();
             if (newTitle !== '' && newTitle !== null) {
                 if (confirm('You\'re about to submit a new option called ' + newTitle + '. Are you sure?')) {
                     var i = document.createElement("img");

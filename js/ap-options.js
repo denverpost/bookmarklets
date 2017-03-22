@@ -105,7 +105,7 @@ var autoProducerOptions = {
         'primary-tag': '',
         'features': [],
         'apple-news': ['colorado-news'],
-        'related' : true,
+        'related' : false,
         'help-primary-tag': '',
         'help-sections': 'Latest News, News, Colorado News, Weather',
         'help-primary-section': 'Weather',
@@ -553,8 +553,8 @@ var autoProducerOptions = {
         'help-primary-section': 'Denver Pioneers',
     },
     '88': {
-        'title': 'Mikaela Shiffrin story',
-        'check-sections': ['48','94','110','111','2221','4317'],
+        'title': 'Mikaela Shiffrin Story',
+        'check-sections': ['48','94','111','2221','4317'],
         'add-tags': ['Mikaela Shiffrin'],
         'primary-section': '2221',
         'primary-tag': '10089',
@@ -567,7 +567,7 @@ var autoProducerOptions = {
     },
     '89': {
         'title': 'Lindsey Vonn Story',
-        'check-sections': ['48','94','110','111','2221','4317'],
+        'check-sections': ['48','94','111','2221','4317'],
         'add-tags': ['Lindsey Vonn'],
         'primary-section': '2221',
         'primary-tag': '9817',

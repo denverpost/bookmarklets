@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.1';
+    var APversion = ' v1.0.2';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -290,13 +290,12 @@
             var excerpt = document.getElementById('excerpt').textContent;
             var newExcerpt = false;
             var content = document.getElementById('content');
+            var relExists = false;
             var tagLen = autoProducerTagList.length;
             var suggestedTags = [];
             var tagContent = content.textContent.toLowerCase();
-            console.log(tagLen);
             while(tagLen--) {
                 if (tagLen >= 0 && tagContent.indexOf(autoProducerTagList[tagLen].toLowerCase()) != -1) {
-                    console.log(autoProducerTagList[tagLen]);
                     suggestedTags.push(autoProducerTagList[tagLen]);
                 }
             }
@@ -313,6 +312,9 @@
             }
             var grafsClean = [];
             for(i=0,len=grafs.length;i<len;i++) {
+                if (grafs[i].match(/\[related_articles/) !== null) {
+                    relExists = true;
+                }
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {
                     grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('&#8212;',' '));
                 }
@@ -325,12 +327,10 @@
                     if (byline.toLowerCase() == 'by the associated press') {
                         bylineSplit = 'APonly';
                     } else {
-                        console.log(byline);
                         var index = byline.lastIndexOf(',');
                         if (byline.indexOf('(c)') > -1) {
                             bylineSplit = byline.split('(c)')[0].substr(0,index).capitalizeFirstLetters().replace('By ','').trim();
                         } else if (author != 'the-associated-press') {
-                            console.log(author);
                             bylineSplit = byline.substr(0,index).capitalizeFirstLetters().replace('By ','');
                         } else {
                             bylineSplit = byline.capitalizeFirstLetters().replace('By ','');
@@ -353,8 +353,8 @@
                 var newExcerptText = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
                 document.getElementById('excerpt').value = newExcerptText;
             }
-            if (args.related) {
-                var relPlace = (grafsClean.length-4 < 2) ? 2 : grafsClean.length-4;
+            if (args.related && !relExists) {
+                var relPlace = (grafsClean.length-4 < 2) ? 2 : ((grafsClean.length > 24) ? 11 : grafsClean.length-4);
                 if (grafsClean.length >= 6 || args['related-override']) {
                     grafsClean.splice(relPlace, 0, '[related_articles location="right" show_article_date="true" article_type="automatic-primary-tag"]');
                 } else if (args['rel-section']) {

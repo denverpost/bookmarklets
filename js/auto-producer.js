@@ -294,8 +294,8 @@
             var tagLen = autoProducerTagList.length;
             var suggestedTags = [];
             var tagContent = content.textContent.toLowerCase();
-            while(tagLen--) {
-                if (tagLen >= 0 && tagContent.indexOf(autoProducerTagList[tagLen].toLowerCase()) != -1) {
+            while(tagLen-- && tagLen >= 0) {
+                if (new RegExp("\\b"+autoProducerTagList[tagLen].toLowerCase()+"\\b").test(tagContent)) {
                     suggestedTags.push(autoProducerTagList[tagLen]);
                 }
             }

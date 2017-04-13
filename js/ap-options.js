@@ -175,6 +175,32 @@ var autoProducerOptions = {
         "help-sections": "Business, Real Estate, Don\"t Miss, Entertainment / Lifestyle, Latest News, News, Colorado News, Home & Garden",
         "help-primary-section": "Real Estate"
     },
+    "43": {
+        "title": "Top Workplaces",
+        "check-sections": ["15","18","22"],
+        "add-tags": ["Top Workplaces","Top Workplaces 2017"],
+        "primary-section": "22",
+        "primary-tag": "9426",
+        "features": [],
+        "apple-news": ["business"],
+        "related": true,
+        "help-primary-tag": "Top Workplaces 2017",
+        "help-sections": "Business, Economy, Jobs",
+        "help-primary-section": "Jobs",
+    },
+    "50": {
+        "title": "Lifestyle",
+        "check-sections": ["48","9101","83"],
+        "add-tags": [],
+        "primary-section": "83",
+        "primary-tag": "",
+        "features": [],
+        "apple-news": ["lifestyle"],
+        "related": true,
+        "help-primary-tag": " ",
+        "help-sections": "Latest News, Entertainment / Lifestyle, Lifestyle",
+        "help-primary-section": "Lifestyle",
+    },
     "51": {
         "title": "Ask Amy",
         "check-sections": ["48","85","83","84","6710","9101"],
@@ -655,5 +681,18 @@ var autoProducerOptions = {
         "help-primary-tag": "MLS",
         "help-sections": "Latest News, Sports, Colorado Rapids, Soccer",
         "help-primary-section": "Colorado Rapids"
-    }
+    },
+    "96": {
+        "title": "Preps Story",
+        "check-sections": ["48","94","112"],
+        "add-tags": [],
+        "primary-section": "112",
+        "primary-tag": "",
+        "features": [],
+        "apple-news": ["sports"],
+        "related": true,
+        "help-primary-tag": "",
+        "help-sections": "Latest News, Sports, Preps",
+        "help-primary-section": "Preps",
+    },
 };

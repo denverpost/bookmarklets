@@ -10,7 +10,7 @@ $tags = array_map('stripslashes', explode(',',str_replace(array($tags_start,$tag
 ?>
 <!DOCTYPE html>
 <head>
-	<title>AUTO🤖PRODUCER™ Tag Suggestion Manager</title>
+	<title>AUTO-PRODUCER Tag Suggestion Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" type="text/css" href="//cdn.foundation5.zurb.com/foundation.css" />
 	<link rel="stylesheet" type="text/css" href="style.css" />
@@ -49,14 +49,15 @@ $tags = array_map('stripslashes', explode(',',str_replace(array($tags_start,$tag
 		<div class="headerstyle">
 			<div class="row">
 				<div class="large-12 columns">
-					<h1>AUTO🤖PRODUCER™ Tag Suggestion Manager</h1>
+					<h1>AUTO-PRODUCER Tag Suggestion Manager</h1>
 				</div>
 				<div class="large-8 medium-8 columns">
-					<p>Manage tags to be suggested by AUTO🤖PRODUCER™. Click or use checkboxes to select items for deletion.</p>
+					<p>Manage tags to be suggested by AUTO-PRODUCER. Click or use checkboxes to select items for deletion.</p>
 					<p>If you're adding a duplicate, it simply won't add anything.</p>
+					<p>PROTIP: Hit CTRL+ENTER (CMD+ENTER for Macs) anywhere on this page to submit. Be careful!</p>
 				</div>
 				<div class="large-4 medium-4 columns">
-					<label
+					<label>
 				</div>
 			</div>
 		</div>
@@ -124,6 +125,13 @@ $tags = array_map('stripslashes', explode(',',str_replace(array($tags_start,$tag
 	<script src="http://extras.denverpost.com/foundation/js/foundation.min.js"></script>
 	<script>
 		$(document).foundation();
+	</script>
+	<script>
+		document.body.addEventListener('keydown', function(e) {
+			if ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 10)) {
+			    document.forms["listtags"].submit();
+			}
+		});
 	</script>
 </body>
 </html>

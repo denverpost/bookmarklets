@@ -3,6 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
+//require('/var/www/lib/class.ftp.php');
 
 function addslashes_recursive( $input ) {
     if ( is_array( $input ) ) {
@@ -33,14 +34,17 @@ if (isset($_POST) && $_POST['tags_save'] == true) {
 	$new_tags = (strlen($_POST['addnewtag']) > 1) ? array_map('trim', explode(',',$_POST['addnewtag'])) : false;
 	$tags = ($new_tags) ? array_merge($tags, $new_tags) : $tags;
 	$tags = array_values(array_unique($tags));
-	sort($tags,SORT_STRING);
-	$tags = addslashes_recursive($tags);
+	natcasesort($tags);
+	$tags = array_map("trim", addslashes_recursive($tags));
 	$tags_write = $tags_start.implode('","',$tags).$tags_end;
-	file_put_contents($tag_file,$tags_write,LOCK_EX);
+	file_put_contents($tag_file,$tags_write,LOCK_EX); /*
+	$ftp = new ftp;
+    $ftp->file_put('ap-taglist', '', 'js', TRUE, FTP_ASCII, '/DenverPost/app/bookmarklet/autoproducer/');
+    $ftp->ftp_connection_close(); */
 	header("Location:./ap-edit-tags.php");
-} else if (isset($_POST) && $_POST['types_save'] == true) {
+} /* else if (isset($_POST) && $_POST['types_save'] == true) {
 	$options_list = file_get_contents($options_file);
 	$options_string = str_replace($options_start,'',$options_list);
 	$options = json_decode($options_string);
 	var_dump($options);
-}
+} */

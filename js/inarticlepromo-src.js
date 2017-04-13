@@ -30,7 +30,7 @@ javascript:(function(){
     if ( typeof item !== 'undefined' ) {
         var section_id = prompt('Select the type of news to insert:\n\n\n\
         News:\n\
-            (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg., (26) Colorado Cold Cases\n\n\
+            (1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg., (26) Colorado Cold Cases, (27) Top Workplaces\n\n\
         Sports:\n\
             (Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n\
         Features:\n\
@@ -57,6 +57,7 @@ javascript:(function(){
         else if ( section_id.indexOf('24') >= 0 ) { section = 'trump-administration'; }
         else if ( section_id.indexOf('25') >= 0 ) { section = 'lifestyle'; }
         else if ( section_id.indexOf('26') >= 0 ) { section = 'colorado-cold-cases'; }
+        else if ( section_id.indexOf('27') >= 0 ) { section = 'top-workplaces'; }
         else if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; }
         else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; }
         else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; }

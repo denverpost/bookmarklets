@@ -123,7 +123,8 @@
                     </ul>
                 </li>
                 <li><strong>Promos:</strong> Check this box to include In-Article Promos. The normal prompts associated with that bookmarklet will appear.</li>
-                <li><strong>Inform Video:</strong> Check this box to insert and Inform video embed. The normal prompts associated with that bookmarklet will appear.</li>
+                <li><strong>Inform Video:</strong> Check this box to insert an Inform video embed. The normal prompts associated with that bookmarklet will appear.</li>
+                <li><strong>YouTube Video:</strong> Check this box to insert a YouTube video embed. You will need the URL or ID (just the part after <code>?v=</code>) and will be asked whether to autoplay. This is different from the normal OEmbed style of just pasting the URL on a line, which cannot autoplay videos.</li>
                 <li><strong>Homicide Report:</strong> Check this box to include the Homicide Report. This will override the Crime Map insert if you have selected the Crime Story story type.</li>
             </ul>
         </div>
@@ -140,14 +141,14 @@
                 <li><strong>Bylines</strong> AUTO🤖PRODUCER™ attempts to clean up and format AP and WaPo bylines, and deletes the byline graf if it's just the organizatio name (after checking that the story's author is that organization).</li>
                 <li><strong>Excerpts</strong> AUTO🤖PRODUCER™ will format AP excerpts to remove the <code>(AP)</code>, and will generate an excerpt as best it can if none is present.</li>
                 <li><strong>Funked-Up The Know</strong> Converts those <code>&amp;#8212;</code> characters that appear in The Know stories via Content Hub back into normal spaces.</li>
-                <li><img src="./img/ap-click-add-tags.png" style="width:60%;margin:.5em -20% .5em .5em;" class="right" /><strong>Suggested Tags</strong> Now AUTO🤖PRODUCER™ examines the content to look for possible tags you may have missed. It's not perfect, but it might help you.
+                <li id="suggested"><img src="./img/ap-click-add-tags.png" style="width:60%;margin:.5em -20% .5em .5em;" class="right" /><strong>Suggested Tags</strong> Now AUTO🤖PRODUCER™ examines the content to look for possible tags you may have missed. It's not perfect, but it might help you.
                     <ul>
                         <li>Automatically compares content to a list of known tags</li>
                         <li>Adds a box to the Tags widget in WP, after it runs, with its suggestions -- and scrolls you down to your tags widget, no matter where you've placed it.</li>
                         <li>All you have to do is click the suggested tags to add them</li>
                         <li>Click "Close" to dismiss the suggestions</li>
                     </ul>
-                It's worth noting that tags list AUTO🤖PRODUCER™ uses is necessarily divorced from the live content in Wordpress. I'll add or remove tags from the suggestions as necessary based on what I see in the <code>#death-to-bad-tags</code> Slack channel. Email me if you have thoughts.</li>
+                It's worth noting that tags list AUTO🤖PRODUCER™ uses is necessarily divorced from the live content in Wordpress. You can <a href="http://denverpostplus.com/app/autoproducer/ap-edit-tags.php">edit the list of suggested tags here</a>. Remove tags that are constantly suggested when they don't apply, because that's not helpful.</li>
             </ul>
         </div>
     </div>
@@ -166,7 +167,8 @@
                 <li>Homicide Report widget</li>
                 <li>Crime Map widget</li>
                 <li>Corrections</li>
-                <li>Inform Video embed</li>
+                <li>Inform video embed</li>
+                <li>YouTube video embed</li>
                 <li>In-Article Promos</li>
             </ul>
         </div>
@@ -294,6 +296,19 @@
     </div>
     <div class="row">
         <div class="large-7 large-centered columns">
+
+            <h3>1.0.4</h3>
+
+            <ul>
+                <li>Adds YouTube embed functionality per Dan Petty request</li>
+            </ul>
+
+            <h3>1.0.3</h3>
+
+            <ul>
+                <li>Introduced the tag suggestion manager (<a href="#suggested">more above</a>)</li>
+                <li>Greatly improved the quality of AUTO🤖PRODUCER™ tag suggestions</li>
+            </ul>
 
             <h3>1.0.2</h3>
 

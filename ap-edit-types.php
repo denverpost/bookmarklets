@@ -4,21 +4,26 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
+require_once './ap-sections.php';
+// $all_sections and $all_tags arrays using 'Wordpress ID' -> 'Title'
+
 $options_file = './ap-options.js';
 $options_start = 'var autoProducerOptions = ';
 $options_end = ';';
 
 $options_list = file_get_contents($options_file);
 $options_string = str_replace(array($options_start,$options_end),'',$options_list);
-var_dump($options_string);
 $options = json_decode($options_string);
-echo json_last_error();
-var_dump($options);
+
+$selected = FALSE;
+if(isset($_POST['typeoption']) && isset($options->$_POST['typeoption'])) {
+	$selected = $_POST['typeoption'];
+}
 
 ?>
 <!DOCTYPE html>
 <head>
-	<title>AUTO🤖PRODUCER™ Tag Suggestion Manager</title>
+	<title>AUTO🤖PRODUCER™ Story Type Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" type="text/css" href="//cdn.foundation5.zurb.com/foundation.css" />
 	<link rel="stylesheet" type="text/css" href="style.css" />
@@ -45,7 +50,7 @@ var_dump($options);
 				<section class="top-bar-section">
 				<ul class="right">
 					<li class="divider"></li>
-					<li class="top-top"><a href="ap-edit-tags.php"><strong>EDIT TAG LIST</strong></a></li>
+					<li class="top-top"><a href="ap-edit-tags.php"><strong>EDIT STORY TYPES</strong></a></li>
 					<li class="divider"></li>
 				</ul>
 			</section>
@@ -57,68 +62,134 @@ var_dump($options);
 		<div class="headerstyle">
 			<div class="row">
 				<div class="large-12 columns">
-					<h1>AUTO🤖PRODUCER™ Tag Suggestion Manager</h1>
+					<h1>AUTO🤖PRODUCER™ Story Type Manager</h1>
 				</div>
 				<div class="large-8 medium-8 columns">
-					<p>Manage tags to be suggested by AUTO🤖PRODUCER™. Click or use checkboxes to select items for deletion.</p>
-					<p>If you're adding a duplicate, it simply won't add anything.</p>
-				</div>
-				<div class="large-4 medium-4 columns">
-					<label
+					<p>Manage the Story Types available within AUTO🤖PRODUCER™. Select a Story Type from the dropdown to edit its details.</p>
 				</div>
 			</div>
 		</div>
 		<div id="admin" class="row">
-			<form id="listtags" name="listtags" method="post" action="ap-submit.php">
+			<form id="selecttype" name="selecttype" method="post" action="ap-edit-types.php">
 				<div class="large-12 columns">
 					<fieldset>
-						<legend> Add tags </legend>
+						<legend> Select </legend>
 						<div class="row add-new-tag">
-							<div class="large-4 columns">
-								<label for="addnewtag">Separate tags with commas:</label>
-							</div>
-							<div class="large-5 columns">
-								<input type="text" name="addnewtag" />
-							</div>
-							<div class="large-3 columns">
-								<input type="submit" value="SAVE CHANGES" class="button" />
+							<div class="large-6 large-centered columns">
+								<select id="typeoption" name="typeoption" onchange="this.form.submit()">
+									<option value="">Select story type...</option>
+									<?php foreach ($options as $key => $value) { ?>
+										<option value="<?php echo $key; ?>"<?php if($selected !== FALSE && $selected == $key) { echo ' selected="selected"';} ?>><?php echo $key.' - '.$value->title; ?></option>
+									<?php } ?>
+								</select>
 							</div>
 						</div>
 					</fieldset>
 				</div>
+			</form>
+			<?php if ($selected !== FALSE): 
+				$option_selected = $options->$selected; ?>
+			<?php echo "primary: ".$option_selected->{'primary-section'}; var_dump($options->$selected); ?>
+			<form id="edittype" name="edittype" method="post" action="ap-submit.php">
 				<div class="large-12 columns">
 					<fieldset>
-						<legend> <?php echo count($tags); ?> tags </legend>
-							<?php if (!count($tags)>0) { ?>
-								<div class="row">
-									<div class="large-12 columns text-center">
-										<h2>No items to display!</h2>
-									</div>
-								</div>
-							<?php } else { ?>
-								<div class="row" id="tablehead">
-									<div class="large-1 large-push-4 columns">
-										<strong>Select</strong>
-									</div>
-									<div class="large-4 large-pull-2 columns">
-										<strong>Tag text</strong>
-									</div>
-								</div>
-								<?php foreach ($tags as $key => $value) { ?>
-								<div class="row">
-									<div class="large-1 large-push-4 columns">
-										<input class="smallmargin" type="checkbox" name="tagdelete-<?php echo $key; ?>" id="tagdelete-<?php echo $key; ?>" value="1" />
-									</div>
-									<div class="large-5 large-pull-2 columns">
-										<label for="tag-<?php echo $key; ?>"><?php echo $value; ?></label>
-									</div>
-								</div>
-							<?php } ?>
-						<?php } ?>
+						<legend> Story type: <span style="color:SteelBlue"><?php echo $option_selected->title; ?></span> </legend>
+						<?php $option = $options->$selected; ?>
+						<div class="row">
+							<div class="large-5 columns">
+								<h5 class="text-center">Sections to select</h5>
+							</div>
+							<div class="large-2 columns">
+								&nbsp;
+							</div>
+							<div class="large-5 columns">
+								<h5 class="text-center">All sections</h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-4 columns">
+								<select name="selectsectionsto" id="select-to-section" multiple size="8">
+									<?php foreach ($option_selected->{'check-sections'} as $key => $value) { ?>
+										<option value="<?php echo $value; ?>"><?php echo $all_sections[$value]; ?></option>
+									<?php } ?>
+							    </select>
+							</div>
+							<div class="large-4 columns">
+							    <a href="JavaScript:void(0);" id="btn-add-section" class="button expand">&laquo; Add</a>
+							    <a href="JavaScript:void(0);" id="btn-remove-section" class="button expand">Remove &raquo;</a>
+							</div>
+							<div class="large-4 columns">
+							    <select name="selectsectionsfrom" id="select-from-section" multiple size="8">
+									<?php foreach ($all_sections as $key => $value) { 
+											if (!isset($option->{'check-sections'}[$key])) { ?>
+											<option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+										<?php }
+									} ?>
+							    </select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-5 columns">
+								<h5 class="text-center">Tags to add</h5>
+							</div>
+							<div class="large-2 columns">
+								&nbsp;
+							</div>
+							<div class="large-5 columns">
+								<h5 class="text-center">All tags</h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-4 columns">
+								<select name="selecttagsto" id="select-to-tag" multiple size="8">
+									<?php foreach ($option_selected->{'add-tags'} as $value) { ?>
+										<option value="<?php echo $value; ?>"><?php echo $value; ?></option>
+									<?php } ?>
+							    </select>
+							</div>
+							<div class="large-4 columns">
+							    <a href="JavaScript:void(0);" id="btn-add-tag" class="button expand">&laquo; Add</a>
+							    <a href="JavaScript:void(0);" id="btn-remove-tag" class="button expand">Remove &raquo;</a>
+							</div>
+							<div class="large-4 columns">
+							    <select name="selecttagsfrom" id="select-from-tag" multiple size="8">
+									<?php foreach ($all_tags as $value) { 
+											if (!in_array($value,$option->{'add-tags'})) { ?>
+											<option value="<?php echo $value; ?>"><?php echo $value; ?></option>
+										<?php }
+									} ?>
+							    </select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="large-6 columns">
+								<h5 class="left">Primary section:</h5>
+								<select name="sectionprimary" id="sectionprimary">
+									<?php if (!isset($option_selected->{'primary-section'})) { ?>
+										<option value="false">NONE</option>
+									<?php } ?>
+									<?php foreach ($all_sections as $key => $value) { ?>
+										<option value="<?php echo $key; ?>"<?php if(isset($option_selected->{'primary-section'}) && $key == $option_selected->{'primary-section'}) { echo ' selected="selected"'; } ?>><?php echo $value; ?></option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="large-6 columns">
+								<h5 class="left">Primary tag:</h5>
+								<select name="tagprimary" id="tagprimary">
+									<?php if (!isset($option_selected->{'primary-tag'})) { ?>
+										<option value="false">NONE</option>
+									<?php } ?>
+									<?php foreach ($all_tags as $key => $value) { ?>
+										<option value="<?php echo $key; ?>"<?php if(isset($option_selected->{'primary-tag'}) && $key == $option_selected->{'primary-tag'}) { echo ' selected="selected"'; } ?>><?php echo $value; ?></option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
 						<input type="hidden" name="tags_save" value="true" />
 					</fieldset>
 				</div>
 			</form>
+		<?php endif; ?>
 		</div>
 
 		<footer>
@@ -132,6 +203,36 @@ var_dump($options);
 	<script src="http://extras.denverpost.com/foundation/js/foundation.min.js"></script>
 	<script>
 		$(document).foundation();
+	</script>
+	<script>
+		$(document).ready(function() {
+ 
+	    $('#btn-add-section').click(function(){
+	        $('#select-from-section option:selected').each( function() {
+	                $('#select-to-section').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>");
+	            $(this).remove();
+	        });
+	    });
+	    $('#btn-remove-section').click(function(){
+	        $('#select-to-section option:selected').each( function() {
+	            $('#select-from-section').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>");
+	            $(this).remove();
+	        });
+	    });
+	    $('#btn-add-tag').click(function(){
+	        $('#select-from-tag option:selected').each( function() {
+	                $('#select-to-tag').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>");
+	            $(this).remove();
+	        });
+	    });
+	    $('#btn-remove-tag').click(function(){
+	        $('#select-to-tag option:selected').each( function() {
+	            $('#select-from-tag').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>");
+	            $(this).remove();
+	        });
+	    });
+	 
+	});
 	</script>
 </body>
 </html>

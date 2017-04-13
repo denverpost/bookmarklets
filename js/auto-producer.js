@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.3';
+    var APversion = ' v1.0.4';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -521,8 +521,8 @@
             if (args.youtube) {
                 loop:
                 while(true) {
-                    var vidId = prompt('What is the YouTube ID or URL of the video you want to embed?\n\nNote: Embeds always appear at the top of a story, but can be moved with CTRL+X and CTRL+V\n\n','');
-                    vidID = (vidId.match(/youtube\.com/)) ? vidId.replace('https://','').replace('http://','').replace('www.','').replace('youtube.com/','').replace('watch?v=','').replace('embed/','').replace('?autoplay=1') : vidId;
+                    var vidIdRaw = prompt('What is the YouTube ID or URL of the video you want to embed?\n\nNote: Embeds always appear at the top of a story, but can be moved with CTRL+X and CTRL+V\n\n','');
+                    vidId = (vidIdRaw.match(/youtube/) !== null) ? vidIdRaw.replace('https://','').replace('http://','').replace('www.','').replace('youtube.com/','').replace('watch?v=','').replace('embed/','').replace('?autoplay=1') : vidIdRaw;
                     if (vidId.length >= 11 && vidId.match(/^[A-za-z0-9_-]+$/) !== null) {
                         break loop;
                     } else {

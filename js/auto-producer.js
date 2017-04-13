@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.2';
+    var APversion = ' v1.0.3';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -241,6 +241,9 @@
             if (args.informSelect) {
                 contentArgs.inform = true;
             }
+            if (args.youtubeSelect) {
+                contentArgs.youtube = true;
+            }
             if (args.newsletterSelect) {
                 contentArgs.newsletter = true;
             }
@@ -294,15 +297,15 @@
             var tagLen = autoProducerTagList.length;
             var suggestedTags = [];
             var tagContent = content.textContent.toLowerCase();
-            while(tagLen--) {
-                if (tagLen >= 0 && tagContent.indexOf(autoProducerTagList[tagLen].toLowerCase()) != -1) {
+            while(tagLen-- && tagLen >= 0) {
+                if (new RegExp("\\b"+autoProducerTagList[tagLen].toLowerCase()+"\\b").test(tagContent)) {
                     suggestedTags.push(autoProducerTagList[tagLen]);
                 }
             }
             var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
             var grafs = content.textContent.split(splitters);
-            if (grafs[0].toLowerCase().startsWith('by') || grafs[0].toLowerCase().startsWith('[caption')) {
-                if (grafs[1].toLowerCase().startsWith('by') || grafs[1].toLowerCase().startsWith('[caption')) {
+            if (grafs[0].toLowerCase().startsWith('by') || grafs[0].toLowerCase().startsWith('[caption') || grafs[0].toLowerCase().startsWith('<strong>by')) {
+                if (grafs[1].toLowerCase().startsWith('by') || grafs[1].toLowerCase().startsWith('[caption') || grafs[0].toLowerCase().startsWith('<strong>by')) {
                     newExcerpt = stripTheHTML(grafs[2].replace(/\[.+\]/g,''));    
                 } else {
                     newExcerpt = stripTheHTML(grafs[1].replace(/\[.+\]/g,''));
@@ -507,12 +510,38 @@
                     if (autoPlay === '0' || autoPlay === '1' || autoPlay === '7' || autoPlay === '3') {
                         break loop;
                     } else {
-                        alert('You must enter an 1-digit number.');
+                        alert('You must enter a 1-digit number.');
                     }
                 }
                 var markup = '[cq  comment="VIDEO PLACED BELOW"]\n' +
 '<div class="ndn_embed" style="width:100%;" data-config-pb="0" data-config-widget-id="' + autoPlay + '" data-config-type="VideoPlayer/Single" data-config-tracking-group="90115" data-config-playlist-id="' + listId + '" data-config-video-id="' + vidId + '" data-config-site-section="denverpost" data-config-width="100%" data-config-height="9/16w"></div> \n' +
 '[cq  comment="VIDEO PLACED ABOVE"]';
+                grafsClean.splice(0, 0, markup);
+            }
+            if (args.youtube) {
+                loop:
+                while(true) {
+                    var vidId = prompt('What is the YouTube ID or URL of the video you want to embed?\n\nNote: Embeds always appear at the top of a story, but can be moved with CTRL+X and CTRL+V\n\n','');
+                    vidID = (vidId.match(/youtube\.com/)) ? vidId.replace('https://','').replace('http://','').replace('www.','').replace('youtube.com/','').replace('watch?v=','').replace('embed/','').replace('?autoplay=1') : vidId;
+                    if (vidId.length >= 11 && vidId.match(/^[A-za-z0-9_-]+$/) !== null) {
+                        break loop;
+                    } else {
+                        alert(vidId + ' is not a valid YouTube URL or ID. Try again.');
+                    }
+                }
+                loop:
+                while(true) {
+                    var autoPlay = prompt('Should it Autoplay? (Hit ENTER for "NO")\n\n' +
+                        'Options:\n\n' +
+                            'No Autoplay: 0 or ENTER\n' +
+                            'Autoplay: 1\n','0');
+                    if (autoPlay === '0' || autoPlay === '1') {
+                        break loop;
+                    } else {
+                        alert('You must enter 0 or 1.');
+                    }
+                }
+                var markup = '[dfm_iframe src="https://www.youtube.com/embed/' + vidId + '?autoplay=' + autoPlay + '" width="100%" advanced_fields="true" allowfullscreen="yes" scrolling="no" frameborder="0"/]';
                 grafsClean.splice(0, 0, markup);
             }
             if (args.newsletter) {
@@ -577,7 +606,7 @@
                 if ( typeof item !== 'undefined' ) {
                     var section_id = prompt('Select the type of news to insert:\n\n\n' +
                     'News:\n' +
-                        '(1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg.\n\n' +
+                        '(1) Soft news, (2) Hard news, (18) Business, (17) Real estate, (19) Tech, (20) Featured homes, (15) General Politics, (24) Trump Admin., (23) Colo. Leg., (26) Colorado Cold Cases, (27) Top Workplaces\n\n' +
                     'Sports:\n' +
                         '(Enter) Sports, (3) Broncos, (4) Nuggets, (5) Rockies\n\n' +
                     'Features:\n' +
@@ -603,6 +632,8 @@
                     else if ( section_id.indexOf('23') >= 0 ) { section = 'colorado-legislature'; }
                     else if ( section_id.indexOf('24') >= 0 ) { section = 'trump-administration'; }
                     else if ( section_id.indexOf('25') >= 0 ) { section = 'lifestyle'; }
+                    else if ( section_id.indexOf('26') >= 0 ) { section = 'colorado-cold-cases'; }
+                    else if ( section_id.indexOf('27') >= 0 ) { section = 'top-workplaces'; }
                     else if ( section_id.indexOf('1') >= 0 ) { section = 'dont-miss'; }
                     else if ( section_id.indexOf('2') >= 0 ) { section = 'hard-news'; }
                     else if ( section_id.indexOf('3') >= 0 ) { section = 'broncos'; }
@@ -726,8 +757,9 @@
             output += '</div>';
             output += '<div class="one-third">';
             output += '<p>Insert in-article Promos? <input type="checkbox" id="promoSelect" tabindex="3" /><br />';
-            output += 'Insert Newsletter widget? <input type="checkbox" id="newsletterSelect" tabindex="5" /><br />';
-            output += 'Change author to WaPo? <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="7" /></p>';
+            output += 'Insert YouTube video? <input type="checkbox" id="youtubeSelect" tabindex="5" /><br />';
+            output += 'Insert Newsletter widget? <input type="checkbox" id="newsletterSelect" tabindex="7" /><br />';
+            output += 'Change author to WaPo? <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="9" /></p>';
             output += '</div>';
             output += '<div class="clear"></div>';
             output += '<p class="red-small">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
@@ -745,6 +777,7 @@
             args['WaPoauthorSelect'] = jQuery('#WaPoauthorSelect').prop('checked');
             args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
             args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
+            args['youtubeSelect'] = jQuery('#youtubeSelect').prop('checked') ? true : false;
             args['newsletterSelect'] = jQuery('#newsletterSelect').prop('checked') ? true : false;
             args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
             if (validOptions.indexOf(String(selectFunction)) !== -1) {
@@ -1190,7 +1223,7 @@
             s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
             window.document.body.appendChild(s2);
             var tagJS = window.document.createElement('script');
-            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-taglist.min.js?v='+vSec());
+            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/autoproducer/ap-taglist.js?v='+vSec());
             window.document.body.appendChild(tagJS);
             var optionsJS = window.document.createElement('script');
             optionsJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-options.min.js?v='+vSec());

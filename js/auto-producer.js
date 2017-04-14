@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.4';
+    var APversion = ' v1.0.5';
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -297,8 +297,13 @@
             var tagLen = autoProducerTagList.length;
             var suggestedTags = [];
             var tagContent = content.textContent.toLowerCase();
+            var articleTags = document.getElementById('post_tag').getElementsByTagName('button');
+            var extantTags = [];
+            for(i=0;i<articleTags.length;i++) {
+                extantTags[i] = articleTags[i].textContent.toLowerCase().replace('remove term: ','');
+            }
             while(tagLen-- && tagLen >= 0) {
-                if (new RegExp("\\b"+autoProducerTagList[tagLen].toLowerCase()+"\\b").test(tagContent)) {
+                if (new RegExp("\\b"+autoProducerTagList[tagLen].toLowerCase()+"\\b").test(tagContent) && extantTags.indexOf(autoProducerTagList[tagLen].toLowerCase()) == -1 ) {
                     suggestedTags.push(autoProducerTagList[tagLen]);
                 }
             }

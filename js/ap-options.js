@@ -305,6 +305,19 @@ var autoProducerOptions = {
         "help-sections": "Entertainment, Television, Entertainment / Lifestyle, Latest News",
         "help-primary-section": "Television"
     },
+    "59": {
+        "title": "Seen",
+        "check-sections": ["48","83","84"],
+        "add-tags": ["Seen","Seen Gallery"],
+        "primary-section": "83",
+        "primary-tag": "4314",
+        "features": [],
+        "apple-news": [],
+        "related": true,
+        "help-primary-tag": "Seen Gallery",
+        "help-sections": "Latest News, Lifestyle, Lifestyle Columnists",
+        "help-primary-section": "Lifestyle",
+    },
     "60": {
         "title": "YourHub General",
         "check-sections": ["2222","48","39","47"],

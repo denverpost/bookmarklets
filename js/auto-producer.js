@@ -546,7 +546,7 @@
                         alert('You must enter 0 or 1.');
                     }
                 }
-                var markup = '[dfm_iframe src="https://www.youtube.com/embed/' + vidId + '?autoplay=' + autoPlay + '" width="100%" advanced_fields="true" allowfullscreen="yes" scrolling="no" frameborder="0"/]';
+                var markup = ( autoPlay == 1 ) ? '[dfm_iframe src="https://www.youtube.com/embed/' + vidId + '?autoplay=' + autoPlay + '" width="100%" advanced_fields="true" allowfullscreen="yes" scrolling="no" frameborder="0"/]' : 'https://www.youtube.com/watch?v=' +  vidId;
                 grafsClean.splice(0, 0, markup);
             }
             if (args.newsletter) {

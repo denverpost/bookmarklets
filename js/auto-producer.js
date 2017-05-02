@@ -1,5 +1,19 @@
 (function() {
-    var APversion = ' v1.0.5';
+    var APversion = ' v1.0.6';
+    function getDPOtip() {
+        //return a random DPO production tip
+        var tips = Array(
+            'Don\'t forget the Front Page PDF! <a href="http://denverpostplus.com/frontpages/">Upload it here.</a>',
+            'The #justposted-all channel in Slack is a great place to catch up on everything that has been posted recently.',
+            '7-8 p.m. is a great time to post strong content on Facebook as we have a lot of fans active at that time.',
+            'When you check a child section in Wordpress, always check the parent, too. Example: If you use <strong>Colorado News</strong>, also use <strong>News</strong>.',
+            'Don\'t forget to check partner and sister sites for great content.',
+            'Be sure to put all Entertianment, Lifestyle and Outdoors stories in the <strong>Entertianment / Lifestyle</strong> section so they get fed to The Know.'
+            );
+        var ceiling = tips.length;
+        var index = Math.floor(Math.random() * ceiling);
+        return tips[index];
+    }
     function HTMLescape(html){
         return document.createElement('div').appendChild(document.createTextNode(html)).parentNode.innerHTML;
     }
@@ -46,8 +60,24 @@
     function slugItUp(inText) {
         return inText.toLowerCase().replace(/[^\w\ ]+/g,'').replace(/ +/g,'-');
     }
+
+    function addslashes(str) {
+        str = str.replace(/\\/g, '\\\\');
+        str = str.replace(/\'/g, '\\\'');
+        str = str.replace(/\"/g, '\\"');
+        str = str.replace(/\0/g, '\\0');
+        return str;
+    }
+     
+    function stripslashes(str) {
+        str = str.replace(/\\'/g, '\'');
+        str = str.replace(/\\"/g, '"');
+        str = str.replace(/\\0/g, '\0');
+        str = str.replace(/\\\\/g, '\\');
+        return str;
+    }
     
-    function autoProducerPost(randomGif) {
+    function autoProducerPost() {
         function captureSections() {
             var output = [];
             jQuery('#categorychecklist input:checked').each(function(){
@@ -187,8 +217,15 @@
             tagsHTML += 'function slugItUp(inText) {';
             tagsHTML += 'return inText.toLowerCase().replace(/[^\\\w\ ]+/g,\'\').replace(/ +/g,\'-\');';
             tagsHTML += '}';
+            tagsHTML += 'function stripslashes(str) {';
+            tagsHTML += 'str = str.replace(/\\\\\'/g, \'\\\'\');';
+            tagsHTML += 'str = str.replace(/\\\\"/g, \'"\');';
+            tagsHTML += 'str = str.replace(/\\\\0/g, \'\\0\');';
+            tagsHTML += 'str = str.replace(/\\\\\\\\/g, \'\\\\\');';
+            tagsHTML += 'return str;';
+            tagsHTML += '}';
             tagsHTML += 'function addSuggestedTag(newSuggestedTag) {';
-            tagsHTML += 'document.getElementById(\'new-tag-post_tag\').value = newSuggestedTag;';
+            tagsHTML += 'document.getElementById(\'new-tag-post_tag\').value = stripslashes(newSuggestedTag);';
             tagsHTML += 'jQuery(\'#post_tag .ajaxtag input.button.tagadd\').click();';
             tagsHTML += 'var delTag = \'#tagSuggest_\' + slugItUp(newSuggestedTag);';
             tagsHTML += 'jQuery(delTag).remove();';
@@ -203,7 +240,7 @@
             tagsHTML += '<ul style="list-style-type:none;text-indent:none;font-size:1.2em;">';
             for (var i=0,len=tags.length;i<len;i++){
                 var slug = slugItUp(tags[i]);
-                tagsHTML += '<li id="tagSuggest_'+slug+'" onClick="javascript:addSuggestedTag(\''+tags[i]+'\')" style="cursor:pointer;margin:0 0 .25em;padding:0;">+ '+tags[i]+'</li>';
+                tagsHTML += '<li id="tagSuggest_'+slug+'" onClick="javascript:addSuggestedTag(\''+addslashes(tags[i])+'\')" style="cursor:pointer;margin:0 0 .25em;padding:0;">+ '+tags[i]+'</li>';
             }
             tagsHTML += '</ul>';
             tagsHTML += '<p style="color:black;margin-top:1em;font-size:1.1em;text-align:right;cursor:pointer;" onClick="javascript:closeSuggestedTags();"><strong>Close</strong></p>';
@@ -683,7 +720,7 @@
             document.body.appendChild(bookmarkletSource);
         }
 
-        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
+        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
         var appleNewsSections = {
@@ -788,7 +825,7 @@
             if (validOptions.indexOf(String(selectFunction)) !== -1) {
                 jQuery('#auto-producer').html(APsuccessText);
                 trumpThatBitch(options[selectFunction],args);
-                setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },1250);
+                setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },2000);
             } else {
                 var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');
                 if (again === false) {
@@ -857,7 +894,7 @@
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerContentHub(randomGif) {
+    function autoProducerContentHub() {
         var options = {
             '1': {
                 'title': 'Daily Camera',
@@ -896,7 +933,7 @@
             }
         };
 
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p></div>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -931,12 +968,7 @@
             var searchString = (selectFunction !== '') ? selectSearch + ' ' + selectFunction : selectSearch;
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);
-            var imageLoad = setInterval(function(){
-                if (jQuery('#waiting-gif').height() > 10) {
-                    clearInterval(imageLoad);
-                    jQuery('#search-submit').trigger("click");
-                }
-            },500);
+            jQuery('#search-submit').trigger("click");
         }
 
         jQuery('#auto-producer').html(APdialogText(options));
@@ -973,7 +1005,7 @@
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerWireHub(randomGif) {
+    function autoProducerWireHub() {
         var options = {
             '0': {
                 'title': 'None',
@@ -996,7 +1028,7 @@
                 'default': false,
             }
         };
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1053,12 +1085,7 @@
             fillDates(searchLength);
             jQuery('#hub_search-search-input').val(searchString);
             jQuery('#auto-producer').html(APsuccessText);
-            var imageLoad = setInterval(function(){
-                if (jQuery('#waiting-gif').height() > 10) {
-                    clearInterval(imageLoad);
-                    jQuery('#search-submit').trigger("click");
-                }
-            },500);
+            jQuery('#search-submit').trigger("click");
         }
 
         jQuery('#auto-producer').html(APdialogText(options));
@@ -1095,7 +1122,7 @@
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerSearch(randomGif) {
+    function autoProducerSearch() {
         var options = {
             '1': {
                 'title': 'Associated Press',
@@ -1103,7 +1130,7 @@
                 'default': ' checked',
             }
         };
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</strong></h3><p>Here\'s a random GIF while you wait. Blame Giphy if it\'s ... bad.</p><p ><img src="' + randomGif + '" id="waiting-gif" /></p><p><input name="readonly" value="' + randomGif + '" readonly /></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1158,12 +1185,7 @@
             fillDates(searchLength);
             jQuery('#post-search-input').val(selectFunction);
             jQuery('#auto-producer').html(APsuccessText);
-            var imageLoad = setInterval(function(){
-                if (jQuery('#waiting-gif').height() > 10) {
-                    clearInterval(imageLoad);
-                    jQuery('#post-query-submit').trigger("click");
-                }
-            },500);
+            jQuery('#post-query-submit').trigger("click");
         }
 
         jQuery('#auto-producer').html(APdialogText(options));
@@ -1200,15 +1222,15 @@
         jQuery('#auto-producer').dialog('open');
     }
 
-    function autoProducerPick(randomGif) {
-        if (loc.indexOf('edit.php') >-1) {
-            autoProducerSearch(randomGif);
-        } else if (loc.indexOf('content_hub_view') >-1) {
-            autoProducerContentHub(randomGif);
-        } else if (loc.indexOf('wire_hub_view') >-1) {
-            autoProducerWireHub(randomGif);
-        } else {
-            autoProducerPost(randomGif);
+    function autoProducerPick() {
+        if (loc.indexOf('edit.php') > -1) {
+            autoProducerSearch();
+        } else if (loc.indexOf('content_hub_view') > -1) {
+            autoProducerContentHub();
+        } else if (loc.indexOf('wire_hub_view') > -1) {
+            autoProducerWireHub();
+        } else if (loc.indexOf('post.php') > -1) {
+            autoProducerPost();
         }
     }
 
@@ -1238,37 +1260,11 @@
             window.document.body.appendChild(APdiv);
         }
 
-        var tagJSint = setInterval(function() {
-            if (typeof autoProducerTagList == 'undefined') {
-                clearInterval(tagJSint);
+        var requirementsLoaded = setInterval(function() {
+            if (typeof autoProducerTagList != 'undefined' && typeof autoProducerOptions != 'undefined' && typeof jQuery.ui.dialog != 'undefined') {
+                clearInterval(requirementsLoaded);
+                autoProducerPick();
             }
         }, 20);
-
-        var optionsJSint = setInterval(function() {
-            if (typeof autoProducerOptions == 'undefined') {
-                clearInterval(optionsJSint);
-            }
-        }, 20);
-
-        var UILoaded = setInterval(function() {
-            if (typeof jQuery.ui.dialog != 'undefined') {
-                clearInterval(UILoaded);
-                var randomGifin = '';
-                jQuery.ajax({
-                    url:'https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
-                    type: 'GET',
-                    success: function(response) {
-                        randomGifin = response.data.image_url;
-                        randomGifin = randomGifin.replace('http:','https:');
-                    }
-                });
-                var gifInt = setInterval(function() {
-                    if (typeof randomGifin != 'undefined' && randomGifin.indexOf('giphy.gif') > -1) {
-                        clearInterval(gifInt);
-                        autoProducerPick(randomGifin);
-                    }
-                }, 10);
-            }
-        }, 50);
     }
 }());

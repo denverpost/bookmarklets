@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.7';
+    var APversion = ' v1.0.8';
     function getDPOtip() {
         //return a random DPO production tip
         var tips = Array(
@@ -269,7 +269,7 @@
             if (typeof options.title != 'undefined' && options.title == 'Recipes') {
                 contentArgs['rel-section'] = true;
             }
-            if (typeof options.title != 'undefined' && options.title == 'Crime Story' && !args.homicideSelect) {
+            if (args.crimeMapSelect && !args.homicideSelect) {
                 contentArgs.crime = true;
             }
             if (args.homicideSelect) {
@@ -789,32 +789,35 @@
             output += '<div class="tipGraf" style="display:none;"></div>';
             output += '</div>';
             output += '<div class="clear"></div>';
-            output += '<div class="one-third">';
-            output += '<p>Enter selection: <input type="text" id="APoptionSelect" tabindex="1"></p>';
+            output += '<div class="one-quarter">';
+            output += '<p><strong>Enter selection:</strong></p><p><input type="text" id="APoptionSelect" tabindex="1"></p>';
             output += '</div>';
-            output += '<div class="one-third">';
-            output += '<p>Insert Related by Primary Tag? <span class="red-star">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
-            output += 'Insert Inform video? <input type="checkbox" id="informSelect" tabindex="4" /><br />';
-            output += 'Change author to AP? <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="6" /><br />';
-            output += 'Insert Homicide Report? <span class="mag-star">*</span> <input type="checkbox" id="homicideSelect" tabindex="8" /></p>';
+            output += '<div class="one-quarter">';
+            output += '<p>Insert Related <span class="red-star">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
+            output += 'Inform video <input type="checkbox" id="informSelect" tabindex="5" /><br />';
+            output += 'Author -> AP <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="8" /></p>';
             output += '</div>';
-            output += '<div class="one-third">';
-            output += '<p>Insert in-article Promos? <input type="checkbox" id="promoSelect" tabindex="3" /><br />';
-            output += 'Insert YouTube video? <input type="checkbox" id="youtubeSelect" tabindex="5" /><br />';
-            output += 'Insert Newsletter widget? <input type="checkbox" id="newsletterSelect" tabindex="7" /><br />';
-            output += 'Change author to WaPo? <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="9" /></p>';
+            output += '<div class="one-quarter">';
+            output += '<p>Insert Promos <input type="checkbox" id="promoSelect" tabindex="3" /><br />';
+            output += 'YouTube video <input type="checkbox" id="youtubeSelect" tabindex="6" /><br />';
+            output += 'Author -> WaPo <span class="blue-star">*</span> <input type="checkbox" id="WaPoauthorSelect" tabindex="9" /></p>';
+            output += '</div>';
+            output += '<div class="one-quarter">';
+            output += '<p>Newsletter widget <input type="checkbox" id="newsletterSelect" tabindex="4" /><br />';
+            output += 'Crime Map widget <input type="checkbox" id="crimeMapSelect" tabindex="7" /><br />';
+            output += 'Homicide Report <span class="mag-star">*</span> <input type="checkbox" id="homicideSelect" tabindex="10" /></p>';
             output += '</div>';
             output += '<div class="clear"></div>';
             output += '<p class="red-small">Items with a star insert Related by Primary Tag automatically.<br />Related items will only be inserted on articles with 6 or more paragraphs.</p>';
             output += '<p class="blue-small">AP will override WaPo if both are checked; you WILL NOT see the new author until you save.</p>';
-            output += '<p class="mag-small">Overrides the Crime Map if inserting with the "Crime Story" option.</p>';
+            output += '<p class="mag-small">Overrides the Crime Map if both are checked.</p>';
             output += '<div class="ap-help"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div></div>';
             return output;
         }
 
         function processAPform() {
             var args = [];
-            var selectFunction = jQuery('#APoptionSelect').val();
+            var selectFunction = (jQuery('#APoptionSelect').val() == '') ? 0 : jQuery('#APoptionSelect').val();
             args['selectRelated'] = jQuery('#relatedSelect').prop('checked');
             args['APauthorSelect'] = jQuery('#APauthorSelect').prop('checked');
             args['WaPoauthorSelect'] = jQuery('#WaPoauthorSelect').prop('checked');
@@ -823,6 +826,7 @@
             args['youtubeSelect'] = jQuery('#youtubeSelect').prop('checked') ? true : false;
             args['newsletterSelect'] = jQuery('#newsletterSelect').prop('checked') ? true : false;
             args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
+            args['crimeMapSelect'] = jQuery('#crimeMapSelect').prop('checked') ? true : false;
             if (validOptions.indexOf(String(selectFunction)) !== -1) {
                 jQuery('#auto-producer').html(APsuccessText);
                 trumpThatBitch(options[selectFunction],args);
@@ -1094,8 +1098,6 @@
             }
         };
 
-
-
         var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
 
         function modifyDialog() {
@@ -1106,7 +1108,6 @@
                 }
             });
             jQuery("input[name=searchname]:checked").focus();
-
         }
 
         function APdialogText(options){

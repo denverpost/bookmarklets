@@ -52,11 +52,11 @@
 	font-weight:bold;
 }
 #auto-producer .ap-options .blue-star {
-	color:darkred;
+	color:darkblue;
 	font-weight:bold;
 }
 #auto-producer .ap-options .mag-star {
-	color:darkmagenta;
+	color:darkgreen;
 	font-weight:bold;
 }
 #auto-producer .ap-options .red-small {
@@ -65,12 +65,12 @@
 	margin:0 0 .4em;
 }
 #auto-producer .ap-options .blue-small {
-	color:darkred;
+	color:darkblue;
 	font-size:85%;
 	margin:0 0 .4em;
 }
 #auto-producer .ap-options .mag-small {
-	color:darkmagenta;
+	color:darkgreen;
 	font-size:85%;
 	margin:0 0 .4em;
 }
@@ -78,6 +78,10 @@
 	width:25%;
 	float:left;
 	display:inline-block;
+}
+#auto-producer .ap-options div.one-quarter input[type=checkbox] {
+	float:left;
+	margin-top: 3px;
 }
 #auto-producer .ap-options div.one-third {
 	width:33%;

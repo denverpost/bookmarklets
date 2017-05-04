@@ -1,9 +1,9 @@
 (function() {
-    var APversion = ' v1.0.6';
+    var APversion = ' v1.0.7';
     function getDPOtip() {
         //return a random DPO production tip
         var tips = Array(
-            'Don\'t forget the Front Page PDF! <a href="http://denverpostplus.com/frontpages/">Upload it here.</a>',
+            'Overnight online shift? Don\'t forget the Front Page PDF! <a href="http://denverpostplus.com/frontpages/">Upload it here.</a>',
             'The #justposted-all channel in Slack is a great place to catch up on everything that has been posted recently.',
             '7-8 p.m. is a great time to post strong content on Facebook as we have a lot of fans active at that time.',
             'When you check a child section in Wordpress, always check the parent, too. Example: If you use <strong>Colorado News</strong>, also use <strong>News</strong>.',
@@ -534,7 +534,8 @@
                             'Politics: 18470\n' +
                             'Politics - Elections: 18471\n' +
                             'Sports: 18474\n' +
-                            'Sports - Broncos: 18477\n\n','18464');
+                            'Sports - Broncos: 18477\n' +
+                            'Movie trailers: 10658\n\n','18464');
                     if (listId.length == 5 && listId.match(/^[0-9]+$/) !== null) {
                         break loop;
                     } else {
@@ -897,41 +898,203 @@
     function autoProducerContentHub() {
         var options = {
             '1': {
-                'title': 'Daily Camera',
-                'search-term': 'daily camera',
-                'default': ' checked',
+                'title': 'Akron News-Reporter',
+                'search-term': '34329',
+                'default': false,
             },
             '2': {
-                'title': 'Longmont Times-Call',
-                'search-term': 'times-call',
+                'title': 'Boulder Daily Camera',
+                'search-term': '15221',
                 'default': false,
             },
             '3': {
-                'title': 'Loveland Reporter-Herald',
-                'search-term': 'reporter-herald',
+                'title': 'Broomfield Enterprise',
+                'search-term': '15186',
                 'default': false,
             },
             '4': {
-                'title': 'The Cannabist',
-                'search-term': 'cannabist',
+                'title': 'Brush News-Tribune',
+                'search-term': '36411',
                 'default': false,
             },
             '5': {
-                'title': 'The Know',
-                'search-term': 'the know',
+                'title': 'Burlington Record',
+                'search-term': '35036',
                 'default': false,
             },
             '6': {
-                'title': 'San Jose Mercury News',
-                'search-term': 'mercury news',
+                'title': 'Canon City Daily Record',
+                'search-term': '34355',
                 'default': false,
             },
             '7': {
+                'title': 'Colorado Daily',
+                'search-term': '15198',
+                'default': false,
+            },
+            '8': {
+                'title': 'Colorado Hometown Weekly',
+                'search-term': '15196',
+                'default': false,
+            },
+            '9': {
+                'title': 'Daily News',
+                'search-term': '15200',
+                'default': false,
+            },
+            '10': {
+                'title': 'East Bay Times',
+                'search-term': '1622',
+                'default': false,
+            },
+            '11': {
+                'title': 'Estes Park Trail-Gazette',
+                'search-term': '15188',
+                'default': false,
+            },
+            '12': {
                 'title': 'Fort Morgan Times',
-                'search-term': 'fort morgan times',
+                'search-term': '34573',
+                'default': false,
+            },
+            '13': {
+                'title': 'Inland Valley Daily Bulletin',
+                'search-term': '34963',
+                'default': false,
+            },
+            '14': {
+                'title': 'Journal Advocate',
+                'search-term': '34309',
+                'default': false,
+            },
+            '15': {
+                'title': 'Julesburg Advocate',
+                'search-term': '15190',
+                'default': false,
+            },
+            '16': {
+                'title': 'Lamar Ledger',
+                'search-term': '15191',
+                'default': false,
+            },
+            '17': {
+                'title': 'Long Beach Press Telegram',
+                'search-term': '35863',
+                'default': false,
+            },
+            '18': {
+                'title': 'Longmont Times-Call',
+                'search-term': '34489',
+                'default': false,
+            },
+            '19': {
+                'title': 'Loveland Reporter-Herald',
+                'search-term': '34496',
+                'default': false,
+            },
+            '20': {
+                'title': 'Marin Independent Journal',
+                'search-term': '36400',
+                'default': false,
+            },
+            '21': {
+                'title': 'Orange County Register',
+                'search-term': '61573',
+                'default': false,
+            },
+            '22': {
+                'title': 'Press Enterprise',
+                'search-term': '60636',
+                'default': false,
+            },
+            '23': {
+                'title': 'Redlands Daily Facts',
+                'search-term': '36382',
+                'default': false,
+            },
+            '24': {
+                'title': 'Reverb',
+                'search-term': '2049',
+                'default': false,
+            },
+            '25': {
+                'title': 'San Bernardino County Sun',
+                'search-term': '36170',
+                'default': false,
+            },
+            '26': {
+                'title': 'Santa Cruz Sentinel',
+                'search-term': '36379',
+                'default': false,
+            },
+            '27': {
+                'title': 'SCNG',
+                'search-term': '62230',
+                'default': false,
+            },
+            '28': {
+                'title': 'Silicon Valley',
+                'search-term': '1954',
+                'default': false,
+            },
+            '29': {
+                'title': 'The Associated Press',
+                'search-term': '2790',
+                'default': false,
+            },
+            '30': {
+                'title': 'The Cannabist',
+                'search-term': '2055',
+                'default': false,
+            },
+            '31': {
+                'title': 'The Cannifornian',
+                'search-term': '26267',
+                'default': false,
+            },
+            '32': {
+                'title': 'The Daily Breeze',
+                'search-term': '36383',
+                'default': false,
+            },
+            '33': {
+                'title': 'The Denver Post',
+                'search-term': '9',
+                'default': false,
+            },
+            '34': {
+                'title': 'The Know',
+                'search-term': '9749',
+                'default': true,
+            },
+            '35': {
+                'title': 'The Mercury News',
+                'search-term': '1598',
+                'default': false,
+            },
+            '36': {
+                'title': 'The Pasadena Star-News',
+                'search-term': '36167',
+                'default': false,
+            },
+            '37': {
+                'title': 'The San Gabriel Valley Tribune',
+                'search-term': '35862',
+                'default': false,
+            },
+            '38': {
+                'title': 'The Whittier Daily News',
+                'search-term': '36573',
+                'default': false,
+            },
+            '39': {
+                'search-term': '2',
+                'title': 'Twin Cities',
                 'default': false,
             }
         };
+
+
 
         var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
 
@@ -948,25 +1111,50 @@
 
         function APdialogText(options){
             var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖SEARCHER™ for CONTENT HUB. Here\'s what I can do for you:</p>';
-            output += '<p>';
+            output += '<div class="one-half"><p><strong>Select a news source:</strong></p>';
+            output += '<select id="ap-ch-search-select" name="ap-ch-search-select" tabindex="1">';
             for(var object in options){
                 if (options.hasOwnProperty(object)) {
-                    var tabind = (options[object]['default']) ? ' tabindex="1"' : ' tabindex="-1"';
-                    output += '<input type="radio" name="searchname" value="' + options[object]['search-term'] + '" ' + tabind + options[object]['default'] + '> ' + options[object]['title'] + '<br />';
+                    var selected = (options[object]['default'] == true) ? ' selected="selected"' : '';
+                    output += '<option value="' + options[object]['search-term'] + '"' + selected + '>' + options[object]['title'] + '</option>';
                 }
             }
-            output += '</p>';
+            output += '</select>';
+            output += '</div>';
+            output += '<div class="one-half"><p><strong>Select a date range:</strong></p>';
+            output += '<input type="radio" name="searchlength" value="0" tabindex="-1" /> No date range<br />';
+            output += '<input type="radio" name="searchlength" value="1" tabindex="2" checked /> 1 day<br />';
+            output += '<input type="radio" name="searchlength" value="2" tabindex="-1" /> 2 days<br />';
+            output += '<input type="radio" name="searchlength" value="7" tabindex="-1" /> 7 days<br />';
+            output += '<input type="radio" name="searchlength" value="30" tabindex="-1" /> 30 days<br />';
+            output += '</div>';
             output += '<div class="clear"></div>';
-            output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="2"></p>';
+            output += '<p>Add a search term? <input type="text" id="APoptionSelect" tabindex="3"></p>';
             output += '<div class="ap-help"><a href="https://extras.denverpost.com/app/bookmarklet/ap-help.html" target="_blank">AUTO🤖PRODUCER™ Help</a></div></div>';
             return output;
         }
 
+        function fillDates(days) {
+            if (days !== 0) {
+                var now = new Date();
+                var backup = now - 1000 * 60 * 60 * 24 * days;
+                var then = new Date(backup);
+                document.getElementById('dfm_hub_start_mm').value = padNum(then.getMonth() + 1);
+                document.getElementById('dfm_hub_start_dd').value = padNum(then.getDate());
+                document.getElementById('dfm_hub_start_yyyy').value = then.getFullYear();
+                document.getElementById('dfm_hub_end_mm').value = padNum(now.getMonth() + 1);
+                document.getElementById('dfm_hub_end_dd').value = padNum(now.getDate() + 1);
+                document.getElementById('dfm_hub_end_yyyy').value = now.getFullYear();
+            }
+        }
+
         function processAPform() {
-            var selectFunction = jQuery('#APoptionSelect').val();
-            var selectSearch = jQuery("input[name=searchname]:checked").val();
-            var searchString = (selectFunction !== '') ? selectSearch + ' ' + selectFunction : selectSearch;
+            var searchLength = jQuery('input[name=searchlength]:checked').val();
+            var searchString = jQuery('#APoptionSelect').val();
+            var selectSearch = jQuery('#ap-ch-search-select').val();
+            fillDates(searchLength);
             jQuery('#hub_search-search-input').val(searchString);
+            jQuery('#hub_search-search-select option[value="' + selectSearch + '"]').attr('selected','selected');
             jQuery('#auto-producer').html(APsuccessText);
             jQuery('#search-submit').trigger("click");
         }
@@ -981,7 +1169,7 @@
                     click: function(){
                         jQuery(this).dialog('close');
                     },
-                    tabindex: 4
+                    tabindex: 5
                 },
                 {
                     id: "btnOne",
@@ -989,7 +1177,7 @@
                     click: function () {
                         processAPform();
                     },
-                    tabindex: 3
+                    tabindex: 4
                 }
             ],
             title: 'Denver Post AUTO🤖SEARCHER™' + APversion,

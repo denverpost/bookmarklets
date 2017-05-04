@@ -110,6 +110,19 @@ var autoProducerOptions = {
         "help-sections": "Latest News, News, Colorado News, Weather",
         "help-primary-section": "Weather"
     },
+    "24": {
+        "title": "Colorado Immigration",
+        "check-sections": ["39","47","46","75","4302"],
+        "add-tags": ["U.S. immigration policy","Immigration and Customs Enforcement"],
+        "primary-section": "46",
+        "primary-tag": "7196",
+        "features": [],
+        "apple-news": [],
+        "related": true,
+        "help-primary-tag": "U.S. immigration policy",
+        "help-sections": "News, Colorado News, Immigration, Politics, Colorado Politics",
+        "help-primary-section": "Immigration",
+    },
     "31": {
         "title": "Colorado Legislature",
         "check-sections": ["48","39","47","79","80","75"],

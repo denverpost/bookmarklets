@@ -28,11 +28,11 @@
 	font-size:1em;
 }
 #auto-producer .ap-options .tipGraf {
-	padding-top:1em;
+	padding-top:.1em;
 	padding-left:.4em;
 }
 #auto-producer .ap-options .tipGraf p {
-	color:CadetBlue;
+	color:DarkSlateGray;
 	font-size:80%;
 }
 #auto-producer .ap-options p:first-child {

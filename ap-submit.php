@@ -13,9 +13,9 @@ function addslashes_recursive( $input ) {
     }
 }
 
-$tag_file = './ap-taglist.js';
-$tags_start = 'var autoProducerTagList = ["';
-$tags_end = '"];';
+$tag_file = './ap-tagignore.js';
+$tags_start = 'var autoProducerTagList = [';
+$tags_end = '];';
 
 $options_file = './ap-options.js';
 $options_start = 'var autoProducerOptions = ';
@@ -36,10 +36,10 @@ if (isset($_POST) && $_POST['tags_save'] == true) {
 	$tags = array_values(array_unique($tags));
 	natcasesort($tags);
 	$tags = array_map("trim", addslashes_recursive($tags));
-	$tags_write = $tags_start.implode('","',$tags).$tags_end;
+	$tags_write = $tags_start.'"'.implode('","',$tags).'"'.$tags_end;
 	file_put_contents($tag_file,$tags_write,LOCK_EX); /*
 	$ftp = new ftp;
-    $ftp->file_put('ap-taglist', '', 'js', TRUE, FTP_ASCII, '/DenverPost/app/bookmarklet/autoproducer/');
+    $ftp->file_put('ap-tagignore', '', 'js', TRUE, FTP_ASCII, '/DenverPost/app/bookmarklet/autoproducer/');
     $ftp->ftp_connection_close(); */
 	header("Location:./ap-edit-tags.php");
 } /* else if (isset($_POST) && $_POST['types_save'] == true) {

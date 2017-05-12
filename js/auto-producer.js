@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.0.8';
+    var APversion = ' v1.1.0';
     function getDPOtip() {
         //return a random DPO production tip
         var tips = Array(
@@ -76,6 +76,31 @@
         str = str.replace(/\\\\/g, '\\');
         return str;
     }
+
+    function createCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name,"",-1);
+    }
     
     function autoProducerPost() {
         function captureSections() {
@@ -138,6 +163,18 @@
                     alert('You have to enter name, dude.');
                 }
             }
+            loop:
+            while(true) {
+                optionSetSelected = prompt('Which option set should this be associated with? (ENTER for "News")\n\n' +
+                            '1. News\n\n' +
+                            '2. Sports\n\n' +
+                        '\n\n','1');
+                if (optionSetSelected == '1' || optionSetSelected == '2') {
+                    break loop;
+                } else {
+                    alert('You have to enter name, dude.');
+                }
+            }
             var newRelated = confirm('Should Related by Primary Tag be added to stories automatically?');
             optionObject.title = newTitle;
             optionObject['check-sections'] = captureSections();
@@ -152,6 +189,7 @@
             optionObject['help-sections'] = captureSectionsHelp();
             var secString = '#'+sectionSelect+' option[value="'+optionObject['primary-section']+'"]';
             optionObject['help-primary-section'] = (jQuery(secString).text() == ' ') ? '' : jQuery(secString).text();
+            optionObject['option-set'] = (optionSetSelected =='2') ? 'sports' : 'news';
             if (newTitle !== '' && newTitle !== null) {
                 if (confirm('You\'re about to submit a new option called ' + newTitle + '. Are you sure?')) {
                     var i = document.createElement("img");
@@ -331,7 +369,10 @@
             var newExcerpt = false;
             var content = document.getElementById('content');
             var relExists = false;
-            var tagLen = autoProducerTagList.length;
+            autoProducerTagsToCheck = autoProducerAllTags.filter(function(val) {
+              return autoProducerTagList.indexOf(val) == -1;
+            });
+            var tagLen = autoProducerTagsToCheck.length;
             var suggestedTags = [];
             var tagContent = content.textContent.toLowerCase();
             var articleTags = document.getElementById('post_tag').getElementsByTagName('button');
@@ -340,8 +381,8 @@
                 extantTags[i] = articleTags[i].textContent.toLowerCase().replace('remove term: ','');
             }
             while(tagLen-- && tagLen >= 0) {
-                if (new RegExp("\\b"+autoProducerTagList[tagLen].toLowerCase()+"\\b").test(tagContent) && extantTags.indexOf(autoProducerTagList[tagLen].toLowerCase()) == -1 ) {
-                    suggestedTags.push(autoProducerTagList[tagLen]);
+                if (new RegExp("\\b"+autoProducerTagsToCheck[tagLen].toLowerCase()+"\\b").test(tagContent) && extantTags.indexOf(autoProducerTagsToCheck[tagLen].toLowerCase()) == -1 ) {
+                    suggestedTags.push(autoProducerTagsToCheck[tagLen]);
                 }
             }
             var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
@@ -742,8 +783,24 @@
                 validOptions.push(object);
             }
         }
+        var autoProducerAllTags = Array();
+        for (var i=0;i<document.getElementById(tagSelect).length;i++) {
+            if (document.getElementById(tagSelect).options[i].text.length >= 3) {
+                autoProducerAllTags.push(document.getElementById(tagSelect).options[i].text);
+            }
+        }
+
+        function resetOptionSet(newSet) {
+            eraseCookie('auto-producer-options');
+            createCookie('auto-producer-options',newSet,5000);
+            return newSet;
+        }
 
         function modifyDialog() {
+            jQuery('#ap-option-set-select').on('change', function() {
+                newOptionSelect = resetOptionSet(this.value);
+                buildHTML(newOptionSelect);
+            });
             jQuery('#auto-producer').keydown(function (event) {
                 if (event.keyCode == 13) {
                     jQuery("#btnOne").trigger("click");
@@ -759,33 +816,49 @@
             jQuery("#APoptionSelect").get(0).focus();
         }
 
-        function APdialogText(options){
+        function APdialogText(options,optionSet){
             var output = '<div class="ap-options"><p>Welcome to The Denver Post AUTO🤖PRODUCER™ for Articles. Here\'s a list of helper functions I can perform for you:</p>';
             output += '<div class="one-quarter">';
             output += '<ul>';
-            var optsLength = Object.keys(options).length;
-            var oneThird = Math.ceil(optsLength * 0.33);
-            var twoThird = Math.ceil(optsLength * 0.66);
+            var displayOptions = [];
+            for(var object in options){
+                if (options.hasOwnProperty(object) && options[object]['option-set'] == optionSet) {
+                    displayOptions.push(object);
+                }
+            }
+            var optsLength = Object.keys(displayOptions).length;
+            var oneThird = Math.ceil(optsLength * 0.35);
+            var twoThird = Math.ceil(optsLength * 0.68);
+            var newsSelected = (optionSet == 'news') ? ' selected="selected"' : '';
+            var sportsSelected = (optionSet == 'sports') ? ' selected="selected"' : '';
             var i = 0;
             for(var object in options){
-                var relStar = (options[object].related) ? ' <span class="red-star">*</span>' : ' ';
-                var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
-                tooltipString += '<p>Sets <strong>Primary Tag</strong> to:<br />' + options[object]['help-primary-tag'] + '</p>';
-                tooltipString += '<p>Selects these <strong>Sections</strong>:<br />' + options[object]['help-sections'] + '</p>';
-                tooltipString += '<p>Adds these <strong>Tags</strong>:<br />' + options[object]['add-tags'].join(', ') + '</p>';
-                tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
-                tooltipString += '<p>Adds these <strong>Features</strong>:<br />' + options[object].features.join(', ') + '</p>';
-                if (options.hasOwnProperty(object)) {
-                    output += '<li>( ' + pad(object) + ' ) ' + options[object].title + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
+                if (options[object]['option-set'] == optionSet) {
+                    var relStar = (options[object].related) ? ' <span class="red-star">*</span>' : ' ';
+                    var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
+                    tooltipString += '<p>Sets <strong>Primary Tag</strong> to:<br />' + options[object]['help-primary-tag'] + '</p>';
+                    tooltipString += '<p>Selects these <strong>Sections</strong>:<br />' + options[object]['help-sections'] + '</p>';
+                    tooltipString += '<p>Adds these <strong>Tags</strong>:<br />' + options[object]['add-tags'].join(', ') + '</p>';
+                    tooltipString += '<p>Adds <strong>Apple News</strong> sections:<br />' + options[object]['apple-news'] + '</p>';
+                    tooltipString += '<p>Adds these <strong>Features</strong>:<br />' + options[object].features.join(', ') + '</p>';
+                    if (options.hasOwnProperty(object)) {
+                        output += '<li>( ' + pad(object) + ' ) ' + options[object].title + relStar + ' <a class="tooltip-link" data-tooltip="' + HTMLescape(tooltipString) + '" href="#" tabindex="0">(?)</a></li>';
+                    }
+                    if (i == oneThird || i == twoThird) {
+                        output += '</ul></div><div class="one-quarter"><ul>';
+                    }
+                    i++;
                 }
-                if (i == oneThird || i == twoThird) {
-                    output += '</ul></div><div class="one-quarter"><ul>';
-                }
-                i++;
             }
             output += '</ul>';
             output += '</div>';
             output += '<div class="one-quarter">';
+            output += '<p>Option set:<br />'
+            output += '<select id="ap-option-set-select" name="ap-option-set-select" tabindex="1">';
+            output += '<option value="news"' + newsSelected + '>News</option>';
+            output += '<option value="sports"' + sportsSelected + '>Sports</option>';
+            output += '</select>';
+            output += '</p>';
             output += '<div class="tipGraf" style="display:none;"></div>';
             output += '</div>';
             output += '<div class="clear"></div>';
@@ -841,7 +914,12 @@
             }
         }
 
-        jQuery('#auto-producer').html(APdialogText(options));
+        function buildHTML(optionSelected) {
+            jQuery('#auto-producer').html(APdialogText(options,optionSelected));
+            modifyDialog();
+        }
+        buildHTML(optionSelect);
+
         jQuery('#auto-producer').dialog({
             autoOpen: false,
             buttons: [
@@ -1423,6 +1501,8 @@
         }
     }
 
+    var optionSetting = readCookie('auto-producer-options');
+    var optionSelect = (optionSetting != null) ? optionSetting : 'news';
     var loc = window.location.href;
     var allTags = [];
     if (document.body.classList.contains('modal-open') || loc.indexOf('upload.php') > -1) {
@@ -1439,7 +1519,7 @@
             s2.setAttribute('src','https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js');
             window.document.body.appendChild(s2);
             var tagJS = window.document.createElement('script');
-            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/autoproducer/ap-taglist.js?v='+vSec());
+            tagJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/autoproducer/ap-tagignore.js?v='+vSec());
             window.document.body.appendChild(tagJS);
             var optionsJS = window.document.createElement('script');
             optionsJS.setAttribute('src','https://extras.denverpost.com/app/bookmarklet/js/ap-options.min.js?v='+vSec());

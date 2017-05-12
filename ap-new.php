@@ -17,6 +17,7 @@ $newObj .= "\t".'"related": '.$_GET['related'].','."\n";
 $newObj .= "\t".'"help-primary-tag": "'.(strlen($_GET['help-primary-tag']) >= 2 ? $_GET['help-primary-tag'] : '').'",'."\n";
 $newObj .= "\t".'"help-sections": "'.implode($_GET['help-sections'],', ').'",'."\n";
 $newObj .= "\t".'"help-primary-section": "'.$_GET['help-primary-section'].'",'."\n";
+$newObj .= "\t".'"option-set": "'.$_GET['option-set'].'",'."\n";
 $newObj .= '},'."\n";
 
 if( strpos(file_get_contents($file),$testObj) == false) {

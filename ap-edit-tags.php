@@ -1,8 +1,8 @@
 <?php
 
-$tag_file = './ap-taglist.js';
-$tags_start = 'var autoProducerTagList = ["';
-$tags_end = '"];';
+$tag_file = './ap-tagignore.js';
+$tags_start = 'var autoProducerTagList = [';
+$tags_end = '];';
 
 $tags_list = file_get_contents($tag_file);
 $tags = array_map('stripslashes', explode(',',str_replace(array($tags_start,$tags_end,'"'),'',$tags_list)));
@@ -49,10 +49,10 @@ $tags = array_map('stripslashes', explode(',',str_replace(array($tags_start,$tag
 		<div class="headerstyle">
 			<div class="row">
 				<div class="large-12 columns">
-					<h1>AUTO-PRODUCER Tag Suggestion Manager</h1>
+					<h1>AUTO-PRODUCER Tag Suggestion Ignore List</h1>
 				</div>
 				<div class="large-8 medium-8 columns">
-					<p>Manage tags to be suggested by AUTO-PRODUCER. Click or use checkboxes to select items for deletion.</p>
+					<p>Manage tags to be ignore when by AUTO-PRODUCER offers suggestions. Click or use checkboxes to select items for deletion.</p>
 					<p>If you're adding a duplicate, it simply won't add anything.</p>
 					<p>PROTIP: Hit CTRL+ENTER (CMD+ENTER for Macs) anywhere on this page to submit. Be careful!</p>
 				</div>
@@ -65,7 +65,7 @@ $tags = array_map('stripslashes', explode(',',str_replace(array($tags_start,$tag
 			<form id="listtags" name="listtags" method="post" action="ap-submit.php">
 				<div class="large-12 columns">
 					<fieldset>
-						<legend> Add tags </legend>
+						<legend> Add tags to ignore </legend>
 						<div class="row add-new-tag">
 							<div class="large-4 columns">
 								<label for="addnewtag">Separate tags with commas:</label>

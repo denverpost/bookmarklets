@@ -1,5 +1,5 @@
 (function() {
-    var APversion = ' v1.1.0';
+    var APversion = ' v1.1.1';
     function getDPOtip() {
         //return a random DPO production tip
         var tips = Array(
@@ -205,6 +205,8 @@
             for (var i=0,len=tags.length;i<len;i++){
                 document.getElementById('in-category-'+tags[i]).checked = true;
             }
+            // uncheck Uncategorized
+            document.getElementById('in-category-1').checked = false;
         }
 
         function checkAppleNewsBoxes(boxes){
@@ -762,7 +764,7 @@
             document.body.appendChild(bookmarkletSource);
         }
 
-        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
+        var APsuccessText = '<div class="ap-success"><h3>I can do that!</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:firebrick;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
         var sectionSelect = 'fm-mason_post_settings-0-schema-0-primary_section-0';
         var tagSelect = 'fm-mason_post_settings-0-schema-0-primary_tag-0';
         var appleNewsSections = {
@@ -778,12 +780,7 @@
         };
         var options = autoProducerOptions;
         var validOptions = [];
-        for(var object in options){
-            if (options.hasOwnProperty(object)) {
-                validOptions.push(object);
-            }
-        }
-        var autoProducerAllTags = Array();
+        var autoProducerAllTags = [];
         for (var i=0;i<document.getElementById(tagSelect).length;i++) {
             if (document.getElementById(tagSelect).options[i].text.length >= 3) {
                 autoProducerAllTags.push(document.getElementById(tagSelect).options[i].text);
@@ -796,17 +793,21 @@
             return newSet;
         }
 
+        var keySetup = false;
         function modifyDialog() {
             jQuery('#ap-option-set-select').on('change', function() {
                 newOptionSelect = resetOptionSet(this.value);
                 buildHTML(newOptionSelect);
             });
-            jQuery('#auto-producer').keydown(function (event) {
-                if (event.keyCode == 13) {
-                    jQuery("#btnOne").trigger("click");
-                    return false;
-                }
-            });
+            if (keySetup == false) {
+                jQuery('#auto-producer').keydown(function (event) {
+                    if (event.keyCode == 13) {
+                        jQuery("#btnOne").trigger("click");
+                        return false;
+                    }
+                });
+                keySetup = true;
+            }
             jQuery('.tooltip-link').on('mouseenter',function(){
                 var tipText = jQuery(this).data("tooltip");
                 jQuery('.tipGraf').html(tipText).css('display','block');
@@ -821,9 +822,11 @@
             output += '<div class="one-quarter">';
             output += '<ul>';
             var displayOptions = [];
+            validOptions.splice(0,validOptions.length);
             for(var object in options){
                 if (options.hasOwnProperty(object) && options[object]['option-set'] == optionSet) {
                     displayOptions.push(object);
+                    validOptions.push(object);
                 }
             }
             var optsLength = Object.keys(displayOptions).length;
@@ -889,27 +892,32 @@
         }
 
         function processAPform() {
-            var args = [];
-            var selectFunction = (jQuery('#APoptionSelect').val() == '') ? 0 : jQuery('#APoptionSelect').val();
-            args['selectRelated'] = jQuery('#relatedSelect').prop('checked');
-            args['APauthorSelect'] = jQuery('#APauthorSelect').prop('checked');
-            args['WaPoauthorSelect'] = jQuery('#WaPoauthorSelect').prop('checked');
-            args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
-            args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
-            args['youtubeSelect'] = jQuery('#youtubeSelect').prop('checked') ? true : false;
-            args['newsletterSelect'] = jQuery('#newsletterSelect').prop('checked') ? true : false;
-            args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
-            args['crimeMapSelect'] = jQuery('#crimeMapSelect').prop('checked') ? true : false;
-            if (validOptions.indexOf(String(selectFunction)) !== -1) {
-                jQuery('#auto-producer').html(APsuccessText);
-                trumpThatBitch(options[selectFunction],args);
-                setTimeout(function(){ jQuery('#auto-producer').dialog('close'); },2000);
-            } else {
-                var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');
-                if (again === false) {
-                    jQuery('#auto-producer').dialog('close');
+            if (typeof processing == 'undefined') {
+                processing = true;
+                var args = [];
+                if (typeof selectFunction == 'undefined') {
+                    var selectFunction = (jQuery('#APoptionSelect').val() == '') ? '0' : jQuery('#APoptionSelect').val();
+                }
+                args['selectRelated'] = jQuery('#relatedSelect').prop('checked');
+                args['APauthorSelect'] = jQuery('#APauthorSelect').prop('checked');
+                args['WaPoauthorSelect'] = jQuery('#WaPoauthorSelect').prop('checked');
+                args['promoSelect'] = jQuery('#promoSelect').prop('checked') ? true : false;
+                args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
+                args['youtubeSelect'] = jQuery('#youtubeSelect').prop('checked') ? true : false;
+                args['newsletterSelect'] = jQuery('#newsletterSelect').prop('checked') ? true : false;
+                args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
+                args['crimeMapSelect'] = jQuery('#crimeMapSelect').prop('checked') ? true : false;
+                if (validOptions.indexOf(String(selectFunction)) !== -1) {
+                    jQuery('#auto-producer').html(APsuccessText);
+                    trumpThatBitch(options[selectFunction],args);
+                    setTimeout( function() { jQuery('#auto-producer').dialog('close'); },2200);
                 } else {
-                    return false;
+                    var again = confirm('That\'s not a valid option. Try again, or Cancel to quit.');
+                    if (again === false) {
+                        jQuery('#auto-producer').dialog('close');
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
@@ -918,7 +926,6 @@
             jQuery('#auto-producer').html(APdialogText(options,optionSelected));
             modifyDialog();
         }
-        buildHTML(optionSelect);
 
         jQuery('#auto-producer').dialog({
             autoOpen: false,
@@ -968,11 +975,11 @@
             resize: 'auto',
             modal: true,
             minWidth: 940,
-            position: { my: 'center', at: 'center', of: window, collision: "none" },
+            position: { my: 'top', at: 'top+30', of: window, collision: "fit", within: window },
             create: function (event, ui) {
                 jQuery(event.target).parent().css('position', 'fixed');
             },
-            open: function(event, ui) { modifyDialog(); }
+            open: function(event, ui) { buildHTML(optionSelect); }
         });
         jQuery('#auto-producer').dialog('open');
     }
@@ -1176,7 +1183,7 @@
             }
         };
 
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Content Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:firebrick;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></div>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1227,7 +1234,7 @@
             }
         }
 
-        function processAPform() {
+        function processContentHubForm() {
             var searchLength = jQuery('input[name=searchlength]:checked').val();
             var searchString = jQuery('#APoptionSelect').val();
             var selectSearch = jQuery('#ap-ch-search-select').val();
@@ -1254,7 +1261,7 @@
                     id: "btnOne",
                     text: "AUTO🤖SEARCH™!",
                     click: function () {
-                        processAPform();
+                        processContentHubForm();
                     },
                     tabindex: 4
                 }
@@ -1295,7 +1302,7 @@
                 'default': false,
             }
         };
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for freakin\' Wire Hub...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:firebrick;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1344,7 +1351,7 @@
             }
         }
 
-        function processAPform() {
+        function processWireHubForm() {
             var searchLength = jQuery('input[name=searchlength]:checked').val();
             var selectFunction = jQuery('#APoptionSelect').val();
             var selectSearch = jQuery("input[name=searchname]:checked").val();
@@ -1371,7 +1378,7 @@
                     id: "btnOne",
                     text: "AUTO🤖SEARCH™!",
                     click: function () {
-                        processAPform();
+                        processWireHubForm();
                     },
                     tabindex: 4
                 }
@@ -1397,7 +1404,7 @@
                 'default': ' checked',
             }
         };
-        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:DarkOrange;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></p>';
+        var APsuccessText = '<div class="ap-success"><h3>Waiting for the freakin\' Article Search...</h3><p>Here\'s a production tip while you wait:</p><p style="font-size:120%;color:firebrick;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;">' + getDPOtip() + '</p></p>';
 
         function modifyDialog() {
             jQuery('#auto-producer').keydown(function (event) {
@@ -1444,7 +1451,7 @@
             jQuery('select[name="dfm_end_yyyy"]').val(now.getFullYear());
         }
 
-        function processAPform() {
+        function processSearchForm() {
             var searchLength = jQuery('input[name=searchlength]:checked').val();
             var selectFunction = jQuery('#APoptionSelect').val();
             /* var selectSearch = jQuery("input[name=searchname]:checked").val(); 
@@ -1471,7 +1478,7 @@
                     id: "btnOne",
                     text: "AUTO🤖SEARCH™!",
                     click: function () {
-                        processAPform();
+                        processSearchForm();
                     },
                     tabindex: 4
                 }

@@ -372,7 +372,7 @@
             var content = document.getElementById('content');
             var relExists = false;
             autoProducerTagsToCheck = autoProducerAllTags.filter(function(val) {
-              return autoProducerTagList.indexOf(val) == -1;
+                return autoProducerTagList.indexOf(val) == -1;
             });
             var tagLen = autoProducerTagsToCheck.length;
             var suggestedTags = [];
@@ -382,9 +382,27 @@
             for(i=0;i<articleTags.length;i++) {
                 extantTags[i] = articleTags[i].textContent.toLowerCase().replace('remove term: ','');
             }
+            function testTag(tagToTest) {
+                var testPassed = false;
+                if (testPassed == false && tagToTest.split(" ").length > 3) {
+                    tagsToTest = tagToTest.split(" ");
+                    for (i=0;i<tagsToTest.length-2;i++) {
+                        if (testPassed == false && tagsToTest[i].length > 3 && tagsToTest[i+1].length > 3 && tagsToTest[i+2].length > 3) {
+                            var testTermLong = tagsToTest[i] + ' ' + tagsToTest[i+1] + ' ' + tagsToTest[i+2];
+                            testPassed = new RegExp("\\b"+testTermLong+"\\b").test(tagContent);
+                        }
+                    }
+                }
+                if (testPassed == false) {
+                    testPassed = new RegExp("\\b"+tagToTest+"\\b").test(tagContent);
+                }
+                return testPassed; 
+            }
             while(tagLen-- && tagLen >= 0) {
-                if (new RegExp("\\b"+autoProducerTagsToCheck[tagLen].toLowerCase()+"\\b").test(tagContent) && extantTags.indexOf(autoProducerTagsToCheck[tagLen].toLowerCase()) == -1 ) {
-                    suggestedTags.push(autoProducerTagsToCheck[tagLen]);
+                var thisTag = autoProducerTagsToCheck[tagLen];
+                var thisTagLower = autoProducerTagsToCheck[tagLen].toLowerCase().replace(/ *\([^)]*\) */g, "");
+                if (testTag(thisTagLower) && extantTags.indexOf(thisTagLower) == -1 && suggestedTags.indexOf(thisTagLower) == -1) {
+                    suggestedTags.push(thisTag);
                 }
             }
             var splitters = /\n\n|<\/p><p>|<\/p>\n<p>|[\s]{2,5}<p>|<p>|<\/p> <p>|<\/p> <p \/> <p>/;
@@ -824,7 +842,7 @@
             var displayOptions = [];
             validOptions.splice(0,validOptions.length);
             for(var object in options){
-                if (options.hasOwnProperty(object) && options[object]['option-set'] == optionSet) {
+                if (options.hasOwnProperty(object) && (options[object]['option-set'] == optionSet || typeof options[object]['option-set'] == 'undefined')) {
                     displayOptions.push(object);
                     validOptions.push(object);
                 }
@@ -836,7 +854,7 @@
             var sportsSelected = (optionSet == 'sports') ? ' selected="selected"' : '';
             var i = 0;
             for(var object in options){
-                if (options[object]['option-set'] == optionSet) {
+                if (options[object]['option-set'] == optionSet || typeof options[object]['option-set'] == 'undefined') {
                     var relStar = (options[object].related) ? ' <span class="red-star">*</span>' : ' ';
                     var tooltipString = '<p>Sets <strong>Primary Section</strong> to:<br />' + options[object]['help-primary-section'] + '</p>';
                     tooltipString += '<p>Sets <strong>Primary Tag</strong> to:<br />' + options[object]['help-primary-tag'] + '</p>';

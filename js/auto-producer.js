@@ -422,7 +422,7 @@
                     relExists = true;
                 }
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {
-                    grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('&#8212;',' '));
+                    grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('(AP) &#8212;','--').replace('&#8212;',' '));
                 }
             }
             if (args.wire) {                

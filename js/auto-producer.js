@@ -456,7 +456,7 @@
                     excerpt = newExcerpt;
                 }
                 var excerptDateline = (excerpt.indexOf('(AP) —') > -1) ? excerpt.substring(0,excerpt.indexOf('(AP) —')) : excerpt.substring(0,excerpt.indexOf('(AP) &#8212;'));
-                var newExcerptText = excerpt.replace(excerptDateline,'').replace('&#8212;','--').replace('—','--').replace('(AP) ','').trim();
+                var newExcerptText = excerpt.replace(excerptDateline,'').replace('&#8212;','--').replace('—','--').replace('(AP) --','').trim();
                 document.getElementById('excerpt').value = newExcerptText;
             }
             if (args.related && !relExists) {

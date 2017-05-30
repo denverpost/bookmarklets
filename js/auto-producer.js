@@ -422,7 +422,7 @@
                     relExists = true;
                 }
                 if (grafs[i].match(/<p \/>/) === null && grafs[i].length > 0 && !(grafs[i].match(/&nbsp;/) && grafs[i].length < 7)) {
-                    grafsClean.push(grafs[i].replace('</p>','').replace('(AP) —','--').replace('(AP) &#8212;','--').replace('&#8212;',' '));
+                    grafsClean.push(grafs[i].replace('</p>','').replace('&#8212;','--').replace('—','--').replace('(AP) ',''));
                 }
             }
             if (args.wire) {                
@@ -455,8 +455,8 @@
                 if (excerpt.length < 10) {
                     excerpt = newExcerpt;
                 }
-                var excerptDateline = excerpt.substring(0,excerpt.indexOf('(AP) —'));
-                var newExcerptText = excerpt.replace(excerptDateline,'').replace('(AP) —','').trim();
+                var excerptDateline = (indexOf('(AP) —') > -1) ? excerpt.substring(0,excerpt.indexOf('(AP) —')) : excerpt.substring(0,excerpt.indexOf('(AP) &#8212;'));
+                var newExcerptText = excerpt.replace(excerptDateline,'').replace('&#8212;','--').replace('—','--').replace('(AP) ','').trim();
                 document.getElementById('excerpt').value = newExcerptText;
             }
             if (args.related && !relExists) {

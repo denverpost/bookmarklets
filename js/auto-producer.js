@@ -315,6 +315,9 @@
             if (args.homicideSelect) {
                 contentArgs.homicide = true;
             }
+            if (args.hateSelect) {
+                contentArgs.hate = true;
+            }
             if (args.informSelect) {
                 contentArgs.inform = true;
             }
@@ -470,6 +473,9 @@
             if (args.wx) {
                 grafsClean.splice(3, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class=\'related alignright\'> [dfm_iframe src=\'http://extras.denverpost.com/weather/widget-iframe.html\' width=\'300px\' height=\'590px\'] </aside>[cq comment="ASIDE PLACED ABOVE"]');
                 grafsClean.push('<a href="http://www.thedenverchannel.com/weather">Click here for more Denver7 weather coverage</a>.');
+            }
+            if (args.hate) {
+                grafsClean.splice(7, 0, '[cq comment="ASIDE PLACED BELOW"]\n<aside class="related left alignleft">\n<h2 class="widget-title">Documenting Hate</h2>\n<div style="width:100%;"><a href="http://extras.denverpost.com/documenting-hate/"><img src="http://www.denverpost.com/wp-content/uploads/2017/06/hate-speech-vandalism.jpg" alt="Documenting Hate project submissions" style="width:90%;margin:0 auto;"></a></div>\n<p>Share your stories of hate crimes and discrimination with The Denver Post and ProPublica <a href="http://extras.denverpost.com/documenting-hate/">through the nationwide Documenting Hate project</a>.</p>\n</aside>\n[cq comment="ASIDE PLACED ABOVE"]');
             }
             if (args.crime && !args.wx) {
                 var crimemap = {
@@ -889,7 +895,8 @@
             output += '<div class="one-quarter">';
             output += '<p>Insert Related <span class="red-star">*</span> <input type="checkbox" id="relatedSelect" tabindex="2" /><br />';
             output += 'Inform video <input type="checkbox" id="informSelect" tabindex="5" /><br />';
-            output += 'Author -> AP <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="8" /></p>';
+            output += 'Author -> AP <span class="blue-star">*</span> <input type="checkbox" id="APauthorSelect" tabindex="8" /><br />';
+            output += 'Documenting Hate <input type="checkbox" id="hateSelect" tabindex="11" /></p>';
             output += '</div>';
             output += '<div class="one-quarter">';
             output += '<p>Insert Promos <input type="checkbox" id="promoSelect" tabindex="3" /><br />';
@@ -923,6 +930,7 @@
                 args['informSelect'] = jQuery('#informSelect').prop('checked') ? true : false;
                 args['youtubeSelect'] = jQuery('#youtubeSelect').prop('checked') ? true : false;
                 args['newsletterSelect'] = jQuery('#newsletterSelect').prop('checked') ? true : false;
+                args['hateSelect'] = jQuery('#hateSelect').prop('checked') ? true : false;
                 args['homicideSelect'] = jQuery('#homicideSelect').prop('checked') ? true : false;
                 args['crimeMapSelect'] = jQuery('#crimeMapSelect').prop('checked') ? true : false;
                 if (validOptions.indexOf(String(selectFunction)) !== -1) {

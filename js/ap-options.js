@@ -554,7 +554,7 @@ var autoProducerOptions = {
     },
     "79": {
         "title": "Terry Wickstrom",
-        "check-sections": ["48","94","111"],
+        "check-sections": ["48","94","111","9101"],
         "add-tags": ["Terry Wickstrom"],
         "primary-section": "111",
         "primary-tag": "7851",
@@ -562,7 +562,7 @@ var autoProducerOptions = {
         "apple-news": ["sports"],
         "related": false,
         "help-primary-tag": "Terry Wickstrom",
-        "help-sections": "Latest News, Sports, Outdoors",
+        "help-sections": "Latest News, Sports, Outdoors, Entertainment / Lifestyle",
         "help-primary-section": "Outdoors",
         "option-set": "sports"
     },

@@ -6,7 +6,7 @@
   margin:.5em 0;
 }
 /* admin table */
-#tablehead {
+.tablehead {
   margin: -1rem -1.25rem 1rem;
   border-bottom:5px solid rgba(0,0,0,0.2);
   padding:1em 0 .5em;

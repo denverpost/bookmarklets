@@ -1,0 +1,1 @@
+var autoProducerTagSets = {"tag you want": ["thing that pulls it","other things that pulls it"],"second tag you want": ["first thing for second tag","second thing for second tag"]};

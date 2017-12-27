@@ -461,6 +461,9 @@
                 var excerptDateline = (excerpt.indexOf('(AP) —') > -1) ? excerpt.substring(0,excerpt.indexOf('(AP) —')) : excerpt.substring(0,excerpt.indexOf('(AP) &#8212;'));
                 var newExcerptText = excerpt.replace(excerptDateline,'').replace('&#8212;','--').replace('—','--').replace('(AP) --','').trim();
                 document.getElementById('excerpt').value = newExcerptText;
+                if (document.getElementById('wp_seo_meta_description').value == '') {
+                    document.getElementById('wp_seo_meta_description').value = newExcerptText;
+                }
             }
             if (args.related && !relExists) {
                 var relPlace = (grafsClean.length-4 < 2) ? 2 : ((grafsClean.length > 24) ? 11 : grafsClean.length-4);
